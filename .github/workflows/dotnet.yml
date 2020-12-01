@@ -15,13 +15,19 @@ jobs:
           fetch-depth: 0
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
-      - name: Nuget Restore
+      - name: Restore Packages
         run: |
           nuget restore
-      - name: MSBuild
+      - name: Build
         run: |
-          msbuild /t:Rebuild /p:Configuration=Release /bl _All.sln        
-      - name: VSTest
+          msbuild /t:Rebuild /p:Configuration=Release /bl _All.sln
+          $sourceFolder = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "_Out" | Join-Path -ChildPath "Release" | Join-Path -ChildPath "*"
+          Compress-Archive -DestinationPath win-x64.zip -Path $sourceFolder -CompressionLevel Optimal
+      - name: Create Nuget Packages
+        run: |
+          $packageOutFolder = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "_Out" | Join-Path -ChildPath "NuGet"
+          dotnet pack _ALL.sln --no-build --output $packageOutFolder
+      - name: Test
         run: |
           $baseFolder = vswhere -latest -products * -requires Microsoft.VisualStudio.Workload.ManagedDesktop Microsoft.VisualStudio.Workload.Web -requiresAny -property installationPath
           Write-Host "baseFolder: $baseFolder"

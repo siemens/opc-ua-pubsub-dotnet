@@ -4,8 +4,8 @@
     <Product>opc-ua-pubsub-dotnet</Product>
     <Authors>opc-ua-pubsub-dotnet contributors</Authors>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <PackageProjectUrl>https://code.siemens.com/em-dg/reuse/multiplatform/iot/opc-ua-pubsub-dotnet</PackageProjectUrl>
-    <RepositoryUrl>git@code.siemens.com:em-dg/reuse/multiplatform/iot/opc-ua-pubsub-dotnet.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/siemens/opc-ua-pubsub-dotnet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/siemens/opc-ua-pubsub-dotnet.git</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
 	<!-- Artifactory does not support snupkg right now, therefore we cannot use 'portable' & 'snupkg' -->
 	
