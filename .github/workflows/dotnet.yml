@@ -36,5 +36,5 @@ jobs:
           $testRootPath = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "Tests"
           $testAssemblies = Get-ChildItem -Directory -Recurse -Path $testRootPath -Include "bin" | Get-ChildItem -File -Recurse -Filter "*.Test.dll" | select -ExpandProperty FullName | % { "`"$_`"" }
           Write-Host "Found test assemblies:"
-          Write-Host $testAssemblies
+          Write-Host $testAssemblies 
           & $vsTestPath $testAssemblies
