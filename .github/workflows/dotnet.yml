@@ -26,7 +26,7 @@ jobs:
       - name: Create Nuget Packages
         run: |
           $packageOutFolder = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "_Out" | Join-Path -ChildPath "NuGet"
-          dotnet pack _ALL.sln --no-build --output $packageOutFolder
+          dotnet pack _ALL.sln --no-build --configuration Release --output $packageOutFolder
       - name: Test
         run: |
           $baseFolder = vswhere -latest -products * -requires Microsoft.VisualStudio.Workload.ManagedDesktop Microsoft.VisualStudio.Workload.Web -requiresAny -property installationPath
