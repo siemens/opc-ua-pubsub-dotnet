@@ -1,0 +1,38 @@
+name: Build & Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: ./src
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.0.2
+      - name: Nuget Restore
+        run: |
+          nuget restore
+      - name: MSBuild
+        run: |
+          msbuild /t:Rebuild /p:Configuration=Release /bl _All.sln        
+      - name: VSTest
+        run: |
+          $baseFolder = vswhere -latest -products * -requires Microsoft.VisualStudio.Workload.ManagedDesktop Microsoft.VisualStudio.Workload.Web -requiresAny -property installationPath
+          Write-Host "baseFolder: $baseFolder"
+          $vsTestPath = join-path $baseFolder 'Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe'
+          Write-Host "vsTestPath: $vsTestPath"
+          Test-Path $vsTestPath
+          Write-Host "Searching for test assemblies..."
+          $testRootPath = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "Tests"
+          $testAssemblies = Get-ChildItem -Directory -Recurse -Path $testRootPath -Include "bin" | Get-ChildItem -File -Recurse -Filter "*.Test.dll" | select -ExpandProperty FullName | % { "`"$_`"" }
+          & $vsTestPath $testAssemblies
