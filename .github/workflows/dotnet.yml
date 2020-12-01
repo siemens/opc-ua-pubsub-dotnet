@@ -1,0 +1,46 @@
+name: Build & Test
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: ./src
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/cache@v1
+        id: cache
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.0.2
+      - name: Restore Packages
+        run: nuget restore
+      - name: Build
+        run: |
+          msbuild /t:Rebuild /p:Configuration=Release /bl _All.sln
+          $sourceFolder = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "_Out" | Join-Path -ChildPath "Release" | Join-Path -ChildPath "*"
+          Compress-Archive -DestinationPath win-x64.zip -Path $sourceFolder -CompressionLevel Optimal
+      - name: Create Nuget Packages
+        run: |
+          $packageOutFolder = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "_Out" | Join-Path -ChildPath "NuGet"
+          dotnet pack _ALL.sln --no-build --configuration Release --output $packageOutFolder
+      - name: Test
+        run: |
+          $baseFolder = vswhere -latest -products * -requires Microsoft.VisualStudio.Workload.ManagedDesktop Microsoft.VisualStudio.Workload.Web -requiresAny -property installationPath
+          Write-Host "baseFolder: $baseFolder"
+          $vsTestPath = join-path $baseFolder 'Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe'
+          Write-Host "vsTestPath: $vsTestPath"
+          Test-Path $vsTestPath
+          Write-Host "Searching for test assemblies..."
+          $testRootPath = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "Tests"
+          $testAssemblies = Get-ChildItem -Directory -Recurse -Path $testRootPath -Include "bin" | Get-ChildItem -File -Recurse -Filter "*.Test.dll" | select -ExpandProperty FullName | % { "`"$_`"" }
+          Write-Host "Found test assemblies:"
+          Write-Host $testAssemblies 
+          & $vsTestPath $testAssemblies
