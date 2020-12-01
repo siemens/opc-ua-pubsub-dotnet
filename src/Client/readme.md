@@ -1,0 +1,1 @@
+Our OPC UA subscriber implementation based on .Net Core

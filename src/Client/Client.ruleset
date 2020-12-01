@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="SonarQube - SAnP Custom" ToolsVersion="16.0">
+  <Include Path="..\..\..\.sonarlint\sanpcsharp.ruleset" Action="Default" />
+</RuleSet>

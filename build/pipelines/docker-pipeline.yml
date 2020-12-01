@@ -1,0 +1,70 @@
+parameters:
+  - name: PoolName
+    displayName: Pool
+    type: string
+    default: 'Windows 2019 Performance'
+    values:
+    - 'Windows Server 2019'
+    - 'Windows 2019 Performance'
+
+variables:
+- name: DockerServiceConnection
+  value: Phoebe docker local-SICAM_GridEdge
+- name: DockerRepository
+  value: 'energy-dev/build/opc-ua-pubsub-dotnet' 
+
+
+trigger:
+  branches:
+      include:
+      - "*"
+  paths:
+    include:
+    - Docker/Dockerfile
+    - build/pipelines/docker-pipeline.yml
+
+stages:
+- stage: build
+  displayName: Create Docker Image
+  
+  jobs:
+  - job: build
+    displayName: Create Docker Image
+    pool:
+      name: ${{parameters.PoolName}}
+    steps:    
+    - task: Docker@2
+      displayName: Login
+      inputs:
+        command: login    
+        containerRegistry: $(DockerServiceConnection)
+
+    - task: Docker@2
+      displayName: Build Image
+      inputs:
+          command: build
+          Dockerfile: build/Docker/Dockerfile
+          containerRegistry: $(DockerServiceConnection)
+          repository: $(DockerRepository)
+          buildContext: $(Build.SourcesDirectory)
+          arguments:
+          tags: |
+              latest
+              $(Build.BuildNumber)
+      
+    - task: Docker@2
+      displayName: Push Image
+      inputs:
+          command: push
+          Dockerfile: build/Docker/Dockerfile
+          containerRegistry: $(DockerServiceConnection)
+          repository: $(DockerRepository)
+          tags: |
+              latest
+              $(Build.BuildNumber)
+
+    - task: Docker@2
+      displayName: "Docker Logout"
+      inputs:
+        command: logout
+        containerRegistry: $(DockerServiceConnection)

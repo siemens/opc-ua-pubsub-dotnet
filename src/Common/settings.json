@@ -1,0 +1,54 @@
+﻿{
+  "Settings": {
+    "Broker": {
+      "BrokerP12": "D:\\CERTS\\LocalBroker_PTS_19216878100.p12", //"D:\\CERTS\\MDSPv1\\ThomasTestGroupinginAspects.p12",
+      "BrokerP12Password": "12345678",
+      "UseTLS": true,
+      "UseMutualAuth": true
+    },
+
+    "Client": {
+      "BrokerHostname": "localhost",
+      "BrokerPort": "8883",
+      "ClientCertP12":
+        "D:\\CERTS\\LocalBroker_PTS_19216878100.p12", //"D:\\CERTS\\MDSPv1\\ThomasTestGroupinginAspects.p12",
+      "ClientCertPassword": "12345678",
+      "BrokerCACert": "D:\\CERTS\\EndToEnd_EnergyIP_CA.pem", //"D:\\CERTS\\MDSPv1\\ClientCA.der",
+      "DefaultSubscribeTopicName": "#",
+      "DefaultPublisherTopicName": "c/{ClientID}/o/opcua/{VersionMS}/u/{T:d/t}{TM:m/t}{F:d/f}{FM:m/f}{E:d/e}{EM:m/e}",
+      "SubscribeUseTls": true,
+      "EnableLogging": false,
+      "AllowUntrustedCertificates": true,
+      "IgnoreCertificateChainErrors": true,
+      "IgnoreCertificateRevocationErrors": false,
+      "CommunicationTimeout": 20,
+      "MqttKeepAlivePeriod": 30
+    },
+
+    "Simulation": {
+      "BrokerHostname": "localhost",
+      "ClientCertP12": "D:\\CERTS\\IoT-Client-RSA2k.p12",
+      "ClientCertPassword": "12345678",
+      "ClientRootCACertDER": "D:\\CERTS\\IoT-Broker-CA-RSA4k.der",
+      "BrokerCACertDER": "D:\\CERTS\\IoT-Broker-CA-RSA4k.der",
+
+      // Time in ms to wait before sending the meta message.
+      // This is sometime useful if the local broker is used so it has enough time to start.
+      "WaitBeforeStarting": 1500,
+
+      // Time in ms to wait after sending the meta message before sending the key message.
+      "WaitAfterMetaMessage": 1500,
+
+      // Time in ms to wait after sending the key message to proceed with the delta message.
+      "WaitAfterKeyMessage": 1500,
+
+      "InputFile": "Simu-A.xlsx",
+      "PublisherID": "SIP6~Thomas~Name~BM00000001",
+
+      // Optional topic prefix which will be used for publishing all messages.
+      //"TopicPrefix": "c/{ClientID}/o/opcua/{VersionMS}/u/{Meta:m}{Meas:d}{File:d}"
+      "TopicPrefix":
+        "c/{ClientID}/o/opcua/{VersionMS}/u/{T:d/t}{TM:m/t}{F:d/f}{FM:m/f}{E:d/e}{EM:m/e}" //"/siemens/uapubsub"
+    }
+  }
+}

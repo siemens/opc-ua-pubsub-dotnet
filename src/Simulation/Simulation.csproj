@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>opc.ua.pubsub.dotnet.simulation</RootNamespace>
+    <AssemblyName>simulation</AssemblyName>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ClosedXML">
+      <Version>0.94.2</Version>
+    </PackageReference>
+    <PackageReference Include="GitVersionTask">
+      <Version>5.0.0</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="log4net">
+      <Version>2.0.8</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NetCore.Analyzers" Version="3.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Client\Client.csproj">
+      <Project>{6e051b82-acdb-4208-a8be-3d7a0048606d}</Project>
+      <Name>Client</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{066786ED-7C49-4886-9AF3-8264C531C28C}</Project>
+      <Name>Common</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Binary\Binary.csproj">
+      <Project>{85e1275c-a568-4981-abe1-c563eb582a3b}</Project>
+      <Name>OPCUABinary</Name>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

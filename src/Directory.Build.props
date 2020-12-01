@@ -1,0 +1,40 @@
+<Project>
+  <PropertyGroup>    
+    <Company>opc-ua-pubsub-dotnet</Company>
+    <Product>opc-ua-pubsub-dotnet</Product>
+    <Authors>opc-ua-pubsub-dotnet contributors</Authors>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://code.siemens.com/em-dg/reuse/multiplatform/iot/opc-ua-pubsub-dotnet</PackageProjectUrl>
+    <RepositoryUrl>git@code.siemens.com:em-dg/reuse/multiplatform/iot/opc-ua-pubsub-dotnet.git</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+	<!-- Artifactory does not support snupkg right now, therefore we cannot use 'portable' & 'snupkg' -->
+	
+	<!-- BEGIN PROPPER SETTINGS -->
+	<!--
+	<DebugType>portable</DebugType>
+	<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	<DebugSymbols>true</DebugSymbols>
+	<IncludeSymbols>true</IncludeSymbols>	
+	-->
+	<!-- END  PROPPER SETTINGS -->
+	
+	<!-- BEGIN WORKAROUND -->
+	<DebugType>embedded</DebugType>
+	<DebugSymbols>false</DebugSymbols>
+	<!-- END  WORKAROUND -->    
+	
+	<EmbedAllSources>true</EmbedAllSources>
+
+
+	<!-- <RestoreFallbackFolders>clear</RestoreFallbackFolders> -->
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\_Out\Debug\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\_Out\Release\</OutputPath>
+  </PropertyGroup>
+</Project>
