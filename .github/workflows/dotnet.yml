@@ -87,19 +87,16 @@ jobs:
       run:
         working-directory: ./src 
     steps:
-    - name: Download Build Results
-      uses: actions/download-artifact@v2
-      with:
-        name: win-x64-release
+      - name: Download Build Results
+        uses: actions/download-artifact@v2
+        with:
+          name: win-x64-release
 
-    - name: Download NuGet Packages
-      uses: actions/download-artifact@v2
-      with:
-        name: nuget-win-x64-release
+      - name: Download NuGet Packages
+        uses: actions/download-artifact@v2
+        with:
+          name: nuget-win-x64-release
 
-    - name: Check content
-      run: |      
-        Write-Host "Debug"
-        gci env:* | sort Name | Format-Table -AutoSize | Out-String -Width 400 | Write-Host
-        # $rootPath = Get-Location
-        # Write-Host "rootPath: $rootPath"
+      - name: Create Nuget Packages
+        run: |
+          Write-Host "Hello release"
