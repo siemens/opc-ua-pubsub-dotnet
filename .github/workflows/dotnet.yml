@@ -29,7 +29,7 @@ jobs:
       
       - name: Build
         run: |
-          msbuild -m -t:Rebuild -p:Configuration=Release -bl -noconlog _All.sln
+          msbuild -m -t:Rebuild -p:Configuration=Release -bl:opc-ua-pubsub-dotnet.binlog -noconlog _All.sln
           $sourceFolder = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "_Out" | Join-Path -ChildPath "Release" | Join-Path -ChildPath "*"
           $outFolder = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "_Out" | Join-Path -ChildPath "GitHub" 
           New-Item -ItemType Directory -Force -Path $outFolder
@@ -42,7 +42,7 @@ jobs:
         with:
           name: log-win-x64-release
           path: |
-            src/msbuild.binlog
+            src/*.binlog
       
       - name: Archive Build Result
         uses: actions/upload-artifact@v2
