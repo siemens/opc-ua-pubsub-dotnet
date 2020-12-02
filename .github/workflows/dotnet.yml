@@ -8,6 +8,9 @@ jobs:
     defaults:
       run:
         working-directory: ./src
+        shell: pwsh
+    outputs:
+      semver: ${{ steps.gitversion.outputs.semver }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -30,19 +33,8 @@ jobs:
         run: dotnet restore _ALL.sln --use-lock-file
       
       - name: Build
-        run: |
-          msbuild -m -t:Rebuild -p:Configuration=Release -bl:opc-ua-pubsub-dotnet.binlog -noconlog _All.sln
-          gci env:* | sort Name | Format-Table -AutoSize | Out-String -Width 400 | Write-Host
-          $sourceFolder = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "_Out" | Join-Path -ChildPath "Release" | Join-Path -ChildPath "*"
-          $outFolder = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "_Out" | Join-Path -ChildPath "GitHub" 
-          New-Item -ItemType Directory -Force -Path $outFolder
-          $outPath = Join-Path $outFolder "win-x64.zip"          
-          Compress-Archive -DestinationPath $outPath -Path $sourceFolder -CompressionLevel Optimal
+        run: msbuild -m -t:Rebuild -p:Configuration=Release -bl:opc-ua-pubsub-dotnet.binlog -noconlog _All.sln
       
-      - name: Env
-        run: |
-          gci env:* | sort Name | Format-Table -AutoSize | Out-String -Width 400 | Write-Host
-
       - name: Archive Build Log
         uses: actions/upload-artifact@v2
         if: ${{ success() || failure() }}
@@ -50,6 +42,19 @@ jobs:
           name: log-win-x64-release
           path: |
             src/*.binlog
+      
+      - name: Store SemVer
+        id: gitversion
+        run: |
+          Write-Host "::set-output name=semver::$($env:GitVersion_SemVer)"
+      
+      - name: Create zip
+        run: |
+          $sourceFolder = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "_Out" | Join-Path -ChildPath "Release" | Join-Path -ChildPath "*"
+          $outFolder = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "_Out" | Join-Path -ChildPath "GitHub" 
+          New-Item -ItemType Directory -Force -Path $outFolder
+          $outPath = Join-Path $outFolder "win-x64-$($env:GitVersion_SemVer).zip"          
+          Compress-Archive -DestinationPath $outPath -Path $sourceFolder -CompressionLevel Optimal
       
       - name: Archive Build Result
         uses: actions/upload-artifact@v2
@@ -90,6 +95,9 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: windows-latest
     needs: build
+    defaults:
+      run:
+        shell: pwsh
     steps:
       - name: Download Build Results
         uses: actions/download-artifact@v2
@@ -103,4 +111,10 @@ jobs:
 
       - name: Publish to NuGet.org
         run: |
-          dotnet nuget push "*.nupkg" --api-key 
+          dotnet nuget push "*.nupkg" --api-key $env:NUGET_API_KEY
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+          
+      - name: Create Release
+        run: |
+          Write-Host "'${{ needs.build.outputs.semver }}'"
