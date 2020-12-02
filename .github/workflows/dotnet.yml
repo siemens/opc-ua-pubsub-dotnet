@@ -99,4 +99,4 @@ jobs:
 
     - name: Check content
       run: |      
-        Get-ChildItem -Recurse -Path $env:GITHUB_WORKSPACE
+        Get-ChildItem -Recurse .
