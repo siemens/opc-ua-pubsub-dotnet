@@ -101,5 +101,5 @@ jobs:
       run: |      
         Write-Host "Debug"
         gci env:* | sort Name | Format-Table -AutoSize | Out-String -Width 400 | Write-Host
-        $rootPath = Get-Location
-        Write-Host "rootPath: $rootPath"
+        # $rootPath = Get-Location
+        # Write-Host "rootPath: $rootPath"
