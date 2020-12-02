@@ -26,7 +26,7 @@ jobs:
         uses: microsoft/setup-msbuild@v1.0.2
       
       - name: Restore Packages
-        if: steps.cache.outputs.cache-hit != 'true'
+        # if: steps.cache.outputs.cache-hit != 'true'
         run: dotnet restore _ALL.sln --use-lock-file
       
       - name: Build
