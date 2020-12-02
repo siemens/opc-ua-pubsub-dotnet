@@ -25,11 +25,11 @@ jobs:
         uses: microsoft/setup-msbuild@v1.0.2
       
       - name: Restore Packages
-        run: nuget restore
+        run: dotnet restore _ALL.sln --use-lock-file
       
       - name: Build
         run: |
-          msbuild /t:Rebuild /p:Configuration=Release /bl /noconlog _All.sln
+          msbuild -m -t:Rebuild -p:Configuration=Release -bl -noconlog _All.sln
           $sourceFolder = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "_Out" | Join-Path -ChildPath "Release" | Join-Path -ChildPath "*"
           $outFolder = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "_Out" | Join-Path -ChildPath "GitHub" 
           New-Item -ItemType Directory -Force -Path $outFolder
