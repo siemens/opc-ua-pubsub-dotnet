@@ -13,26 +13,58 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - uses: actions/cache@v1
+      
+      - name: Cache NuGet Packages
+        uses: actions/cache@v1
         id: cache
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+      
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
+      
       - name: Restore Packages
         run: nuget restore
+      
       - name: Build
         run: |
           msbuild /t:Rebuild /p:Configuration=Release /bl _All.sln
           $sourceFolder = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "_Out" | Join-Path -ChildPath "Release" | Join-Path -ChildPath "*"
-          Compress-Archive -DestinationPath win-x64.zip -Path $sourceFolder -CompressionLevel Optimal
+          $outPath = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "_Out" | Join-Path -ChildPath "GitHub" | Join-Path -ChildPath "win-x64.zip"
+          Compress-Archive -DestinationPath $outPath -Path $sourceFolder -CompressionLevel Optimal
+      
+      - name: Archive Build Log
+        uses: actions/upload-artifact@v2
+        if: ${{ success() || failure() }}
+        with:
+          name: log-win-x64-release
+          path: |
+            src/msbuild.binlog
+      
+      - name: Archive Build Result
+        uses: actions/upload-artifact@v2
+        with:
+          name: win-x64-release
+          path: |
+            src/_Out/GitHub
+
       - name: Create Nuget Packages
         run: |
           $packageOutFolder = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "_Out" | Join-Path -ChildPath "NuGet"
           dotnet pack _ALL.sln --no-build --configuration Release --output $packageOutFolder
+
+      - name: Archive NuGet Packages
+        uses: actions/upload-artifact@v2
+        with:
+          name: nuget-win-x64-release
+          path: |
+            src/_Out/NuGet
+          
+
       - name: Test
         run: |
+          Write-Host "Using vswhere to find VSTest..."
           $baseFolder = vswhere -latest -products * -requires Microsoft.VisualStudio.Workload.ManagedDesktop Microsoft.VisualStudio.Workload.Web -requiresAny -property installationPath
           Write-Host "baseFolder: $baseFolder"
           $vsTestPath = join-path $baseFolder 'Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe'
@@ -44,3 +76,23 @@ jobs:
           Write-Host "Found test assemblies:"
           Write-Host $testAssemblies 
           & $vsTestPath $testAssemblies
+
+  release:
+    #if: github.ref == 'refs/heads/main'
+    runs-on: windows-latest
+    needs: build
+    defaults:
+      run:
+        working-directory: ./src 
+    steps:
+    - name: Download Build Results
+        uses: actions/download-artifact@v2
+        with:
+          name: win-x64-release
+    - name: Download NuGet Packages
+        uses: actions/download-artifact@v2
+        with:
+          name: nuget-win-x64-release
+    - name: Check content
+      run: |
+        Get-ChildItem -Recurse
