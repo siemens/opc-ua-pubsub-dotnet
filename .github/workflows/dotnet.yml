@@ -98,5 +98,5 @@ jobs:
         name: nuget-win-x64-release
 
     - name: Check content
-      run: |
-        Get-ChildItem -Recurse
+      run: |      
+        Get-ChildItem -Recurse -Path $env:GITHUB_WORKSPACE
