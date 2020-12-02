@@ -31,6 +31,7 @@ jobs:
       - name: Build
         run: |
           msbuild -m -t:Rebuild -p:Configuration=Release -bl:opc-ua-pubsub-dotnet.binlog -noconlog _All.sln
+          gci env:* | sort Name | Format-Table -AutoSize | Out-String -Width 400 | Write-Host
           $sourceFolder = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "_Out" | Join-Path -ChildPath "Release" | Join-Path -ChildPath "*"
           $outFolder = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "_Out" | Join-Path -ChildPath "GitHub" 
           New-Item -ItemType Directory -Force -Path $outFolder
@@ -81,7 +82,7 @@ jobs:
           & $vsTestPath $testAssemblies
 
   release:
-    #if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     runs-on: windows-latest
     needs: build
     steps:
@@ -95,8 +96,6 @@ jobs:
         with:
           name: nuget-win-x64-release
 
-      - name: Create Nuget Packages
+      - name: Publish to NuGet.org
         run: |
-          gci env:* | sort Name | Format-Table -AutoSize | Out-String -Width 400 | Write-Host
-          Write-Host "Get-Location: $(Get-Location)"
-          Get-ChildItem -Recurse
+          dotnet nuget push "*.nupkg" --api-key 
