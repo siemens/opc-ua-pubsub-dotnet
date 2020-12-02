@@ -39,6 +39,10 @@ jobs:
           $outPath = Join-Path $outFolder "win-x64.zip"          
           Compress-Archive -DestinationPath $outPath -Path $sourceFolder -CompressionLevel Optimal
       
+      - name: Env
+        run: |
+          gci env:* | sort Name | Format-Table -AutoSize | Out-String -Width 400 | Write-Host
+
       - name: Archive Build Log
         uses: actions/upload-artifact@v2
         if: ${{ success() || failure() }}
