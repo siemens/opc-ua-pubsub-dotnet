@@ -86,13 +86,15 @@ jobs:
         working-directory: ./src 
     steps:
     - name: Download Build Results
-        uses: actions/download-artifact@v2
-        with:
-          name: win-x64-release
+      uses: actions/download-artifact@v2
+      with:
+        name: win-x64-release
+
     - name: Download NuGet Packages
-        uses: actions/download-artifact@v2
-        with:
-          name: nuget-win-x64-release
+      uses: actions/download-artifact@v2
+      with:
+        name: nuget-win-x64-release
+        
     - name: Check content
       run: |
         Get-ChildItem -Recurse
