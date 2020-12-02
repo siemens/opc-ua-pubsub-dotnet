@@ -31,7 +31,9 @@ jobs:
         run: |
           msbuild /t:Rebuild /p:Configuration=Release /bl _All.sln
           $sourceFolder = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "_Out" | Join-Path -ChildPath "Release" | Join-Path -ChildPath "*"
-          $outPath = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "_Out" | Join-Path -ChildPath "GitHub" | Join-Path -ChildPath "win-x64.zip"
+          $outFolder = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "_Out" | Join-Path -ChildPath "GitHub" 
+          New-Item -ItemType Directory -Force -Path $outFolder
+          $outPath = Join-Path $outFolder "win-x64.zip"          
           Compress-Archive -DestinationPath $outPath -Path $sourceFolder -CompressionLevel Optimal
       
       - name: Archive Build Log
@@ -94,7 +96,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: nuget-win-x64-release
-        
+
     - name: Check content
       run: |
         Get-ChildItem -Recurse
