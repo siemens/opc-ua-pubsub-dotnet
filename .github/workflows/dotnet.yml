@@ -101,4 +101,5 @@ jobs:
       run: |      
         Write-Host "Debug"
         gci env:* | sort Name | Format-Table -AutoSize | Out-String -Width 400 | Write-Host
-        Get-ChildItem -Recurse .
+        $rootPath = Get-Location
+        Get-ChildItem -Recurse -Path -$rootPath
