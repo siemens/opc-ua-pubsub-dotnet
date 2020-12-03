@@ -6,6 +6,7 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/siemens/opc-ua-pubsub-dotnet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/siemens/opc-ua-pubsub-dotnet.git</RepositoryUrl>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <RepositoryType>Git</RepositoryType>
 	<!-- Artifactory does not support snupkg right now, therefore we cannot use 'portable' & 'snupkg' -->
 	

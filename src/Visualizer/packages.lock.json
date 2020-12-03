@@ -1,7 +1,7 @@
 {
   "version": 1,
   "dependencies": {
-    ".NETFramework,Version=v4.6.1": {
+    ".NETFramework,Version=v4.8": {
       "GitVersionTask": {
         "type": "Direct",
         "requested": "[5.5.1, )",
@@ -172,6 +172,11 @@
           "Newtonsoft.Json": "10.0.1"
         }
       },
+      "System.IO": {
+        "type": "Transitive",
+        "resolved": "4.3.0",
+        "contentHash": "3qjaHvxQPDpSOYICjUoTsmoq5u6QJAFRUITgeT/4gqkF1bajbSmb1kwSxEA8AHlofqgcKJcM8udgieRNhaJ5Cg=="
+      },
       "System.Memory": {
         "type": "Transitive",
         "resolved": "4.5.3",
@@ -209,6 +214,11 @@
         "resolved": "4.5.0",
         "contentHash": "QQTlPTl06J/iiDbJCiepZ4H//BVraReU4O4EoRw1U02H5TLUIT7xn3GnDp9AXPSlJUDyFs4uWjWafNX6WrAojQ=="
       },
+      "System.Runtime": {
+        "type": "Transitive",
+        "resolved": "4.3.0",
+        "contentHash": "JufQi0vPQ0xGnAczR13AUFglDyVYt4Kqnz1AZaiKZ5+GICq0/1MH/mO/eAJHt/mHW1zjKBJd7kV26SrxddAhiw=="
+      },
       "System.Runtime.CompilerServices.Unsafe": {
         "type": "Transitive",
         "resolved": "4.6.0",
@@ -219,6 +229,9 @@
         "resolved": "4.3.0",
         "contentHash": "W1kd2Y8mYSCgc3ULTAZ0hOP2dSdG5YauTb1089T0/kRcN2MpSAW1izOFROrJgxSlMn3ArsgHXagigyi+ibhevg==",
         "dependencies": {
+          "System.IO": "4.3.0",
+          "System.Runtime": "4.3.0",
+          "System.Security.Cryptography.Encoding": "4.3.0",
           "System.Security.Cryptography.Primitives": "4.3.0"
         }
       },
@@ -304,7 +317,7 @@
         }
       }
     },
-    ".NETFramework,Version=v4.6.1/win": {
+    ".NETFramework,Version=v4.8/win": {
       "System.Net.Security": {
         "type": "Transitive",
         "resolved": "4.3.2",
@@ -327,6 +340,9 @@
         "resolved": "4.3.0",
         "contentHash": "W1kd2Y8mYSCgc3ULTAZ0hOP2dSdG5YauTb1089T0/kRcN2MpSAW1izOFROrJgxSlMn3ArsgHXagigyi+ibhevg==",
         "dependencies": {
+          "System.IO": "4.3.0",
+          "System.Runtime": "4.3.0",
+          "System.Security.Cryptography.Encoding": "4.3.0",
           "System.Security.Cryptography.Primitives": "4.3.0"
         }
       },
