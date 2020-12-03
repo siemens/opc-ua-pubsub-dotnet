@@ -28,8 +28,6 @@
     </PackageReference>
   </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\Common\Common.csproj">
-        <Private>True</Private>
-      </ProjectReference>
+      <ProjectReference Include="..\client\Client.csproj" />
     </ItemGroup>
 </Project>

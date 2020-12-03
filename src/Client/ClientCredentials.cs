@@ -4,7 +4,7 @@
 using System;
 using System.Security;
 using System.Security.Cryptography.X509Certificates;
-using opc.ua.pubsub.dotnet.common;
+using opc.ua.pubsub.dotnet.client.common;
 
 namespace opc.ua.pubsub.dotnet.client
 {

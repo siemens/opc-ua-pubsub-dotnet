@@ -5,8 +5,8 @@ using System;
 using System.Reflection;
 using System.Windows.Forms;
 using log4net;
-using opc.ua.pubsub.dotnet.common;
-using opc.ua.pubsub.dotnet.common.Settings;
+using opc.ua.pubsub.dotnet.client.common;
+using opc.ua.pubsub.dotnet.client.common.Settings;
 
 namespace opc.ua.pubsub.dotnet.visualizer
 {

@@ -116,6 +116,19 @@
           "Microsoft.Extensions.Configuration.FileExtensions": "3.0.1"
         }
       },
+      "Microsoft.Extensions.DependencyInjection": {
+        "type": "Transitive",
+        "resolved": "2.2.0",
+        "contentHash": "MZtBIwfDFork5vfjpJdG5g8wuJFt7d/y3LOSVVtDK/76wlbtz6cjltfKHqLx2TKVqTj5/c41t77m1+h20zqtPA==",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "2.2.0"
+        }
+      },
+      "Microsoft.Extensions.DependencyInjection.Abstractions": {
+        "type": "Transitive",
+        "resolved": "2.2.0",
+        "contentHash": "f9hstgjVmr6rmrfGSpfsVOl2irKAgr1QjrSi3FgnS7kulxband50f2brRLwySAQTADPZeTdow0mpSMcoAdadCw=="
+      },
       "Microsoft.Extensions.FileProviders.Abstractions": {
         "type": "Transitive",
         "resolved": "3.0.1",
@@ -1270,15 +1283,29 @@
           "System.Xml.ReaderWriter": "4.0.11"
         }
       },
-      "opc-ua-pubsub-dotnet.common": {
+      "opc-ua-pubsub-dotnet.client": {
         "type": "Project",
         "dependencies": {
+          "MQTTnet": "3.0.13",
           "Microsoft.Extensions.Configuration.Binder": "2.2.4",
           "Microsoft.Extensions.Configuration.CommandLine": "3.0.1",
           "Microsoft.Extensions.Configuration.Json": "3.0.1",
+          "Microsoft.Extensions.DependencyInjection": "2.2.0",
           "Microsoft.IdentityModel.Tokens": "5.5.0",
           "Newtonsoft.Json": "12.0.3",
           "System.IdentityModel.Tokens.Jwt": "5.5.0",
+          "log4net": "2.0.8",
+          "opc.ua.pubsub.dotnet.binary": "1.0.0"
+        }
+      },
+      "opc.ua.pubsub.dotnet.binary": {
+        "type": "Project",
+        "dependencies": {
+          "Microsoft.Extensions.Configuration": "3.0.1",
+          "Microsoft.Extensions.Configuration.CommandLine": "3.0.1",
+          "Microsoft.Extensions.Configuration.FileExtensions": "3.0.1",
+          "Microsoft.Extensions.Configuration.Json": "3.0.1",
+          "Newtonsoft.Json": "12.0.3",
           "log4net": "2.0.8"
         }
       }

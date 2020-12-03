@@ -13,7 +13,7 @@ using log4net;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Linq;
 
-namespace opc.ua.pubsub.dotnet.common
+namespace opc.ua.pubsub.dotnet.client.common
 {
     public class JSONWebToken
     {

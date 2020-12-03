@@ -4,7 +4,7 @@
 using System.IO;
 using Microsoft.Extensions.Configuration;
 
-namespace opc.ua.pubsub.dotnet.common
+namespace opc.ua.pubsub.dotnet.client.common
 {
     public static class SettingManager
     {

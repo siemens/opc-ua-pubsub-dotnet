@@ -4,7 +4,7 @@
 using System.Security.Cryptography.X509Certificates;
 using log4net;
 
-namespace opc.ua.pubsub.dotnet.common
+namespace opc.ua.pubsub.dotnet.client.common
 {
     public static class CertifacteLogging
     {

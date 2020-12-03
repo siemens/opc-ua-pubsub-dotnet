@@ -31,11 +31,6 @@
       <Name>Client</Name>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\Common\Common.csproj">
-      <Project>{066786ED-7C49-4886-9AF3-8264C531C28C}</Project>
-      <Name>Common</Name>
-      <Private>True</Private>
-    </ProjectReference>
     <ProjectReference Include="..\Binary\Binary.csproj">
       <Project>{85e1275c-a568-4981-abe1-c563eb582a3b}</Project>
       <Name>OPCUABinary</Name>

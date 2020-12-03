@@ -1,7 +1,7 @@
 ﻿// Copyright 2020 Siemens AG
 // SPDX-License-Identifier: MIT
 
-namespace opc.ua.pubsub.dotnet.common.Settings
+namespace opc.ua.pubsub.dotnet.client.common.Settings
 {
     public class Simulation
     {
