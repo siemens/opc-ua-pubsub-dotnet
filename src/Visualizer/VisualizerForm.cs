@@ -55,8 +55,9 @@ namespace opc.ua.pubsub.dotnet.visualizer
             InitBinding();
             InitTypeConverters();
             IClientService client = new Client( m_Settings );
-            client.MessageReceived     += ClientOnMessageReceived;
-            client.MetaMessageReceived += ClientOnMessageReceived;
+            client.Options.LegacyFieldFlagEncoding =  false;
+            client.MessageReceived                 += ClientOnMessageReceived;
+            client.MetaMessageReceived             += ClientOnMessageReceived;
             BlockingCollection<Publisher> publisherQueue = new BlockingCollection<Publisher>();
             m_PublisherBindings = new ConcurrentDictionary<string, ConcurrentDictionary<ushort, BindingSource>>();
             BlockingCollection<DataPointCollection> valueQueue = new BlockingCollection<DataPointCollection>();
@@ -70,7 +71,7 @@ namespace opc.ua.pubsub.dotnet.visualizer
             // there was a decoding standard violation in a part of the meta frame
             // which has been fixed and we enable it here to use this fix
             client.Options.LegacyFieldFlagEncoding = false;
-            if ( m_Settings.Client.SubscribeUseTls )
+            if ( m_Settings.Client.UseTls )
             {
                 // with TLS for use e.g. with MQTT-Broker as MDSP simulation
 

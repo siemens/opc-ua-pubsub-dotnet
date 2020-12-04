@@ -87,6 +87,8 @@ namespace opc.ua.pubsub.dotnet.broker
         {
             X509Certificate2 clientCert = null;
             string           password   = Settings.Broker.BrokerP12Password;
+            if(string.IsNullOrWhiteSpace(Settings.Broker.BrokerP12))
+                return (clientCert, password);
             try
             {
                 clientCert = new X509Certificate2( Settings.Broker.BrokerP12, password );
@@ -97,7 +99,7 @@ namespace opc.ua.pubsub.dotnet.broker
             }
             if ( clientCert == null )
             {
-                Logger.Info( $"No Certificate found by using file {Settings.Broker.BrokerP12} and password {Settings.Broker.BrokerP12Password}." );
+                Logger.Info( $"No Certificate found by using file '{Settings.Broker.BrokerP12}' and password '{Settings.Broker.BrokerP12Password}'." );
                 clientCert = GetMachineCertifacte();
             }
             return ( clientCert, password );
@@ -120,6 +122,7 @@ namespace opc.ua.pubsub.dotnet.broker
 
         private static void Main( string[] args )
         {
+            Log4Net.Init();
             MqttNetGlobalLogger.LogMessagePublished += OnLogMessagePublished;
             MainAsync( args )
                    .GetAwaiter()

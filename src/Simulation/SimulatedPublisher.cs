@@ -3,10 +3,14 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Reflection;
 using System.Threading;
 using Binary.DataPoints;
 using Binary.Messages.Meta;
 using log4net;
+using log4net.Config;
+using log4net.Repository;
 using opc.ua.pubsub.dotnet.client;
 using opc.ua.pubsub.dotnet.client.common;
 using opc.ua.pubsub.dotnet.client.common.Settings;
@@ -28,13 +32,10 @@ namespace opc.ua.pubsub.dotnet.simulation
         [SuppressMessage( "Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "This is just a demo. No need for globalization." )]
         private static void Main( string[] args )
         {
+            Log4Net.Init();
+
             Settings                      = SettingManager.ReadConfiguration( args );
             Settings.Client.EnableLogging = true;
-            s_Client                      = new Client( Settings, Settings.Simulation.PublisherID );
-
-            // there was a decoding standard violation in a part of the meta frame
-            // which has been fixed and we enable it here to use this fix
-            s_Client.Options.LegacyFieldFlagEncoding = false;
 
             // connect to broker and send data 
             MQTT();
@@ -46,8 +47,18 @@ namespace opc.ua.pubsub.dotnet.simulation
             {
                 Logger.Error( "Exception during disconnect. ", e );
             }
+
             Console.WriteLine( "Press ENTER to exit." );
             Console.ReadLine();
+        }
+
+        private static void CreateClient()
+        {
+            s_Client = new Client( Settings, Settings.Simulation.PublisherID );
+
+            // there was a decoding standard violation in a part of the meta frame
+            // which has been fixed and we enable it here to use this fix
+            s_Client.Options.LegacyFieldFlagEncoding = false;
         }
 
         private static void MQTT()
@@ -65,6 +76,13 @@ namespace opc.ua.pubsub.dotnet.simulation
             {
                 configuration.CommonConfig.PublisherID = Settings.Simulation.PublisherID;
             }
+            else
+            {
+                // PublisherID is not overridden in settings.json, use the value from the configuration
+                Settings.Simulation.PublisherID = configuration.CommonConfig.PublisherID;
+            }
+            CreateClient();
+
 
             // delay before start?
             if ( Settings.Simulation.WaitBeforeStarting > 0 )
@@ -73,46 +91,63 @@ namespace opc.ua.pubsub.dotnet.simulation
             }
 
             // Broker CA certificate
-            if ( SettingManager.TryGetCertificateAsArray( Settings.Simulation.BrokerCACertDER, out byte[] brokerCaCert ) )
+            if ( Settings.Client.UseTls )
             {
-                s_Client.BrokerCACert = brokerCaCert;
-            }
-            else
-            {
-                Logger.Error( $"Certificate file not found {Settings.Simulation.BrokerCACertDER}" );
-                return;
-            }
-
-            // client certificate and client CA 
-            using ( MindsphereClientCredentials credentials = new MindsphereClientCredentials() )
-            {
-                if ( SettingManager.TryGetCertificateAsArray( Settings.Simulation.ClientCertP12, out byte[] clientPkcs12Content ) )
+                if ( SettingManager.TryGetCertificateAsArray( Settings.Simulation.BrokerCACertDER, out byte[] brokerCaCert ) )
                 {
-                    try
-                    {
-                        credentials.Import( clientPkcs12Content, Settings.Simulation.ClientCertPassword );
-                    }
-                    catch ( Exception )
-                    {
-                        Logger.Error( "Exception during creation of client credentials" );
-                        return;
-                    }
+                    s_Client.BrokerCACert = brokerCaCert;
                 }
                 else
                 {
-                    Logger.Error( $"Certificate file not found {Settings.Simulation.ClientCertP12}" );
+                    Logger.Error( $"Certificate file not found {Settings.Simulation.BrokerCACertDER}" );
                     return;
                 }
 
+                // client certificate and client CA 
+                using ( MindsphereClientCredentials credentials = new MindsphereClientCredentials() )
+                {
+                    if ( SettingManager.TryGetCertificateAsArray( Settings.Simulation.ClientCertP12, out byte[] clientPkcs12Content ) )
+                    {
+                        try
+                        {
+                            credentials.Import( clientPkcs12Content, Settings.Simulation.ClientCertPassword );
+                        }
+                        catch ( Exception )
+                        {
+                            Logger.Error( "Exception during creation of client credentials" );
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        Logger.Error( $"Certificate file not found {Settings.Simulation.ClientCertP12}" );
+                        return;
+                    }
+
+                    // connect to broker
+                    try
+                    {
+                        Logger.Info( "Connecting to the broker" );
+                        s_Client.Connect( credentials );
+                    }
+                    catch ( Exception ex )
+                    {
+                        Logger.Error( "Unable to establish MQTT connection with broker", ex );
+                        return;
+                    }
+                }
+            }
+            else
+            {
                 // connect to broker
                 try
                 {
                     Logger.Info( "Connecting to the broker" );
-                    s_Client.Connect( credentials );
+                    s_Client.Connect( );
                 }
-                catch ( Exception )
+                catch ( Exception ex)
                 {
-                    Logger.Error( "Unable to establish MQTT connection with broker" );
+                    Logger.Error( "Unable to establish MQTT connection with broker", ex );
                     return;
                 }
             }

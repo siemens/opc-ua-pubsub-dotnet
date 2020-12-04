@@ -8,7 +8,7 @@ namespace opc.ua.pubsub.dotnet.client.common.Settings
         public bool   AllowUntrustedCertificates        { get; set; }
         public string BrokerCACert                      { get; set; }
         public string BrokerHostname                    { get; set; } = "localhost";
-        public int    BrokerPort                        { get; set; } = 8883;
+        public int    BrokerPort                        { get; set; } = 1883;
         public string ClientCertP12                     { get; set; }
         public string ClientCertPassword                { get; set; }
         public string DefaultPublisherTopicName         { get; set; }
@@ -16,7 +16,7 @@ namespace opc.ua.pubsub.dotnet.client.common.Settings
         public bool   EnableLogging                     { get; set; }
         public bool   IgnoreCertificateChainErrors      { get; set; }
         public bool   IgnoreCertificateRevocationErrors { get; set; }
-        public bool   SubscribeUseTls                   { get; set; }
+        public bool   UseTls                            { get; set; } = false;
 
         // Mqtt communication timeout in seconds
         public int CommunicationTimeout { get; set; } = 10;

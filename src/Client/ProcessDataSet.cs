@@ -245,7 +245,7 @@ namespace opc.ua.pubsub.dotnet.client
             byte[] rawMessage = null;
             using ( MemoryStream outputStream = new MemoryStream() )
             {
-                m_MetaFrame.Encode( outputStream );
+                m_MetaFrame.EncodeChunk( outputStream );
                 rawMessage = outputStream.ToArray();
             }
             return rawMessage;

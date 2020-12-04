@@ -23,6 +23,7 @@ namespace opc.ua.pubsub.dotnet.visualizer
         [STAThread]
         private static void Main( string[] args )
         {
+            Log4Net.Init();
             Logger.Info( "Visualizer starting..." );
             Settings = SettingManager.ReadConfiguration( args );
             Application.EnableVisualStyles();

@@ -30,12 +30,4 @@
 	<!-- <RestoreFallbackFolders>clear</RestoreFallbackFolders> -->
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\_Out\Debug\</OutputPath>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\_Out\Release\</OutputPath>
-  </PropertyGroup>
 </Project>
