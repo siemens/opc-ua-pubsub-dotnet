@@ -78,18 +78,7 @@ jobs:
 
       - name: Test
         run: |
-          Write-Host "Using vswhere to find VSTest..."
-          $baseFolder = vswhere -latest -products * -requires Microsoft.VisualStudio.Workload.ManagedDesktop Microsoft.VisualStudio.Workload.Web -requiresAny -property installationPath
-          Write-Host "baseFolder: $baseFolder"
-          $vsTestPath = join-path $baseFolder 'Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe'
-          Write-Host "vsTestPath: $vsTestPath"
-          Test-Path $vsTestPath
-          Write-Host "Searching for test assemblies..."
-          $testRootPath = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "Tests"
-          $testAssemblies = Get-ChildItem -Directory -Recurse -Path $testRootPath -Include "bin" | Get-ChildItem -File -Recurse -Filter "*.Test.dll" | select -ExpandProperty FullName | % { "`"$_`"" }
-          Write-Host "Found test assemblies:"
-          Write-Host $testAssemblies 
-          & $vsTestPath $testAssemblies
+          dotnet test --no-build
 
   release:
     if: github.ref == 'refs/heads/main'
