@@ -101,7 +101,7 @@ jobs:
           dotnet test --no-build --configuration Release
 
   release:
-    # if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     runs-on: windows-latest
     needs: build
     defaults:
