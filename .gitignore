@@ -201,3 +201,4 @@ src/_Out
 src/nuget.config
 report.html
 report.xml
+test.ps1

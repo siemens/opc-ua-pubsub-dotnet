@@ -6,6 +6,7 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/siemens/opc-ua-pubsub-dotnet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/siemens/opc-ua-pubsub-dotnet.git</RepositoryUrl>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <RepositoryType>Git</RepositoryType>
 	<!-- Artifactory does not support snupkg right now, therefore we cannot use 'portable' & 'snupkg' -->
 	
@@ -28,13 +29,5 @@
 
 	<!-- <RestoreFallbackFolders>clear</RestoreFallbackFolders> -->
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\_Out\Debug\</OutputPath>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\_Out\Release\</OutputPath>
   </PropertyGroup>
 </Project>

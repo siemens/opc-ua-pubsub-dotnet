@@ -7,6 +7,13 @@
     <AssemblyName>broker</AssemblyName>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <OutputPath>..\_Out\Debug\$(AssemblyName)\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <OutputPath>..\_Out\Release\$(AssemblyName)\</OutputPath>
+  </PropertyGroup>
     <ItemGroup>
     <PackageReference Include="GitVersionTask">
       <Version>5.5.1</Version>
@@ -14,7 +21,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="log4net">
-      <Version>2.0.8</Version>
+      <Version>2.0.12</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NetCore.Analyzers" Version="3.3.0">
       <PrivateAssets>all</PrivateAssets>
@@ -23,13 +30,8 @@
     <PackageReference Include="MQTTnet">
       <Version>3.0.13</Version>
     </PackageReference>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.3</Version>
-    </PackageReference>
   </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\Common\Common.csproj">
-        <Private>True</Private>
-      </ProjectReference>
+      <ProjectReference Include="..\client\Client.csproj" />
     </ItemGroup>
 </Project>

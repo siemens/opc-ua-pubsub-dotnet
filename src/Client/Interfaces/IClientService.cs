@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using Binary;
 using Binary.Decode;
-using opc.ua.pubsub.dotnet.common.Settings;
+using opc.ua.pubsub.dotnet.client.common.Settings;
 using OPCUAFile = Binary.DataPoints.File;
 using static opc.ua.pubsub.dotnet.client.ProcessDataSet;
 

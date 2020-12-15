@@ -7,8 +7,8 @@ using System.Reflection;
 using Binary;
 using Binary.DataPoints;
 using Binary.Decode;
+using opc.ua.pubsub.dotnet.client.common.Settings;
 using opc.ua.pubsub.dotnet.client.Interfaces;
-using opc.ua.pubsub.dotnet.common.Settings;
 using static opc.ua.pubsub.dotnet.client.ProcessDataSet;
 
 namespace opc.ua.pubsub.dotnet.client

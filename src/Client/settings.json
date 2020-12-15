@@ -3,19 +3,19 @@
     "Broker": {
       "BrokerP12": "", 
       "BrokerP12Password": "12345678",
-      "UseTLS": true,
-      "UseMutualAuth": true
+      "UseTLS": false,
+      "UseMutualAuth": false
     },
 
     "Client": {
       "BrokerHostname": "localhost",
-      "BrokerPort": "8883",
+      "BrokerPort": "1883",
       "ClientCertP12":  "", 
       "ClientCertPassword": "12345678",
       "BrokerCACert": "",
       "DefaultSubscribeTopicName": "#",
       "DefaultPublisherTopicName": "c/{ClientID}/o/opcua/{VersionMS}/u/{T:d/t}{TM:m/t}{F:d/f}{FM:m/f}{E:d/e}{EM:m/e}",
-      "SubscribeUseTls": true,
+      "SubscribeUseTls": false,
       "EnableLogging": false,
       "AllowUntrustedCertificates": true,
       "IgnoreCertificateChainErrors": true,
@@ -41,7 +41,9 @@
       // Time in ms to wait after sending the key message to proceed with the delta message.
       "WaitAfterKeyMessage": 1500,
 
-      "InputFile": "",
+      "InputFile": "Simu-A.xlsx",
+      
+      // It's possible to override the PublisherID set in the input file
       "PublisherID": "",
 
       // Optional topic prefix which will be used for publishing all messages.

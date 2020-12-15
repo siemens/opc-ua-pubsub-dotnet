@@ -1,0 +1,26 @@
+name: Publish NuGet Packages
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Download NuGet Packages from Release
+        run: |
+          Write-Host "GITHUB_REF: '$($env:GITHUB_REF)'"
+          gh release download $($env:GITHUB_REF) --repo siemens/opc-ua-pubsub-dotnet --pattern '*.nupkg'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to NuGet.org
+        run: |
+          dotnet nuget push "*.nupkg" --api-key $env:NUGET_API_KEY
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+

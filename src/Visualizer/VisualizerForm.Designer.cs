@@ -58,10 +58,9 @@
             // statusStrip1
             // 
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.statusStrip1.Location = new System.Drawing.Point(0, 590);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 475);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1145, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(859, 22);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -70,7 +69,7 @@
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1145, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(859, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -82,12 +81,11 @@
             this.MainTableLayoutPanel.Controls.Add(this.MainTabControl, 0, 0);
             this.MainTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainTableLayoutPanel.Location = new System.Drawing.Point(0, 25);
-            this.MainTableLayoutPanel.Margin = new System.Windows.Forms.Padding(4);
             this.MainTableLayoutPanel.Name = "MainTableLayoutPanel";
             this.MainTableLayoutPanel.RowCount = 1;
             this.MainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.MainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.MainTableLayoutPanel.Size = new System.Drawing.Size(1145, 565);
+            this.MainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.MainTableLayoutPanel.Size = new System.Drawing.Size(859, 450);
             this.MainTableLayoutPanel.TabIndex = 2;
             // 
             // MainTabControl
@@ -97,22 +95,20 @@
             this.MainTabControl.Controls.Add(this.DetailsPage);
             this.MainTabControl.Controls.Add(this.MessageTabPage);
             this.MainTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MainTabControl.Location = new System.Drawing.Point(4, 4);
-            this.MainTabControl.Margin = new System.Windows.Forms.Padding(4);
+            this.MainTabControl.Location = new System.Drawing.Point(3, 3);
             this.MainTabControl.Name = "MainTabControl";
             this.MainTabControl.SelectedIndex = 0;
-            this.MainTabControl.Size = new System.Drawing.Size(1137, 557);
+            this.MainTabControl.Size = new System.Drawing.Size(853, 444);
             this.MainTabControl.TabIndex = 2;
             // 
             // OverviewPage
             // 
             this.OverviewPage.AutoScroll = true;
             this.OverviewPage.Controls.Add(this.panel1);
-            this.OverviewPage.Location = new System.Drawing.Point(4, 25);
-            this.OverviewPage.Margin = new System.Windows.Forms.Padding(4);
+            this.OverviewPage.Location = new System.Drawing.Point(4, 22);
             this.OverviewPage.Name = "OverviewPage";
-            this.OverviewPage.Padding = new System.Windows.Forms.Padding(4);
-            this.OverviewPage.Size = new System.Drawing.Size(1129, 528);
+            this.OverviewPage.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.OverviewPage.Size = new System.Drawing.Size(845, 418);
             this.OverviewPage.TabIndex = 0;
             this.OverviewPage.Text = "Overview";
             this.OverviewPage.UseVisualStyleBackColor = true;
@@ -121,10 +117,9 @@
             // 
             this.panel1.Controls.Add(this.OverviewDataGridView);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(4, 4);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4);
+            this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1121, 520);
+            this.panel1.Size = new System.Drawing.Size(839, 412);
             this.panel1.TabIndex = 1;
             // 
             // OverviewDataGridView
@@ -133,22 +128,19 @@
             this.OverviewDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.OverviewDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.OverviewDataGridView.Location = new System.Drawing.Point(0, 0);
-            this.OverviewDataGridView.Margin = new System.Windows.Forms.Padding(4);
             this.OverviewDataGridView.Name = "OverviewDataGridView";
             this.OverviewDataGridView.ReadOnly = true;
             this.OverviewDataGridView.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.OverviewDataGridView.Size = new System.Drawing.Size(1121, 520);
+            this.OverviewDataGridView.Size = new System.Drawing.Size(839, 412);
             this.OverviewDataGridView.TabIndex = 0;
-            
             // 
             // DetailsPage
             // 
             this.DetailsPage.Controls.Add(this.DetailsTableLayoutPanel);
-            this.DetailsPage.Location = new System.Drawing.Point(4, 25);
-            this.DetailsPage.Margin = new System.Windows.Forms.Padding(4);
+            this.DetailsPage.Location = new System.Drawing.Point(4, 22);
             this.DetailsPage.Name = "DetailsPage";
-            this.DetailsPage.Padding = new System.Windows.Forms.Padding(4);
-            this.DetailsPage.Size = new System.Drawing.Size(1129, 528);
+            this.DetailsPage.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.DetailsPage.Size = new System.Drawing.Size(845, 427);
             this.DetailsPage.TabIndex = 1;
             this.DetailsPage.Text = "Details";
             this.DetailsPage.UseVisualStyleBackColor = true;
@@ -156,26 +148,24 @@
             // DetailsTableLayoutPanel
             // 
             this.DetailsTableLayoutPanel.ColumnCount = 2;
-            this.DetailsTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 400F));
+            this.DetailsTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
             this.DetailsTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.DetailsTableLayoutPanel.Controls.Add(this.DevicesTreeView, 0, 0);
             this.DetailsTableLayoutPanel.Controls.Add(this.DetailsDataGridView, 1, 0);
             this.DetailsTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DetailsTableLayoutPanel.Location = new System.Drawing.Point(4, 4);
-            this.DetailsTableLayoutPanel.Margin = new System.Windows.Forms.Padding(4);
+            this.DetailsTableLayoutPanel.Location = new System.Drawing.Point(3, 3);
             this.DetailsTableLayoutPanel.Name = "DetailsTableLayoutPanel";
             this.DetailsTableLayoutPanel.RowCount = 1;
             this.DetailsTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.DetailsTableLayoutPanel.Size = new System.Drawing.Size(1121, 520);
+            this.DetailsTableLayoutPanel.Size = new System.Drawing.Size(839, 421);
             this.DetailsTableLayoutPanel.TabIndex = 0;
             // 
             // DevicesTreeView
             // 
             this.DevicesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DevicesTreeView.Location = new System.Drawing.Point(4, 4);
-            this.DevicesTreeView.Margin = new System.Windows.Forms.Padding(4);
+            this.DevicesTreeView.Location = new System.Drawing.Point(3, 3);
             this.DevicesTreeView.Name = "DevicesTreeView";
-            this.DevicesTreeView.Size = new System.Drawing.Size(392, 512);
+            this.DevicesTreeView.Size = new System.Drawing.Size(294, 415);
             this.DevicesTreeView.TabIndex = 1;
             this.DevicesTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.DevicesTreeView_AfterSelect);
             // 
@@ -188,22 +178,20 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.DetailsDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.DetailsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DetailsDataGridView.Location = new System.Drawing.Point(404, 4);
-            this.DetailsDataGridView.Margin = new System.Windows.Forms.Padding(4);
+            this.DetailsDataGridView.Location = new System.Drawing.Point(303, 3);
             this.DetailsDataGridView.Name = "DetailsDataGridView";
             this.DetailsDataGridView.ReadOnly = true;
-            this.DetailsDataGridView.Size = new System.Drawing.Size(713, 512);
+            this.DetailsDataGridView.Size = new System.Drawing.Size(533, 415);
             this.DetailsDataGridView.TabIndex = 2;
             this.DetailsDataGridView.RowHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DetailsDataGridView_RowHeaderMouseClick_1);
             // 
             // MessageTabPage
             // 
             this.MessageTabPage.Controls.Add(this.MessagePanel);
-            this.MessageTabPage.Location = new System.Drawing.Point(4, 25);
-            this.MessageTabPage.Margin = new System.Windows.Forms.Padding(4);
+            this.MessageTabPage.Location = new System.Drawing.Point(4, 22);
             this.MessageTabPage.Name = "MessageTabPage";
-            this.MessageTabPage.Padding = new System.Windows.Forms.Padding(4);
-            this.MessageTabPage.Size = new System.Drawing.Size(1129, 528);
+            this.MessageTabPage.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.MessageTabPage.Size = new System.Drawing.Size(845, 427);
             this.MessageTabPage.TabIndex = 2;
             this.MessageTabPage.Text = "Last Message";
             this.MessageTabPage.UseVisualStyleBackColor = true;
@@ -212,33 +200,31 @@
             // 
             this.MessagePanel.Controls.Add(this.MessagePropertyGrid);
             this.MessagePanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MessagePanel.Location = new System.Drawing.Point(4, 4);
-            this.MessagePanel.Margin = new System.Windows.Forms.Padding(4);
+            this.MessagePanel.Location = new System.Drawing.Point(3, 3);
             this.MessagePanel.Name = "MessagePanel";
-            this.MessagePanel.Size = new System.Drawing.Size(1121, 520);
+            this.MessagePanel.Size = new System.Drawing.Size(839, 421);
             this.MessagePanel.TabIndex = 0;
             // 
             // MessagePropertyGrid
             // 
             this.MessagePropertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MessagePropertyGrid.Location = new System.Drawing.Point(0, 0);
-            this.MessagePropertyGrid.Margin = new System.Windows.Forms.Padding(4);
             this.MessagePropertyGrid.Name = "MessagePropertyGrid";
-            this.MessagePropertyGrid.Size = new System.Drawing.Size(1121, 520);
+            this.MessagePropertyGrid.Size = new System.Drawing.Size(839, 421);
             this.MessagePropertyGrid.TabIndex = 0;
             // 
             // VisualizerForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1145, 612);
+            this.ClientSize = new System.Drawing.Size(859, 497);
             this.Controls.Add(this.MainTableLayoutPanel);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "VisualizerForm";
-            this.Text = "Siemens Energy - OPC UA PubSub MQTT Subscriber";
+            this.ShowIcon = false;
+            this.Text = "OPC UA PubSub MQTT Subscriber";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VisualizerForm_FormClosing);
             this.MainTableLayoutPanel.ResumeLayout(false);
             this.MainTabControl.ResumeLayout(false);

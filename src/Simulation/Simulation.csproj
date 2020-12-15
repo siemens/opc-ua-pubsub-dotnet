@@ -7,7 +7,13 @@
     <AssemblyName>simulation</AssemblyName>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <OutputPath>..\_Out\Debug\$(AssemblyName)\</OutputPath>
+  </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <OutputPath>..\_Out\Release\$(AssemblyName)\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="ClosedXML">
       <Version>0.94.2</Version>
@@ -18,7 +24,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="log4net">
-      <Version>2.0.8</Version>
+      <Version>2.0.12</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NetCore.Analyzers" Version="3.3.0">
       <PrivateAssets>all</PrivateAssets>
@@ -31,15 +37,21 @@
       <Name>Client</Name>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\Common\Common.csproj">
-      <Project>{066786ED-7C49-4886-9AF3-8264C531C28C}</Project>
-      <Name>Common</Name>
-      <Private>True</Private>
-    </ProjectReference>
     <ProjectReference Include="..\Binary\Binary.csproj">
       <Project>{85e1275c-a568-4981-abe1-c563eb582a3b}</Project>
       <Name>OPCUABinary</Name>
       <Private>True</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Simu-A.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Simu-A_600.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Simu-B.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

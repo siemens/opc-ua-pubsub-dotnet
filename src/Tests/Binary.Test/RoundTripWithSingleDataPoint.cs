@@ -106,7 +106,7 @@ namespace opc.ua.pubsub.dotnet.binary.test
             ProcessDataSet dataSet = new ProcessDataSet( "test-publisher", "test001", 123, ProcessDataSet.DataSetType.TimeSeries );
             dataSet.AddDataPoint( dataPoint );
             DecodeMessage  decoder            = new DecodeMessage();
-            byte[]         encodedMeta        = dataSet.GetEncodedMetaFrame( new EncodingOptions(), 1 );
+            byte[]         encodedMeta        = dataSet.GetChunkedMetaFrame( 0, new EncodingOptions(), 1 )[0];
             byte[]         encodedKey         = dataSet.GetEncodedDeltaFrame( 2 );
             NetworkMessage metaNetworkMessage = decoder.ParseBinaryMessage( encodedMeta );
             Assert.That( metaNetworkMessage, Is.Not.Null );
@@ -128,7 +128,7 @@ namespace opc.ua.pubsub.dotnet.binary.test
             ProcessDataSet dataSet = new ProcessDataSet( "test-publisher", "test001", 123, ProcessDataSet.DataSetType.TimeSeries );
             dataSet.AddDataPoint( dataPoint );
             DecodeMessage  decoder            = new DecodeMessage();
-            byte[]         encodedMeta        = dataSet.GetEncodedMetaFrame( new EncodingOptions(), 1 );
+            byte[]         encodedMeta        = dataSet.GetChunkedMetaFrame( 0, new EncodingOptions(), 1 )[0];
             byte[]         encodedKey         = dataSet.GetEncodedKeyFrame( 2 );
             NetworkMessage metaNetworkMessage = decoder.ParseBinaryMessage( encodedMeta );
             Assert.That( metaNetworkMessage, Is.Not.Null );
