@@ -1,4 +1,4 @@
-name: Build & Test
+name: Publish NuGet Packages
 
 on:
   release:
