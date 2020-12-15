@@ -11,6 +11,9 @@ jobs:
         shell: pwsh
     outputs:
       semver: ${{ steps.gitversion.outputs.semver }}
+      win-x64-fileName: ${{ steps.packageBuildResults.outputs.win-x64-fileName }}
+      nupkg-binary-fileName: ${{ steps.createNupkg.outputs.nupkg-binary-fileName }}
+      nupkg-client-fileName: ${{ steps.createNupkg.outputs.nupkg-client-fileName }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -49,11 +52,15 @@ jobs:
           Write-Host "::set-output name=semver::$($env:GitVersion_SemVer)"
       
       - name: Create zip
+        id: packageBuildResults
         run: |
           $sourceFolder = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "_Out" | Join-Path -ChildPath "Release" | Join-Path -ChildPath "*"
           $outFolder = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "_Out" | Join-Path -ChildPath "GitHub" 
           New-Item -ItemType Directory -Force -Path $outFolder
-          $outPath = Join-Path $outFolder "win-x64-$($env:GitVersion_SemVer).zip"          
+          $fileName = "win-x64-$($env:GitVersion_SemVer).zip"
+          Write-Host "Filename: '$fileName'"
+          Write-Host "::set-output name=win-x64-fileName::$($fileName)"
+          $outPath = Join-Path $outFolder $fileName
           Compress-Archive -DestinationPath $outPath -Path $sourceFolder -CompressionLevel Optimal
       
       - name: Archive Build Result
@@ -64,9 +71,22 @@ jobs:
             src/_Out/GitHub
 
       - name: Create Nuget Packages
+        id: createNupkg
         run: |
           $packageOutFolder = Join-Path $env:GITHUB_WORKSPACE "src" | Join-Path -ChildPath "_Out" | Join-Path -ChildPath "NuGet"
           dotnet pack _ALL.sln --no-build --configuration Release --output $packageOutFolder
+          
+          Write-Host "Save filenames of created NuGet packages..."
+          $packages = gci -Path $packageOutFolder -File -Filter "*.nupkg" | select -ExpandProperty Name
+          
+          $binary = $packages | where {$_ -match "binary"}
+          Write-Host "Binary NuGet Package: '$binary'"
+          Write-Host "::set-output name=nupkg-binary-fileName::$($binary)"
+
+          $client = $packages | where {$_ -match "client"}
+          Write-Host "Client NuGet Package: '$client'"
+          Write-Host "::set-output name=nupkg-client-fileName::$($client)"
+          
 
       - name: Archive NuGet Packages
         uses: actions/upload-artifact@v2
@@ -81,7 +101,7 @@ jobs:
           dotnet test --no-build --configuration Release
 
   release:
-    if: github.ref == 'refs/heads/main'
+    # if: github.ref == 'refs/heads/main'
     runs-on: windows-latest
     needs: build
     defaults:
@@ -97,13 +117,50 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: nuget-win-x64-release
-
-      - name: Publish to NuGet.org
-        run: |
-          dotnet nuget push "*.nupkg" --api-key $env:NUGET_API_KEY
-        env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-          
+      
       - name: Create Release
-        run: |
-          Write-Host "'${{ needs.build.outputs.semver }}'"
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ needs.build.outputs.semver }}
+          release_name: Release ${{ needs.build.outputs.semver }}
+          body: |
+            ${{ github.event.head_commit.message }}
+          draft: true
+          prerelease: true
+      
+      - name: Upload Zip
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./${{ needs.build.outputs.win-x64-fileName }}
+          asset_name: ${{ needs.build.outputs.win-x64-fileName }}
+          asset_content_type: application/zip
+
+          
+      - name: Upload Binary Nupkg
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./${{ needs.build.outputs.nupkg-binary-fileName }}.nupkg
+          asset_name: ${{ needs.build.outputs.nupkg-binary-fileName }}.nupkg
+          asset_content_type: application/zip
+
+      - name: Upload Client Nupkg
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./${{ needs.build.outputs.nupkg-client-fileName }}.nupkg
+          asset_name: ${{ needs.build.outputs.nupkg-client-fileName }}.nupkg
+          asset_content_type: application/zip

@@ -1,0 +1,27 @@
+name: Build & Test
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    runs-on: windows-latest
+    needs: build
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - run: |
+          Write-Host "GITHUB_REF: '$($env:GITHUB_REF)'"
+          Write-Host "Check if gh is available..."
+          gh pr list --state closed --repo siemens/opc-ua-pubsub-dotnet
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Publish to NuGet.org
+      #   run: |
+      #     dotnet nuget push "*.nupkg" --api-key $env:NUGET_API_KEY
+      #   env:
+      #     NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+
