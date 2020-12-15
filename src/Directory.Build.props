@@ -7,27 +7,21 @@
     <PackageProjectUrl>https://github.com/siemens/opc-ua-pubsub-dotnet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/siemens/opc-ua-pubsub-dotnet.git</RepositoryUrl>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryType>Git</RepositoryType>
-	<!-- Artifactory does not support snupkg right now, therefore we cannot use 'portable' & 'snupkg' -->
-	
-	<!-- BEGIN PROPPER SETTINGS -->
-	<!--
 	<DebugType>portable</DebugType>
-	<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 	<DebugSymbols>true</DebugSymbols>
-	<IncludeSymbols>true</IncludeSymbols>	
-	-->
-	<!-- END  PROPPER SETTINGS -->
-	
-	<!-- BEGIN WORKAROUND -->
-	<DebugType>embedded</DebugType>
-	<DebugSymbols>false</DebugSymbols>
-	<!-- END  WORKAROUND -->    
-	
 	<EmbedAllSources>true</EmbedAllSources>
-
-
-	<!-- <RestoreFallbackFolders>clear</RestoreFallbackFolders> -->
+	<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+	<Deterministic>true</Deterministic>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>  
+  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+  </ItemGroup>
+
 </Project>
