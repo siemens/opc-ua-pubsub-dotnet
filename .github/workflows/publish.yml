@@ -14,7 +14,10 @@ jobs:
       - name: Download NuGet Packages from Release
         run: |
           Write-Host "GITHUB_REF: '$($env:GITHUB_REF)'"
-          gh release download $($env:GITHUB_REF) --repo siemens/opc-ua-pubsub-dotnet --pattern '*.nupkg'
+          $prefix = "refs/tags/"
+          $name = $($env:GITHUB_REF).Substring($prefix.Length)
+          Write-Host "name: '$name'"
+          gh release download $name --repo siemens/opc-ua-pubsub-dotnet --pattern '*.nupkg'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
