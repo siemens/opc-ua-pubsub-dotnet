@@ -62,13 +62,13 @@ namespace Binary.Messages.Delta
             return instance;
         }
 
-        public override void Encode( Stream outputStream )
+        public override void Encode( Stream outputStream, bool withHeader = true )
         {
             if ( outputStream == null || !outputStream.CanWrite )
             {
                 return;
             }
-            base.Encode( outputStream );
+            base.Encode( outputStream, withHeader );
             EncodeDataPoints( outputStream );
         }
 

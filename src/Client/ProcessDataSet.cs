@@ -102,7 +102,7 @@ namespace opc.ua.pubsub.dotnet.client
 
         public List<byte[]> GetChunkedMetaFrame( uint chunkSize, EncodingOptions options, ushort sequenceNumber )
         {
-            byte[]       rawMessage = GetEncodedMetaFrame( options, sequenceNumber );
+            byte[]       rawMessage = GetEncodedMetaFrame( options, sequenceNumber, false );
             List<byte[]> rawChunks  = new List<byte[]>();
             if ( chunkSize == 0 )
             {
@@ -236,7 +236,7 @@ namespace opc.ua.pubsub.dotnet.client
             }
         }
 
-        public byte[] GetEncodedMetaFrame( EncodingOptions options, ushort sequenceNumber )
+        public byte[] GetEncodedMetaFrame( EncodingOptions options, ushort sequenceNumber, bool withHeader )
         {
             if ( m_MetaFrame == null )
             {
@@ -245,7 +245,7 @@ namespace opc.ua.pubsub.dotnet.client
             byte[] rawMessage = null;
             using ( MemoryStream outputStream = new MemoryStream() )
             {
-                m_MetaFrame.EncodeChunk( outputStream );
+                m_MetaFrame.Encode( outputStream, withHeader );
                 rawMessage = outputStream.ToArray();
             }
             return rawMessage;
@@ -363,7 +363,7 @@ namespace opc.ua.pubsub.dotnet.client
             m_MetaFrame.Description                = Description;
             foreach ( DataPointEntry entry in m_ProcessValues.Values )
             {
-                CreateFieldMetaDataList( entry, m_MetaFrame );
+                CreateFieldMetaDataList( entry, m_MetaFrame, options );
                 AddDataPointMeta( entry.DataPoint );
             }
         }
@@ -425,17 +425,17 @@ namespace opc.ua.pubsub.dotnet.client
             return key;
         }
 
-        private static void CreateFieldMetaDataList( DataPointEntry entry, MetaFrame m_MetaFrame )
+        private static void CreateFieldMetaDataList( DataPointEntry entry, MetaFrame m_MetaFrame, EncodingOptions options )
         {
             if ( m_MetaFrame.FieldMetaDataList == null )
             {
                 m_MetaFrame.FieldMetaDataList = new List<FieldMetaData>();
             }
-            FieldMetaData fieldMetaData = new FieldMetaData
+            FieldMetaData fieldMetaData = new FieldMetaData ( options )
                                           {
                                                   Index    = entry.DataPoint.Index,
                                                   Name     = new String( entry.DataPoint.Name ),
-                                                  Flags    = new DataSetFieldFlags(),
+                                                  Flags    = new DataSetFieldFlags( options ),
                                                   DataType = entry.DataPoint.NodeID,
                                                   FieldID  = entry.DataPoint.FieldID
                                           };

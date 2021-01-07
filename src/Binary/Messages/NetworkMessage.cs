@@ -19,7 +19,7 @@ namespace Binary.Messages
 
         public         NetworkMessageHeader NetworkMessageHeader          { get; set; }
         public         byte[]               RawPayload                    { get; set; }
-        public virtual void                 Encode( Stream outputStream ) { }
+        public virtual void                 Encode( Stream outputStream, bool withHeader = true ) { }
         public         EncodingOptions      Options                       { get; protected set; }
 
         #region Overrides of Object

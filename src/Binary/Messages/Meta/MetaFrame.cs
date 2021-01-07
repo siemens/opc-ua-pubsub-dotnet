@@ -40,13 +40,18 @@ namespace Binary.Messages.Meta
         [JsonConverter( typeof(StructureDataTypeDictionaryJSONConverter) )]
         public Dictionary<NodeID, StructureDescription> StructureDataTypes { get; set; }
 
-        public override void Encode( Stream outputStream )
+        public override void Encode( Stream outputStream, bool withHeader = true )
         {
             if ( outputStream == null || !outputStream.CanWrite )
             {
                 return;
             }
-            NetworkMessageHeader.Encode( outputStream );
+
+            if ( withHeader )
+            {
+                NetworkMessageHeader.Encode( outputStream );
+            }
+
             EncodeChunk( outputStream );
         }
 
@@ -142,9 +147,12 @@ namespace Binary.Messages.Meta
                 nameSpaceLength = Namespaces.Count;
             }
             sb.AppendLine( $"Namespaces:\t\t{nameSpaceLength}" );
-            for ( int i = 0; i < nameSpaceLength; i++ )
+            if ( Namespaces != null )
             {
-                sb.AppendLine( $"Namespace [{i}]: {Namespaces[i]?.ToString() ?? "null"}" );
+                for ( int i = 0; i < nameSpaceLength; i++ )
+                {
+                    sb.AppendLine( $"Namespace [{i}]: {Namespaces[i]?.ToString() ?? "null"}" );
+                }
             }
             int structureLength = -1;
             if ( StructureDataTypes != null )
@@ -152,14 +160,17 @@ namespace Binary.Messages.Meta
                 structureLength = StructureDataTypes.Count;
             }
             sb.AppendLine( $"StructureDataTypes:\t\t{structureLength}" );
-            List<StructureDescription> structureDescriptions = StructureDataTypes.Values.ToList();
-            for ( int i = 0; i < structureLength; i++ )
+            if ( StructureDataTypes != null )
             {
-                sb.AppendLine( $"StructureDescription [{i}]:" );
-                sb.AppendLine( structureDescriptions[i]
-                                     ?.ToConsoleString()
-                            ?? "null"
-                             );
+                List<StructureDescription> structureDescriptions = StructureDataTypes.Values.ToList();
+                for ( int i = 0; i < structureLength; i++ )
+                {
+                    sb.AppendLine( $"StructureDescription [{i}]:" );
+                    sb.AppendLine( structureDescriptions[i]
+                                         ?.ToConsoleString()
+                                ?? "null"
+                                 );
+                }
             }
             if ( EnumDataTypes != null )
             {
@@ -191,7 +202,8 @@ namespace Binary.Messages.Meta
             instance.Namespaces         = ParseNamespaceArray( inputStream );
             instance.StructureDataTypes = ParseStructureDescriptions( inputStream );
 
-            //            DataPointsManager.UpdateStructureDescription(instance.StructureDataTypes);
+            // if (instance.StructureDataTypes != null)
+            //    DataPointsManager.UpdateStructureDescription(instance.StructureDataTypes);
             instance.EnumDataTypes = ParseEnumDescriptions( inputStream );
 
             // Simple Data Types are currently not supported
@@ -245,11 +257,14 @@ namespace Binary.Messages.Meta
                 structureLength = StructureDataTypes.Count;
             }
             BaseType.WriteToStream( outputStream, BitConverter.GetBytes( structureLength ) );
-            List<StructureDescription> structureDescriptions = StructureDataTypes.Values.ToList();
-            for ( int i = 0; i < structureLength; i++ )
+            if ( StructureDataTypes != null )
             {
-                StructureDescription desc = structureDescriptions[i] ?? new StructureDescription();
-                desc.Encode( outputStream );
+                List<StructureDescription> structureDescriptions = StructureDataTypes.Values.ToList();
+                for ( int i = 0; i < structureLength; i++ )
+                {
+                    StructureDescription desc = structureDescriptions[i] ?? new StructureDescription();
+                    desc.Encode( outputStream );
+                }
             }
 
             // Enums
@@ -309,6 +324,14 @@ namespace Binary.Messages.Meta
             {
                 return null;
             }
+
+            // check whether FieldMetaData exist
+            if ( arraySize.Value <= 0 )
+            {
+                // no FieldMetaData
+                return null;
+            }
+
             List<FieldMetaData> fieldMetaDataList = new List<FieldMetaData>( arraySize.Value );
             for ( int i = 0; i < arraySize.Value; i++ )
             {
@@ -330,6 +353,14 @@ namespace Binary.Messages.Meta
             {
                 return null;
             }
+
+            // check whether namespaces exist
+            if ( length.Value <= 0 )
+            {
+                // no namespaces
+                return null;
+            }
+
             List<String> resultList = new List<String>( length.Value );
             for ( int i = 0; i < length.Value; i++ )
             {
@@ -349,6 +380,14 @@ namespace Binary.Messages.Meta
             {
                 return null;
             }
+
+            // check whether StructureDescriptions exist
+            if ( length.Value < 0 )
+            {
+                // no StructureDescriptions
+                return null;
+            }
+
             Dictionary<NodeID, StructureDescription> dictionary = new Dictionary<NodeID, StructureDescription>( length.Value );
             for ( int i = 0; i < length.Value; i++ )
             {

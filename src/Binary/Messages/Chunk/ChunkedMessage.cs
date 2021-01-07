@@ -44,13 +44,16 @@ namespace Binary.Messages.Chunk
             return instance;
         }
 
-        public override void Encode( Stream outputStream )
+        public override void Encode( Stream outputStream, bool withHeader = true )
         {
             if ( outputStream == null || !outputStream.CanWrite )
             {
                 return;
             }
-            NetworkMessageHeader.Encode( outputStream );
+            if ( withHeader )
+            {
+                NetworkMessageHeader.Encode( outputStream );
+            }
             PayloadHeader.Encode( outputStream );
             BaseType.WriteToStream( outputStream, BitConverter.GetBytes( MessageSequenceNumber ) );
             BaseType.WriteToStream( outputStream, BitConverter.GetBytes( ChunkOffset ) );

@@ -1,6 +1,7 @@
 ﻿// Copyright 2020 Siemens AG
 // SPDX-License-Identifier: MIT
 
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Binary.Messages.Meta;
@@ -76,7 +77,7 @@ namespace Binary.DataPoints
         {
             get
             {
-                return base.Value as float[];
+                return Array.ConvertAll<object, float>(base.Value as object[], v => Convert.ToSingle(v, CultureInfo.InvariantCulture));
             }
             set
             {
@@ -128,9 +129,10 @@ namespace Binary.DataPoints
                 {
                     valueChanged = true;
                 }
+
                 if ( valueChanged )
                 {
-                    newMVA50.Value.CopyTo( Value, 0 );
+                    Value = newValues;
                 }
             }
             return valueChanged;

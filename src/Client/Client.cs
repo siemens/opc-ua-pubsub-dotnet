@@ -28,9 +28,9 @@ using MQTTnet.Client.Options;
 using MQTTnet.Client.Receiving;
 using MQTTnet.Diagnostics;
 using MQTTnet.Protocol;
+using opc.ua.pubsub.dotnet.client.Interfaces;
 using opc.ua.pubsub.dotnet.client.common;
 using opc.ua.pubsub.dotnet.client.common.Settings;
-using opc.ua.pubsub.dotnet.client.Interfaces;
 using OPCUAFile = Binary.DataPoints.File;
 using static opc.ua.pubsub.dotnet.client.ProcessDataSet;
 using String = Binary.String;
@@ -628,7 +628,7 @@ namespace opc.ua.pubsub.dotnet.client
                                             };
             metaFrame.NetworkMessageHeader = new NetworkMessageHeader
                                              {
-                                                     VersionAndFlags = 0x91,
+                                                     VersionAndFlags = 0xD1,
                                                      ExtendedFlags1  = extendedFlags1,
                                                      ExtendedFlags2  = extendedFlags2,
                                                      PublisherID     = new String( ClientId )
@@ -647,7 +647,7 @@ namespace opc.ua.pubsub.dotnet.client
                                            new String( "http://siemens.com/energy/schema/opcua/ps/v2" ),
                                            new String( "https://mindsphere.io/OPCUAPubSub/v3" )
                                    };
-            FieldMetaData fieldMetaData = new FieldMetaData
+            FieldMetaData fieldMetaData = new FieldMetaData (Options)
                                           {
                                                   Name     = new String( file.Name ),
                                                   DataType = OPCUAFile.PreDefinedNodeID

@@ -41,7 +41,7 @@ namespace Binary.Messages.Key
             KeyFrame instance = new KeyFrame( dataFrame );
             instance.MetaFrame = meta;
             instance.Timestamp = dataFrame.Timestamp;
-            ushort  fieldCount = (ushort)meta.FieldMetaDataList.Count;
+            ushort  fieldCount = (ushort)(meta.FieldMetaDataList?.Count ?? 0);
             ushort? readUInt16 = BaseType.ReadUInt16( inputStream );
             if ( readUInt16 == null )
             {
@@ -64,13 +64,13 @@ namespace Binary.Messages.Key
             return instance;
         }
 
-        public override void Encode( Stream outputStream )
+        public override void Encode( Stream outputStream, bool withHeader = true )
         {
             if ( outputStream == null || !outputStream.CanWrite )
             {
                 return;
             }
-            base.Encode( outputStream );
+            base.Encode( outputStream, withHeader );
             EncodeDataPoints( outputStream );
         }
 

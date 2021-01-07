@@ -12,7 +12,7 @@ namespace Binary
     public interface ICodable<out T>
     {
         EncodingOptions Options { get; }
-        void            Encode( Stream outputStream );
+        void            Encode( Stream outputStream, bool withHeader = true );
 
         //T Decode(Stream inputStream);
     }

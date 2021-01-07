@@ -134,7 +134,7 @@ namespace opc.ua.pubsub.dotnet.simulation
                                                  new String( "https://mindsphere.io/OPCUAPubSub/v3" )
                                          };
             }
-            FieldMetaData fieldMetaData = new FieldMetaData
+            FieldMetaData fieldMetaData = new FieldMetaData (new EncodingOptions() )
                                           {
                                                   Name     = new String( Name ),
                                                   DataType = File.PreDefinedNodeID

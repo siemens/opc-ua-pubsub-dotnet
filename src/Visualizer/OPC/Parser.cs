@@ -161,57 +161,61 @@ namespace opc.ua.pubsub.dotnet.visualizer.OPC
                     BindingSource bs = writerDictionary.GetOrAdd( writerID, s => new BindingSource() );
                     bs.Clear();
                     m_VisualizerForm.ResetGroupedTypeIndex( publisherID, writerID );
-                    for ( int i = 0; i < metaMessage.FieldMetaDataList.Count; i++ )
+
+                    if ( metaMessage.FieldMetaDataList != null )
                     {
-                        FieldMetaData fieldMetaData = metaMessage.FieldMetaDataList[i];
-                        bool isOldEnum         = false,
-                             isGroupedDataType = false;
-                        if ( metaMessage.StructureDataTypes.TryGetValue( fieldMetaData.DataType, out StructureDescription structDesc ) )
+                        for ( int i = 0; i < metaMessage.FieldMetaDataList.Count; i++ )
                         {
-                            if ( metaMessage.EnumDataTypes != null
-                              && structDesc.Name.Name.ToString()
-                                           .Contains( "EnumValue" ) )
+                            FieldMetaData fieldMetaData = metaMessage.FieldMetaDataList[i];
+                            bool isOldEnum = false,
+                                 isGroupedDataType = false;
+                            if ( metaMessage.StructureDataTypes.TryGetValue( fieldMetaData.DataType, out StructureDescription structDesc ) )
                             {
-                                isOldEnum = true;
-                            }
-                        }
-                        if ( !isOldEnum )
-                        {
-                            isGroupedDataType = ProcessValueFactory.GetNodeIDType( fieldMetaData.DataType ) == NodeIDType.GroupDataTypeTimeSeries;
-                        }
-                        DataPointBase dp = null;
-                        if ( fieldMetaData.DataType == File.PreDefinedNodeID )
-                        {
-                            dp = new FileDataPoint();
-                        }
-                        else
-                        {
-                            dp = new ProcessDataPoint();
-                        }
-                        dp.Index = fieldMetaData.Index;
-                        dp.Name = dp.GetType()
-                                    .Name
-                               == "FileDataPoint"
-                                          ? Path.GetFileName( fieldMetaData.Name.Value )
-                                          : fieldMetaData.Name.Value;
-                        bs.Add( dp );
-                        if ( isGroupedDataType )
-                        {
-                            m_VisualizerForm.AddGroupDataTypeIndex( publisherID, writerID, bs.Count - 1 );
-                            List<StructureField> fields = metaMessage.StructureDataTypes[fieldMetaData.DataType]
-                                                                     .Fields;
-                            int count = fields.Count;
-                            for ( int k = 0; k < count; k++ )
-                            {
-                                string name = fields[k]
-                                             .Name.Value;
-                                if ( name != "_time" && name.Contains( "_qc" ) == false )
+                                if ( metaMessage.EnumDataTypes != null
+                                  && structDesc.Name.Name.ToString()
+                                               .Contains( "EnumValue" ) )
                                 {
-                                    ProcessDataPoint dp1 = new ProcessDataPoint();
-                                    dp1.Index = fieldMetaData.Index;
-                                    dp1.Name = fields[k]
-                                              .Name.Value;
-                                    bs.Add( dp1 );
+                                    isOldEnum = true;
+                                }
+                            }
+                            if ( !isOldEnum )
+                            {
+                                isGroupedDataType = ProcessValueFactory.GetNodeIDType( fieldMetaData.DataType ) == NodeIDType.GroupDataTypeTimeSeries;
+                            }
+                            DataPointBase dp = null;
+                            if ( fieldMetaData.DataType == File.PreDefinedNodeID )
+                            {
+                                dp = new FileDataPoint();
+                            }
+                            else
+                            {
+                                dp = new ProcessDataPoint();
+                            }
+                            dp.Index = fieldMetaData.Index;
+                            dp.Name = dp.GetType()
+                                        .Name
+                                   == "FileDataPoint"
+                                              ? Path.GetFileName( fieldMetaData.Name.Value )
+                                              : fieldMetaData.Name.Value;
+                            bs.Add( dp );
+                            if ( isGroupedDataType )
+                            {
+                                m_VisualizerForm.AddGroupDataTypeIndex( publisherID, writerID, bs.Count - 1 );
+                                List<StructureField> fields = metaMessage.StructureDataTypes[fieldMetaData.DataType]
+                                                                         .Fields;
+                                int count = fields.Count;
+                                for ( int k = 0; k < count; k++ )
+                                {
+                                    string name = fields[k]
+                                                 .Name.Value;
+                                    if ( name != "_time" && name.Contains( "_qc" ) == false )
+                                    {
+                                        ProcessDataPoint dp1 = new ProcessDataPoint();
+                                        dp1.Index = fieldMetaData.Index;
+                                        dp1.Name = fields[k]
+                                                  .Name.Value;
+                                        bs.Add( dp1 );
+                                    }
                                 }
                             }
                         }

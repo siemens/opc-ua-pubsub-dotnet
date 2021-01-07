@@ -64,15 +64,18 @@ namespace Binary.Messages
             return null;
         }
 
-        public override void Encode( Stream outputStream )
+        public override void Encode( Stream outputStream, bool withHeader = true )
         {
             if ( outputStream == null || !outputStream.CanWrite )
             {
                 return;
             }
 
-            // 1. Network Message Header
-            NetworkMessageHeader.Encode( outputStream );
+            if ( withHeader )
+            {
+                // 1. Network Message Header
+                NetworkMessageHeader.Encode( outputStream );
+            }
 
             // 2. DataSet Payload Header
             PayloadHeader.Encode( outputStream );
