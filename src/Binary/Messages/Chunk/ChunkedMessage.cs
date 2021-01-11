@@ -4,7 +4,7 @@
 using System;
 using System.IO;
 
-namespace Binary.Messages.Chunk
+namespace opc.ua.pubsub.dotnet.binary.Messages.Chunk
 {
     public class ChunkedMessage : NetworkMessage
     {

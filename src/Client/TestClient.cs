@@ -4,9 +4,9 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Binary;
-using Binary.DataPoints;
-using Binary.Decode;
+using opc.ua.pubsub.dotnet.binary;
+using opc.ua.pubsub.dotnet.binary.DataPoints;
+using opc.ua.pubsub.dotnet.binary.Decode;
 using opc.ua.pubsub.dotnet.client.common.Settings;
 using opc.ua.pubsub.dotnet.client.Interfaces;
 using static opc.ua.pubsub.dotnet.client.ProcessDataSet;

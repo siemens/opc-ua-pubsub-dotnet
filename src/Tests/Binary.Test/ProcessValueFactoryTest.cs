@@ -4,7 +4,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Binary.DataPoints;
+using opc.ua.pubsub.dotnet.binary.DataPoints;
 using NUnit.Framework;
 
 namespace opc.ua.pubsub.dotnet.binary.test

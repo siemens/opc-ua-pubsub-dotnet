@@ -8,11 +8,11 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using Binary.Messages.Meta;
-using Binary.Messages.Meta.Structure;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta.Structure;
 using log4net;
 
-namespace Binary.DataPoints
+namespace opc.ua.pubsub.dotnet.binary.DataPoints
 {
     public abstract class ProcessDataPointValue : DataPointValue, IEquatable<ProcessDataPointValue>
     {

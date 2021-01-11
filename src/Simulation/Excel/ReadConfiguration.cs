@@ -3,13 +3,13 @@
 
 using System;
 using System.Collections.Generic;
-using Binary;
-using Binary.Messages.Meta;
-using Binary.Messages.Meta.Structure;
+using opc.ua.pubsub.dotnet.binary;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta.Structure;
 using ClosedXML.Excel;
 using log4net;
 using opc.ua.pubsub.dotnet.simulation.Excel.Model;
-using String = Binary.String;
+using String = opc.ua.pubsub.dotnet.binary.String;
 
 namespace opc.ua.pubsub.dotnet.simulation.Excel
 {

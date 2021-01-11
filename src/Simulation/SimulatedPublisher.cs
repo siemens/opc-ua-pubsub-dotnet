@@ -3,14 +3,10 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Reflection;
 using System.Threading;
-using Binary.DataPoints;
-using Binary.Messages.Meta;
+using opc.ua.pubsub.dotnet.binary.DataPoints;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta;
 using log4net;
-using log4net.Config;
-using log4net.Repository;
 using opc.ua.pubsub.dotnet.client;
 using opc.ua.pubsub.dotnet.client.common;
 using opc.ua.pubsub.dotnet.client.common.Settings;
@@ -18,7 +14,7 @@ using opc.ua.pubsub.dotnet.simulation.Excel;
 using opc.ua.pubsub.dotnet.simulation.Excel.Model;
 using static opc.ua.pubsub.dotnet.client.ProcessDataSet;
 using Client = opc.ua.pubsub.dotnet.client.Client;
-using String = Binary.String;
+using String = opc.ua.pubsub.dotnet.binary.String;
 
 namespace opc.ua.pubsub.dotnet.simulation
 {

@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace Binary
+namespace opc.ua.pubsub.dotnet.binary
 {
     /// <summary>
     ///     Reads an array of "simple" types, e.g. types which a fixed size.

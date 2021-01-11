@@ -11,15 +11,15 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Binary.DataPoints;
-using Binary.Decode;
-using Binary.Header;
-using Binary.Messages;
-using Binary.Messages.Chunk;
-using Binary.Messages.Delta;
-using Binary.Messages.Key;
-using Binary.Messages.Meta;
-using Binary.Messages.Meta.Structure;
+using opc.ua.pubsub.dotnet.binary.DataPoints;
+using opc.ua.pubsub.dotnet.binary.Decode;
+using opc.ua.pubsub.dotnet.binary.Header;
+using opc.ua.pubsub.dotnet.binary.Messages;
+using opc.ua.pubsub.dotnet.binary.Messages.Chunk;
+using opc.ua.pubsub.dotnet.binary.Messages.Delta;
+using opc.ua.pubsub.dotnet.binary.Messages.Key;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta.Structure;
 using opc.ua.pubsub.dotnet.client;
 using opc.ua.pubsub.dotnet.client.common;
 using opc.ua.pubsub.dotnet.client.common.Settings;
@@ -27,7 +27,7 @@ using opc.ua.pubsub.dotnet.client.Interfaces;
 using opc.ua.pubsub.dotnet.visualizer.OPC;
 using opc.ua.pubsub.dotnet.visualizer.UI;
 using Client = opc.ua.pubsub.dotnet.client.Client;
-using String = Binary.String;
+using String = opc.ua.pubsub.dotnet.binary.String;
 
 namespace opc.ua.pubsub.dotnet.visualizer
 {

@@ -4,7 +4,7 @@
 using System;
 using System.IO;
 
-namespace Binary
+namespace opc.ua.pubsub.dotnet.binary
 {
     public class QualifiedName : IEquatable<QualifiedName>
     {

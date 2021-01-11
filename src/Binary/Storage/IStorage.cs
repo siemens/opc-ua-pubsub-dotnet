@@ -1,10 +1,10 @@
 ﻿// Copyright 2020 Siemens AG
 // SPDX-License-Identifier: MIT
 
-using Binary.Messages;
-using Binary.Messages.Meta;
+using opc.ua.pubsub.dotnet.binary.Messages;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta;
 
-namespace Binary.Storage
+namespace opc.ua.pubsub.dotnet.binary.Storage
 {
     public interface IStorage
     {

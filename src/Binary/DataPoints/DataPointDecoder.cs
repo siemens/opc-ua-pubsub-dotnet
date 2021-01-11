@@ -6,10 +6,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
-using Binary.Messages.Meta;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta;
 using log4net;
 
-namespace Binary.DataPoints
+namespace opc.ua.pubsub.dotnet.binary.DataPoints
 {
     public static class DataPointEncoderDecoder
     {

@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace Binary.Decode
+namespace opc.ua.pubsub.dotnet.binary.Decode
 {
     public class Chunk
     {

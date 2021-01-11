@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using log4net;
 
-namespace Binary.Decode
+namespace opc.ua.pubsub.dotnet.binary.Decode
 {
     public class ChunkStorage
     {

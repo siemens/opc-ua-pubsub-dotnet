@@ -3,7 +3,7 @@
 
 using System.IO;
 
-namespace Binary
+namespace opc.ua.pubsub.dotnet.binary
 {
     /// <summary>
     ///     This interface is implemented by every entity which can be encoded and decode to or from a OPC UA PubSub binary

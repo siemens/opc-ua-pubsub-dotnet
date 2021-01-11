@@ -7,17 +7,17 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading;
-using Binary.Header;
-using Binary.Messages;
-using Binary.Messages.Chunk;
-using Binary.Messages.Delta;
-using Binary.Messages.KeepAlive;
-using Binary.Messages.Key;
-using Binary.Messages.Meta;
-using Binary.Storage;
+using opc.ua.pubsub.dotnet.binary.Header;
+using opc.ua.pubsub.dotnet.binary.Messages;
+using opc.ua.pubsub.dotnet.binary.Messages.Chunk;
+using opc.ua.pubsub.dotnet.binary.Messages.Delta;
+using opc.ua.pubsub.dotnet.binary.Messages.KeepAlive;
+using opc.ua.pubsub.dotnet.binary.Messages.Key;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta;
+using opc.ua.pubsub.dotnet.binary.Storage;
 using log4net;
 
-namespace Binary.Decode
+namespace opc.ua.pubsub.dotnet.binary.Decode
 {
     public class DecodeMessage
     {

@@ -1,7 +1,7 @@
 ﻿// Copyright 2020 Siemens AG
 // SPDX-License-Identifier: MIT
 
-using Binary.Messages.Meta;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta;
 
 /**
  * 
@@ -15,7 +15,7 @@ using Binary.Messages.Meta;
  * 
  */
 
-namespace Binary.DataPoints
+namespace opc.ua.pubsub.dotnet.binary.DataPoints
 {
     public static class WellKnownNodeIDs
     {

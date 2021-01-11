@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace Binary
+namespace opc.ua.pubsub.dotnet.binary
 {
     public static class BaseType
     {

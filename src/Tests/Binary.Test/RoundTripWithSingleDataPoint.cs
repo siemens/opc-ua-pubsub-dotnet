@@ -3,13 +3,13 @@
 
 using System;
 using System.Collections;
-using Binary;
-using Binary.DataPoints;
-using Binary.Decode;
-using Binary.Messages;
-using Binary.Messages.Delta;
-using Binary.Messages.Key;
-using Binary.Messages.Meta;
+using opc.ua.pubsub.dotnet.binary;
+using opc.ua.pubsub.dotnet.binary.DataPoints;
+using opc.ua.pubsub.dotnet.binary.Decode;
+using opc.ua.pubsub.dotnet.binary.Messages;
+using opc.ua.pubsub.dotnet.binary.Messages.Delta;
+using opc.ua.pubsub.dotnet.binary.Messages.Key;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta;
 using NUnit.Framework;
 using opc.ua.pubsub.dotnet.client;
 

@@ -1,7 +1,7 @@
 // Copyright 2020 Siemens AG
 // SPDX-License-Identifier: MIT
 
-namespace Binary.Messages.Meta
+namespace opc.ua.pubsub.dotnet.binary.Messages.Meta
 {
     public enum BuiltinType : byte
     {

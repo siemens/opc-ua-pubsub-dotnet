@@ -1,7 +1,7 @@
 ﻿// Copyright 2020 Siemens AG
 // SPDX-License-Identifier: MIT
 
-namespace Binary.Header
+namespace opc.ua.pubsub.dotnet.binary.Header
 {
     public enum MessageType
     {

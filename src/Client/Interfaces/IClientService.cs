@@ -3,10 +3,10 @@
 
 using System;
 using System.Collections.Generic;
-using Binary;
-using Binary.Decode;
+using opc.ua.pubsub.dotnet.binary;
+using opc.ua.pubsub.dotnet.binary.Decode;
 using opc.ua.pubsub.dotnet.client.common.Settings;
-using OPCUAFile = Binary.DataPoints.File;
+using OPCUAFile = opc.ua.pubsub.dotnet.binary.DataPoints.File;
 using static opc.ua.pubsub.dotnet.client.ProcessDataSet;
 
 namespace opc.ua.pubsub.dotnet.client.Interfaces

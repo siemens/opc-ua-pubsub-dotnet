@@ -4,16 +4,16 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Binary;
-using Binary.DataPoints;
-using Binary.Header;
-using Binary.Messages;
-using Binary.Messages.Delta;
-using Binary.Messages.Key;
-using Binary.Messages.Meta;
-using Binary.Messages.Meta.Structure;
-using File = Binary.DataPoints.File;
-using String = Binary.String;
+using opc.ua.pubsub.dotnet.binary;
+using opc.ua.pubsub.dotnet.binary.DataPoints;
+using opc.ua.pubsub.dotnet.binary.Header;
+using opc.ua.pubsub.dotnet.binary.Messages;
+using opc.ua.pubsub.dotnet.binary.Messages.Delta;
+using opc.ua.pubsub.dotnet.binary.Messages.Key;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta.Structure;
+using File = opc.ua.pubsub.dotnet.binary.DataPoints.File;
+using String = opc.ua.pubsub.dotnet.binary.String;
 
 namespace opc.ua.pubsub.dotnet.simulation
 {

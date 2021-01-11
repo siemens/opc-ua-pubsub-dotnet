@@ -3,7 +3,7 @@
 
 using System.IO;
 
-namespace Binary.Header
+namespace opc.ua.pubsub.dotnet.binary.Header
 {
     public enum MessageTypeEnum : byte
     {

@@ -1,7 +1,7 @@
 ﻿// Copyright 2020 Siemens AG
 // SPDX-License-Identifier: MIT
 
-using Binary.DataPoints;
+using opc.ua.pubsub.dotnet.binary.DataPoints;
 using NUnit.Framework;
 
 namespace opc.ua.pubsub.dotnet.binary.test

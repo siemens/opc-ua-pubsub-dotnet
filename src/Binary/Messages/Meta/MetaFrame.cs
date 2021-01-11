@@ -6,10 +6,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Binary.Messages.Meta.Structure;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta.Structure;
 using Newtonsoft.Json;
 
-namespace Binary.Messages.Meta
+namespace opc.ua.pubsub.dotnet.binary.Messages.Meta
 {
     public class MetaFrame : NetworkMessage, ICodable<MetaFrame>
     {

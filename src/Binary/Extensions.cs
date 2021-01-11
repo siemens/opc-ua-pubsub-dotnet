@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Binary
+namespace opc.ua.pubsub.dotnet.binary
 {
     public static class Extensions
     {

@@ -3,7 +3,7 @@
 
 using System.IO;
 
-namespace Binary.Messages.Meta
+namespace opc.ua.pubsub.dotnet.binary.Messages.Meta
 {
     public class DataSetFieldFlags : OptionSet
     {

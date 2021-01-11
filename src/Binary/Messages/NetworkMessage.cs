@@ -4,9 +4,9 @@
 using System;
 using System.IO;
 using System.Text;
-using Binary.Header;
+using opc.ua.pubsub.dotnet.binary.Header;
 
-namespace Binary.Messages
+namespace opc.ua.pubsub.dotnet.binary.Messages
 {
     public class NetworkMessage : ICodable<NetworkMessage>
     {

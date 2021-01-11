@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Binary.Header
+namespace opc.ua.pubsub.dotnet.binary.Header
 {
     [Flags]
     public enum UADPFlags

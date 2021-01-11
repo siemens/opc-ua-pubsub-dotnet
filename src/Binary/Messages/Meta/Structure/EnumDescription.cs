@@ -9,7 +9,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Binary.Messages.Meta.Structure
+namespace opc.ua.pubsub.dotnet.binary.Messages.Meta.Structure
 {
     public class EnumDescription : IEquatable<EnumDescription>
     {

@@ -4,10 +4,10 @@
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Reflection;
-using Binary.Messages.Meta;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta;
 using log4net;
 
-namespace Binary.Storage
+namespace opc.ua.pubsub.dotnet.binary.Storage
 {
     public class LocalMetaStorage
     {

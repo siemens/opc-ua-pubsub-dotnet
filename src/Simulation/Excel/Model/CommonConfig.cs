@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections.Generic;
-using Binary.Messages.Meta;
-using Binary.Messages.Meta.Structure;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta.Structure;
 
 namespace opc.ua.pubsub.dotnet.simulation.Excel.Model
 {

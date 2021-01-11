@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Binary.Messages
+namespace opc.ua.pubsub.dotnet.binary.Messages
 {
     [Flags]
     public enum DataSetFlags2Enum : byte

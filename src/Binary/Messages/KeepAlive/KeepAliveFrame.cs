@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using log4net;
 
-namespace Binary.Messages.KeepAlive
+namespace opc.ua.pubsub.dotnet.binary.Messages.KeepAlive
 {
     public class KeepAliveFrame : DataFrame
     {
