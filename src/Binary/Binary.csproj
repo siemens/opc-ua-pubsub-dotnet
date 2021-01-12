@@ -4,11 +4,18 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>AnyCPU;x64;x86</Platforms>
     <PackageId>opc.ua.pubsub.dotnet.binary</PackageId>
-    <AssemblyName>binary</AssemblyName>
+    <AssemblyName>opc.ua.pubsub.dotnet.binary</AssemblyName>
     <Company>Siemens AG</Company>
     <Product>opc-ua-pubsub-dotnet</Product>
     <Authors>Siemens AG</Authors>
-    <RootNamespace>opc.ua.pubsub.dotnet.binary</RootNamespace>    
+    <RootNamespace>opc.ua.pubsub.dotnet.binary</RootNamespace>
+    <PackageTags>OPC UA PubSub</PackageTags>
+    <Description>
+      The opc-ua-pubsub-dotnet binary is a library which implements OPC UA PubSub encoding and decoding in a simplified way. This package contains only functions for encoding and decoding OPC UA PubSub binary messages, there is no communication contained.
+      It's not offering the full flexibility of OPC UA PubSub, but it supports encoding and decoding of all data types which are used by Siemens SICAM A8000 and SICAM GridEdge. You can easily extend this library to support additional data types.
+      The library itself is written in .NET Standard 2.0 so it supports a wide range of targets (.NET Core, .NET Framework, Mono, Xamarin, Unity, UWP).
+      https://github.com/siemens/opc-ua-pubsub-dotnet
+    </Description>    
   </PropertyGroup>
 
 

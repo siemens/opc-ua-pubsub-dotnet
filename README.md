@@ -11,7 +11,7 @@ The library itself is written in .NET Standard 2.0 so it supports a wide range o
 
 Add the Nuget package, e.g.:
 ```shell
-dotnet add package opc-ua-pubsub-dotnet.client
+dotnet add package opc.ua.pubsub.dotnet.client
 ```
 or by using [Visual Studio](https://docs.microsoft.com/en-us/nuget/consume-packages/install-use-packages-visual-studio), [Visual Studio for Mac](https://docs.microsoft.com/en-us/visualstudio/mac/nuget-walkthrough?toc=%2Fnuget%2Ftoc.json&view=vsmac-2019) or the [Package Manager Console](https://docs.microsoft.com/en-us/nuget/consume-packages/install-use-packages-powershell)
 
