@@ -6,12 +6,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using Binary.DataPoints;
-using Binary.Messages.Meta;
+using opc.ua.pubsub.dotnet.binary.DataPoints;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta;
 using log4net;
-using File = Binary.DataPoints.File;
+using File = opc.ua.pubsub.dotnet.binary.DataPoints.File;
 
-namespace Binary.Messages.Delta
+namespace opc.ua.pubsub.dotnet.binary.Messages.Delta
 {
     public class DeltaFrame : DataFrame
     {
@@ -62,13 +62,13 @@ namespace Binary.Messages.Delta
             return instance;
         }
 
-        public override void Encode( Stream outputStream )
+        public override void Encode( Stream outputStream, bool withHeader = true )
         {
             if ( outputStream == null || !outputStream.CanWrite )
             {
                 return;
             }
-            base.Encode( outputStream );
+            base.Encode( outputStream, withHeader );
             EncodeDataPoints( outputStream );
         }
 

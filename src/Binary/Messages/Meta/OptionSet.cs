@@ -4,11 +4,10 @@
 using System;
 using System.IO;
 
-namespace Binary.Messages.Meta
+namespace opc.ua.pubsub.dotnet.binary.Messages.Meta
 {
     public class OptionSet : ICodable<DataSetFieldFlags>, IEquatable<OptionSet>
     {
-        public OptionSet() : this( new EncodingOptions() ) { }
 
         public OptionSet( EncodingOptions options )
         {
@@ -18,7 +17,7 @@ namespace Binary.Messages.Meta
         public byte[] ValidBits { get; set; }
         public byte[] Value     { get; set; }
 
-        public void Encode( Stream outputStream )
+        public void Encode( Stream outputStream, bool withHeader = true )
         {
             if ( !Options.LegacyFieldFlagEncoding )
             {
@@ -73,11 +72,13 @@ namespace Binary.Messages.Meta
 
         public static OptionSet Decode( Stream inputStream, EncodingOptions options )
         {
-            OptionSet instance = new OptionSet();
+            OptionSet instance = new OptionSet( options );
             if ( options.LegacyFieldFlagEncoding )
             {
-                instance.Value     = SimpleArray<byte>.Decode( inputStream, BaseType.ReadByte );
-                instance.ValidBits = SimpleArray<byte>.Decode( inputStream, BaseType.ReadByte );
+                inputStream.Position += 4;
+                instance.Value = new[] { (byte)inputStream.ReadByte() };
+                inputStream.Position += 4;
+                instance.ValidBits = new[] { (byte)inputStream.ReadByte() };
                 return instance;
             }
             instance.Value     = new[] { (byte)inputStream.ReadByte() };

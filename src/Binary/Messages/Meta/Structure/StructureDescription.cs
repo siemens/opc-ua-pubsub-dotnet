@@ -7,7 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 
-namespace Binary.Messages.Meta.Structure
+namespace opc.ua.pubsub.dotnet.binary.Messages.Meta.Structure
 {
     public class StructureDescription : IEquatable<StructureDescription>
     {

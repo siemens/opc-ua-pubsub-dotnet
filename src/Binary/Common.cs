@@ -5,7 +5,7 @@ using System;
 using System.Globalization;
 using System.IO;
 
-namespace Binary
+namespace opc.ua.pubsub.dotnet.binary
 {
     internal static class Common
     {

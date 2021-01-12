@@ -9,12 +9,12 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using Binary.DataPoints;
-using Binary.Messages.Meta;
-using Binary.Messages.Meta.Structure;
+using opc.ua.pubsub.dotnet.binary.DataPoints;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta.Structure;
 using log4net;
-using File = Binary.DataPoints.File;
-using String = Binary.String;
+using File = opc.ua.pubsub.dotnet.binary.DataPoints.File;
+using String = opc.ua.pubsub.dotnet.binary.String;
 
 namespace opc.ua.pubsub.dotnet.visualizer.UI
 {

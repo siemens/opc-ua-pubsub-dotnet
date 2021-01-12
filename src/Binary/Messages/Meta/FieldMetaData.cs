@@ -8,7 +8,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Binary.Messages.Meta
+namespace opc.ua.pubsub.dotnet.binary.Messages.Meta
 {
     public class FieldMetaData : ICodable<FieldMetaData>
     {
@@ -17,13 +17,12 @@ namespace Binary.Messages.Meta
             Options         = options;
             Name            = new String();
             Description     = new LocalizedText();
-            Flags           = new DataSetFieldFlags();
+            Flags           = new DataSetFieldFlags( options );
             Type            = BuiltinType.ExtensionObject;
             ValueRank       = -1;
             MaxStringLength = 0;
         }
 
-        public FieldMetaData() : this( new EncodingOptions() ) { }
         public uint[]             ArrayDimension  { get; set; }
         public NodeID             DataType        { get; set; }
         public LocalizedText      Description     { get; set; }
@@ -37,7 +36,7 @@ namespace Binary.Messages.Meta
         public BuiltinType Type { get; set; }
         public int ValueRank { get;    set; }
 
-        public void Encode( Stream outputStream )
+        public void Encode( Stream outputStream, bool withHeader = true)
         {
             if ( outputStream == null || !outputStream.CanWrite )
             {
@@ -79,7 +78,7 @@ namespace Binary.Messages.Meta
 
         public static FieldMetaData Decode( Stream inputStream, EncodingOptions options )
         {
-            FieldMetaData instance = new FieldMetaData();
+            FieldMetaData instance = new FieldMetaData( options );
 
             // 1. Name
             instance.Name = String.Decode( inputStream );

@@ -4,9 +4,9 @@
 using System;
 using System.IO;
 using System.Text;
-using Binary.Header;
+using opc.ua.pubsub.dotnet.binary.Header;
 
-namespace Binary.Messages
+namespace opc.ua.pubsub.dotnet.binary.Messages
 {
     public class NetworkMessage : ICodable<NetworkMessage>
     {
@@ -19,7 +19,7 @@ namespace Binary.Messages
 
         public         NetworkMessageHeader NetworkMessageHeader          { get; set; }
         public         byte[]               RawPayload                    { get; set; }
-        public virtual void                 Encode( Stream outputStream ) { }
+        public virtual void                 Encode( Stream outputStream, bool withHeader = true ) { }
         public         EncodingOptions      Options                       { get; protected set; }
 
         #region Overrides of Object

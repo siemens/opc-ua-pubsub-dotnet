@@ -12,14 +12,14 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using Binary;
-using Binary.DataPoints;
-using Binary.Decode;
-using Binary.Header;
-using Binary.Messages;
-using Binary.Messages.Key;
-using Binary.Messages.Meta;
-using Binary.Messages.Meta.Structure;
+using opc.ua.pubsub.dotnet.binary;
+using opc.ua.pubsub.dotnet.binary.DataPoints;
+using opc.ua.pubsub.dotnet.binary.Decode;
+using opc.ua.pubsub.dotnet.binary.Header;
+using opc.ua.pubsub.dotnet.binary.Messages;
+using opc.ua.pubsub.dotnet.binary.Messages.Key;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta.Structure;
 using log4net;
 using MQTTnet;
 using MQTTnet.Client;
@@ -28,12 +28,12 @@ using MQTTnet.Client.Options;
 using MQTTnet.Client.Receiving;
 using MQTTnet.Diagnostics;
 using MQTTnet.Protocol;
+using opc.ua.pubsub.dotnet.client.Interfaces;
 using opc.ua.pubsub.dotnet.client.common;
 using opc.ua.pubsub.dotnet.client.common.Settings;
-using opc.ua.pubsub.dotnet.client.Interfaces;
-using OPCUAFile = Binary.DataPoints.File;
+using OPCUAFile = opc.ua.pubsub.dotnet.binary.DataPoints.File;
 using static opc.ua.pubsub.dotnet.client.ProcessDataSet;
-using String = Binary.String;
+using String = opc.ua.pubsub.dotnet.binary.String;
 
 [assembly: InternalsVisibleTo( "Client.Test" )]
 
@@ -628,7 +628,7 @@ namespace opc.ua.pubsub.dotnet.client
                                             };
             metaFrame.NetworkMessageHeader = new NetworkMessageHeader
                                              {
-                                                     VersionAndFlags = 0x91,
+                                                     VersionAndFlags = 0xD1,
                                                      ExtendedFlags1  = extendedFlags1,
                                                      ExtendedFlags2  = extendedFlags2,
                                                      PublisherID     = new String( ClientId )
@@ -647,7 +647,7 @@ namespace opc.ua.pubsub.dotnet.client
                                            new String( "http://siemens.com/energy/schema/opcua/ps/v2" ),
                                            new String( "https://mindsphere.io/OPCUAPubSub/v3" )
                                    };
-            FieldMetaData fieldMetaData = new FieldMetaData
+            FieldMetaData fieldMetaData = new FieldMetaData (Options)
                                           {
                                                   Name     = new String( file.Name ),
                                                   DataType = OPCUAFile.PreDefinedNodeID

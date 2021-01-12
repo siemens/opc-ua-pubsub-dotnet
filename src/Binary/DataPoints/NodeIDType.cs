@@ -1,7 +1,7 @@
 ﻿// Copyright 2020 Siemens AG
 // SPDX-License-Identifier: MIT
 
-namespace Binary.DataPoints
+namespace opc.ua.pubsub.dotnet.binary.DataPoints
 {
     public enum NodeIDType
     {

@@ -6,7 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 
-namespace Binary
+namespace opc.ua.pubsub.dotnet.binary
 {
     public class String : IEquatable<String>
     {

@@ -3,7 +3,7 @@
 
 using System.IO;
 
-namespace Binary.Messages
+namespace opc.ua.pubsub.dotnet.binary.Messages
 {
     public class DataSetPayloadHeader : BaseHeader
     {

@@ -4,7 +4,7 @@
 using System;
 using System.Globalization;
 using System.Reflection;
-using Binary.DataPoints;
+using opc.ua.pubsub.dotnet.binary.DataPoints;
 using ClosedXML.Excel;
 using log4net;
 using opc.ua.pubsub.dotnet.simulation.Excel.Model;

@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: MIT
 
 using System;
-using Binary.Messages;
+using opc.ua.pubsub.dotnet.binary.Messages;
 
-namespace Binary.Decode
+namespace opc.ua.pubsub.dotnet.binary.Decode
 {
     public class MessageDecodedEventArgs : EventArgs
     {

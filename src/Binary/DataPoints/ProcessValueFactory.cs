@@ -4,9 +4,9 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Binary.Messages.Meta;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta;
 
-namespace Binary.DataPoints
+namespace opc.ua.pubsub.dotnet.binary.DataPoints
 {
     public class ProcessValueFactory
     {

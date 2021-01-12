@@ -4,7 +4,7 @@
 using System;
 using System.Globalization;
 
-namespace Binary.Header
+namespace opc.ua.pubsub.dotnet.binary.Header
 {
     [Flags]
     public enum ExtendedFlags1Enum

@@ -4,11 +4,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Binary.Messages.Meta;
-using Binary.Messages.Meta.Structure;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta.Structure;
 using Newtonsoft.Json;
 
-namespace Binary
+namespace opc.ua.pubsub.dotnet.binary
 {
     public class StructureDataTypeDictionaryJSONConverter : JsonConverter
     {

@@ -4,13 +4,13 @@
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using Binary;
-using Binary.Decode;
-using Binary.Messages;
-using Binary.Messages.Chunk;
-using Binary.Messages.Delta;
-using Binary.Messages.Key;
-using Binary.Messages.Meta;
+using opc.ua.pubsub.dotnet.binary;
+using opc.ua.pubsub.dotnet.binary.Decode;
+using opc.ua.pubsub.dotnet.binary.Messages;
+using opc.ua.pubsub.dotnet.binary.Messages.Chunk;
+using opc.ua.pubsub.dotnet.binary.Messages.Delta;
+using opc.ua.pubsub.dotnet.binary.Messages.Key;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta;
 using NUnit.Framework;
 
 namespace opc.ua.pubsub.dotnet.binary.test

@@ -6,13 +6,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Binary.DataPoints;
-using Binary.Messages.Meta;
-using Binary.Messages.Meta.Structure;
+using opc.ua.pubsub.dotnet.binary.DataPoints;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta.Structure;
 using log4net;
-using File = Binary.DataPoints.File;
+using File = opc.ua.pubsub.dotnet.binary.DataPoints.File;
 
-namespace Binary.Messages
+namespace opc.ua.pubsub.dotnet.binary.Messages
 {
     public class DataFrame : NetworkMessage
     {
@@ -64,15 +64,18 @@ namespace Binary.Messages
             return null;
         }
 
-        public override void Encode( Stream outputStream )
+        public override void Encode( Stream outputStream, bool withHeader = true )
         {
             if ( outputStream == null || !outputStream.CanWrite )
             {
                 return;
             }
 
-            // 1. Network Message Header
-            NetworkMessageHeader.Encode( outputStream );
+            if ( withHeader )
+            {
+                // 1. Network Message Header
+                NetworkMessageHeader.Encode( outputStream );
+            }
 
             // 2. DataSet Payload Header
             PayloadHeader.Encode( outputStream );

@@ -1,7 +1,7 @@
 ﻿// Copyright 2020 Siemens AG
 // SPDX-License-Identifier: MIT
 
-using Binary;
+using opc.ua.pubsub.dotnet.binary;
 
 namespace opc.ua.pubsub.dotnet.simulation.Excel.Model
 {

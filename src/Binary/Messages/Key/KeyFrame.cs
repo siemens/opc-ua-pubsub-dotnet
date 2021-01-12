@@ -6,12 +6,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using Binary.DataPoints;
-using Binary.Messages.Meta;
+using opc.ua.pubsub.dotnet.binary.DataPoints;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta;
 using log4net;
-using File = Binary.DataPoints.File;
+using File = opc.ua.pubsub.dotnet.binary.DataPoints.File;
 
-namespace Binary.Messages.Key
+namespace opc.ua.pubsub.dotnet.binary.Messages.Key
 {
     public class KeyFrame : DataFrame
     {
@@ -41,7 +41,7 @@ namespace Binary.Messages.Key
             KeyFrame instance = new KeyFrame( dataFrame );
             instance.MetaFrame = meta;
             instance.Timestamp = dataFrame.Timestamp;
-            ushort  fieldCount = (ushort)meta.FieldMetaDataList.Count;
+            ushort  fieldCount = (ushort)(meta.FieldMetaDataList?.Count ?? 0);
             ushort? readUInt16 = BaseType.ReadUInt16( inputStream );
             if ( readUInt16 == null )
             {
@@ -64,13 +64,13 @@ namespace Binary.Messages.Key
             return instance;
         }
 
-        public override void Encode( Stream outputStream )
+        public override void Encode( Stream outputStream, bool withHeader = true )
         {
             if ( outputStream == null || !outputStream.CanWrite )
             {
                 return;
             }
-            base.Encode( outputStream );
+            base.Encode( outputStream, withHeader );
             EncodeDataPoints( outputStream );
         }
 

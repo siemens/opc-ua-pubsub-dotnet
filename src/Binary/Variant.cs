@@ -5,11 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Binary.Messages.Meta;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Binary
+namespace opc.ua.pubsub.dotnet.binary
 {
     public class Variant
     {

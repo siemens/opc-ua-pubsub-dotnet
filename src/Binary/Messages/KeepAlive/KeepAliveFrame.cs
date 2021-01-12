@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using log4net;
 
-namespace Binary.Messages.KeepAlive
+namespace opc.ua.pubsub.dotnet.binary.Messages.KeepAlive
 {
     public class KeepAliveFrame : DataFrame
     {
@@ -23,13 +23,13 @@ namespace Binary.Messages.KeepAlive
             return instance;
         }
 
-        public override void Encode( Stream outputStream )
+        public override void Encode( Stream outputStream, bool withHeader = true )
         {
             if ( outputStream == null || !outputStream.CanWrite )
             {
                 return;
             }
-            base.Encode( outputStream );
+            base.Encode( outputStream, withHeader );
         }
 
         public override void EncodeChunk( Stream outputStream )

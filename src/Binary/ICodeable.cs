@@ -3,7 +3,7 @@
 
 using System.IO;
 
-namespace Binary
+namespace opc.ua.pubsub.dotnet.binary
 {
     /// <summary>
     ///     This interface is implemented by every entity which can be encoded and decode to or from a OPC UA PubSub binary
@@ -12,7 +12,7 @@ namespace Binary
     public interface ICodable<out T>
     {
         EncodingOptions Options { get; }
-        void            Encode( Stream outputStream );
+        void            Encode( Stream outputStream, bool withHeader = true );
 
         //T Decode(Stream inputStream);
     }

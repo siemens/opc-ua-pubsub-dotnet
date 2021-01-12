@@ -3,15 +3,13 @@
 
 using System.IO;
 
-namespace Binary.Messages.Meta
+namespace opc.ua.pubsub.dotnet.binary.Messages.Meta
 {
     public class DataSetFieldFlags : OptionSet
     {
-        public DataSetFieldFlags() : this( new EncodingOptions() ) { }
 
-        public DataSetFieldFlags( EncodingOptions options )
+        public DataSetFieldFlags( EncodingOptions options ) : base ( options )
         {
-            Options   = options;
             Value     = new[] { (byte)0 };
             ValidBits = new[] { (byte)0 };
         }
@@ -37,11 +35,13 @@ namespace Binary.Messages.Meta
 
         public new static DataSetFieldFlags Decode( Stream inputStream, EncodingOptions options )
         {
-            DataSetFieldFlags instance = new DataSetFieldFlags();
+            DataSetFieldFlags instance = new DataSetFieldFlags( options );
             if ( options.LegacyFieldFlagEncoding )
             {
-                instance.Value     = SimpleArray<byte>.Decode( inputStream, BaseType.ReadByte );
-                instance.ValidBits = SimpleArray<byte>.Decode( inputStream, BaseType.ReadByte );
+                inputStream.Position += 4;
+                instance.Value = new[] { (byte)inputStream.ReadByte() };
+                inputStream.Position += 4;
+                instance.ValidBits = new[] { (byte)inputStream.ReadByte() };
                 return instance;
             }
             instance.Value     = new[] { (byte)inputStream.ReadByte() };

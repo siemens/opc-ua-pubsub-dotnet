@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Binary
+namespace opc.ua.pubsub.dotnet.binary
 {
     public class EncodingOptions : IEquatable<EncodingOptions>
     {

@@ -4,13 +4,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Binary;
-using Binary.DataPoints;
-using Binary.Decode;
-using Binary.Messages;
-using Binary.Messages.Delta;
-using Binary.Messages.Key;
-using Binary.Messages.Meta;
+using opc.ua.pubsub.dotnet.binary;
+using opc.ua.pubsub.dotnet.binary.DataPoints;
+using opc.ua.pubsub.dotnet.binary.Decode;
+using opc.ua.pubsub.dotnet.binary.Messages;
+using opc.ua.pubsub.dotnet.binary.Messages.Delta;
+using opc.ua.pubsub.dotnet.binary.Messages.Key;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta;
 using NUnit.Framework;
 using opc.ua.pubsub.dotnet.client;
 
@@ -170,7 +170,7 @@ namespace opc.ua.pubsub.dotnet.binary.test
                 dataSet.AddDataPoint( dataPoint );
             }
             DecodeMessage  decoder            = new DecodeMessage();
-            byte[]         encodedMeta        = dataSet.GetChunkedMetaFrame( 0, new EncodingOptions(), 1 )[0];
+            byte[]         encodedMeta        = dataSet.GetEncodedMetaFrame( new EncodingOptions(), 1, true );
             byte[]         encodedDelta       = dataSet.GetEncodedDeltaFrame( 2 );
             NetworkMessage metaNetworkMessage = decoder.ParseBinaryMessage( encodedMeta );
             Assert.That( metaNetworkMessage, Is.Not.Null );
@@ -194,7 +194,7 @@ namespace opc.ua.pubsub.dotnet.binary.test
                 dataSet.AddDataPoint( dataPoint );
             }
             DecodeMessage  decoder            = new DecodeMessage();
-            byte[]         encodedMeta        = dataSet.GetChunkedMetaFrame( 0, new EncodingOptions(), 1 )[0];
+            byte[]         encodedMeta        = dataSet.GetEncodedMetaFrame( new EncodingOptions(), 1, true );
             byte[]         encodedKey         = dataSet.GetEncodedKeyFrame( 2 );
             NetworkMessage metaNetworkMessage = decoder.ParseBinaryMessage( encodedMeta );
             Assert.That( metaNetworkMessage, Is.Not.Null );

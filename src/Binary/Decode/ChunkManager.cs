@@ -4,10 +4,10 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Binary.Messages.Chunk;
+using opc.ua.pubsub.dotnet.binary.Messages.Chunk;
 using log4net;
 
-namespace Binary.Decode
+namespace opc.ua.pubsub.dotnet.binary.Decode
 {
     public class ChunkManager
     {

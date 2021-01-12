@@ -4,7 +4,7 @@
 using System;
 using System.IO;
 
-namespace Binary.Messages.Meta.Structure
+namespace opc.ua.pubsub.dotnet.binary.Messages.Meta.Structure
 {
     public class StructureField : IEquatable<StructureField>
     {

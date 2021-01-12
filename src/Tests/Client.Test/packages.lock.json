@@ -1243,7 +1243,14 @@
           "System.Xml.XmlDocument": "4.3.0"
         }
       },
-      "opc-ua-pubsub-dotnet.client": {
+      "opc.ua.pubsub.dotnet.binary": {
+        "type": "Project",
+        "dependencies": {
+          "Newtonsoft.Json": "12.0.3",
+          "log4net": "2.0.12"
+        }
+      },
+      "opc.ua.pubsub.dotnet.client": {
         "type": "Project",
         "dependencies": {
           "MQTTnet": "3.0.13",
@@ -1256,13 +1263,6 @@
           "System.IdentityModel.Tokens.Jwt": "5.5.0",
           "log4net": "2.0.12",
           "opc.ua.pubsub.dotnet.binary": "1.0.0"
-        }
-      },
-      "opc.ua.pubsub.dotnet.binary": {
-        "type": "Project",
-        "dependencies": {
-          "Newtonsoft.Json": "12.0.3",
-          "log4net": "2.0.12"
         }
       }
     }

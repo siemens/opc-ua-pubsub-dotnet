@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 using System;
-using Binary.DataPoints;
+using opc.ua.pubsub.dotnet.binary.DataPoints;
 using log4net;
 using opc.ua.pubsub.dotnet.simulation.Excel.Model;
 using static opc.ua.pubsub.dotnet.client.ProcessDataSet;

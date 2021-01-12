@@ -4,10 +4,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Binary.Header;
-using Binary.Messages.Chunk;
-using Binary.Messages.Meta;
-using String = Binary.String;
+using opc.ua.pubsub.dotnet.binary.Header;
+using opc.ua.pubsub.dotnet.binary.Messages.Chunk;
+using opc.ua.pubsub.dotnet.binary.Messages.Meta;
+using String = opc.ua.pubsub.dotnet.binary.String;
 
 namespace opc.ua.pubsub.dotnet.simulation
 {

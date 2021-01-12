@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections.Generic;
-using Binary.DataPoints;
+using opc.ua.pubsub.dotnet.binary.DataPoints;
 
 namespace opc.ua.pubsub.dotnet.visualizer.UI
 {
