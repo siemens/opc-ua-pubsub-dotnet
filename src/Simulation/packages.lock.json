@@ -35,6 +35,16 @@
         "resolved": "3.3.0",
         "contentHash": "6qptTHUu1Wfszuf83NhU0IoAb4j7YWOpJs6oc6S4G/nI6aGGWKH/Xi5Vs9L/8lrI74ijEEzPcIwafSQW5ASHtA=="
       },
+      "Microsoft.SourceLink.GitHub": {
+        "type": "Direct",
+        "requested": "[1.0.0, )",
+        "resolved": "1.0.0",
+        "contentHash": "aZyGyGg2nFSxix+xMkPmlmZSsnGQ3w+mIG23LTxJZHN+GPwTQ5FpPgDo7RMOq+Kcf5D4hFWfXkGhoGstawX13Q==",
+        "dependencies": {
+          "Microsoft.Build.Tasks.Git": "1.0.0",
+          "Microsoft.SourceLink.Common": "1.0.0"
+        }
+      },
       "DocumentFormat.OpenXml": {
         "type": "Transitive",
         "resolved": "2.7.2",
@@ -70,6 +80,11 @@
           "System.Runtime": "4.3.0",
           "System.Threading": "4.3.0"
         }
+      },
+      "Microsoft.Build.Tasks.Git": {
+        "type": "Transitive",
+        "resolved": "1.0.0",
+        "contentHash": "z2fpmmt+1Jfl+ZnBki9nSP08S1/tbEOxFdsK1rSR+LBehIJz1Xv9/6qOOoGNqlwnAGGVGis1Oj6S8Kt9COEYlQ=="
       },
       "Microsoft.CSharp": {
         "type": "Transitive",
@@ -217,6 +232,11 @@
         "type": "Transitive",
         "resolved": "1.1.0",
         "contentHash": "aOZA3BWfz9RXjpzt0sRJJMjAscAUm3Hoa4UWAfceV9UTYxgwZ1lZt5nO2myFf+/jetYQo4uTP7zS8sJY67BBxg=="
+      },
+      "Microsoft.SourceLink.Common": {
+        "type": "Transitive",
+        "resolved": "1.0.0",
+        "contentHash": "G8DuQY8/DK5NN+3jm5wcMcd9QYD90UV7MiLmdljSJixi3U/vNaeBKmmXUqI4DJCOeWizIUEh4ALhSt58mR+5eg=="
       },
       "Microsoft.Win32.Primitives": {
         "type": "Transitive",
@@ -488,7 +508,7 @@
       "System.Collections.NonGeneric": {
         "type": "Transitive",
         "resolved": "4.3.0",
-        "contentHash": "prtjIEMhGUnQq6RnPEYLpFt8AtLbp9yq2zxOSrY7KJJZrw25Fi97IzBqY7iqssbM61Ek5b8f3MG/sG1N2sN5KA==",
+        "contentHash": "LE/oChpRvkSi3U25u0KnJcI44JeDZ1QJCyN4qFDx2uusEypdqR24w7lKYw21eYe5esuCBuc862wRmpF63Yy1KQ==",
         "dependencies": {
           "System.Diagnostics.Debug": "4.3.0",
           "System.Globalization": "4.3.0",
@@ -1521,7 +1541,14 @@
           "System.Xml.ReaderWriter": "4.3.0"
         }
       },
-      "opc-ua-pubsub-dotnet.client": {
+      "opc.ua.pubsub.dotnet.binary": {
+        "type": "Project",
+        "dependencies": {
+          "Newtonsoft.Json": "12.0.3",
+          "log4net": "2.0.12"
+        }
+      },
+      "opc.ua.pubsub.dotnet.client": {
         "type": "Project",
         "dependencies": {
           "MQTTnet": "3.0.13",
@@ -1534,13 +1561,6 @@
           "System.IdentityModel.Tokens.Jwt": "5.5.0",
           "log4net": "2.0.12",
           "opc.ua.pubsub.dotnet.binary": "1.0.0"
-        }
-      },
-      "opc.ua.pubsub.dotnet.binary": {
-        "type": "Project",
-        "dependencies": {
-          "Newtonsoft.Json": "12.0.3",
-          "log4net": "2.0.12"
         }
       }
     }
