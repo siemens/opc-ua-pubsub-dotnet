@@ -9,8 +9,15 @@
     <Company>Siemens AG</Company>
     <Product>opc-ua-pubsub-dotnet</Product>
     <Authors>Siemens AG</Authors>
-    <AssemblyName>client</AssemblyName>
+    <AssemblyName>opc.ua.pubsub.dotnet.client</AssemblyName>
     <RootNamespace>opc.ua.pubsub.dotnet.client</RootNamespace>
+    <PackageTags>OPC UA PubSub;MQTT;Subscriber;Publisher</PackageTags>
+    <Description>
+      The opc-ua-pubsub-dotnet client is a library which implements OPC UA PubSub communication via MQTT protocol in a simplified way. 
+      It's not offering the full flexibility of OPC UA PubSub, but it supports encoding and decoding of all data types which are used by Siemens SICAM A8000 and SICAM GridEdge. You can easily extend this library to support additional data types.
+      The library itself is written in .NET Standard 2.0 so it supports a wide range of targets (.NET Core, .NET Framework, Mono, Xamarin, Unity, UWP).
+      https://github.com/siemens/opc-ua-pubsub-dotnet
+    </Description>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
