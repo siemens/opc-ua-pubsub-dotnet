@@ -1,4 +1,11 @@
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](code_of_conduct.md)
+![GitHub](https://img.shields.io/github/license/siemens/opc-ua-pubsub-dotnet)
+
+![Build & Test](https://github.com/siemens/opc-ua-pubsub-dotnet/workflows/Build%20&%20Test/badge.svg?branch=main)
+![Publish NuGet Packages](https://github.com/siemens/opc-ua-pubsub-dotnet/workflows/Publish%20NuGet%20Packages/badge.svg)
+
+![Nuget](https://img.shields.io/nuget/v/opc.ua.pubsub.dotnet.binary?label=binary&logo=nuget)
+![Nuget](https://img.shields.io/nuget/v/opc.ua.pubsub.dotnet.client?label=client&logo=nuget)
 
 # opc-ua-pubsub-dotnet
 `opc-ua-pubsub-dotnet` is a library which implements OPC UA PubSub encoding and decoding in a simplified way.
