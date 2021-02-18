@@ -86,9 +86,9 @@
       },
       "MQTTnet": {
         "type": "Direct",
-        "requested": "[3.0.14, )",
-        "resolved": "3.0.14",
-        "contentHash": "gZfHRBZ0uChhg/45t6chn5GlzXlhdQiXZyyZQ4GpshBdiViIwxirOcz5mnNJDwoUT0eUcUxp4XqrYlEwJ13ylg==",
+        "requested": "[3.0.11, )",
+        "resolved": "3.0.11",
+        "contentHash": "OxKzVY9/ob1ofBgzf+9P1CWDhAz1qY/KfXMoWrwG5BEGatsi5PluhDsEn4u7+QUucDUdoleRdAWQv/llCl63Wg==",
         "dependencies": {
           "NETStandard.Library": "2.0.0",
           "System.Net.Security": "4.3.2",
