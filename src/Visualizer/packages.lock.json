@@ -144,8 +144,8 @@
       },
       "MQTTnet": {
         "type": "Transitive",
-        "resolved": "3.0.14",
-        "contentHash": "gZfHRBZ0uChhg/45t6chn5GlzXlhdQiXZyyZQ4GpshBdiViIwxirOcz5mnNJDwoUT0eUcUxp4XqrYlEwJ13ylg==",
+        "resolved": "3.0.11",
+        "contentHash": "OxKzVY9/ob1ofBgzf+9P1CWDhAz1qY/KfXMoWrwG5BEGatsi5PluhDsEn4u7+QUucDUdoleRdAWQv/llCl63Wg==",
         "dependencies": {
           "NETStandard.Library": "2.0.0",
           "System.Net.Security": "4.3.2",
@@ -301,7 +301,7 @@
       "opc.ua.pubsub.dotnet.client": {
         "type": "Project",
         "dependencies": {
-          "MQTTnet": "3.0.14",
+          "MQTTnet": "3.0.11",
           "Microsoft.Extensions.Configuration.Binder": "3.1.10",
           "Microsoft.Extensions.Configuration.CommandLine": "3.1.10",
           "Microsoft.Extensions.Configuration.Json": "3.1.10",
