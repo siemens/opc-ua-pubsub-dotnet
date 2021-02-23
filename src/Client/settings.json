@@ -1,21 +1,21 @@
 ﻿{
   "Settings": {
     "Broker": {
-      "BrokerP12": "C:\\_AMQP\\Certificates_Test_2020\\IoT_PQ_2k_OK\\SICAM_PQ_Broker_192-168-0-200_1.p12",
+      "BrokerP12": "",
       "BrokerP12Password": "12345678",
-      "UseTLS": true,
-      "UseMutualAuth": true
+      "UseTLS": false,
+      "UseMutualAuth": false
     },
 
     "Client": {
-      "BrokerHostname": "192.168.0.200",
-      "BrokerPort": "8883",
-      "ClientCertP12": "C:\\_AMQP\\Certificates_Test_2020\\IoT_PQ_2k_OK\\SICAM_PQ_Client_192-168-0-55_1.p12",
+      "BrokerHostname": "localhost",
+      "BrokerPort": "1883",
+      "ClientCertP12": "",
       "ClientCertPassword": "12345678",
-      "BrokerCACert": "C:\\_AMQP\\Certificates_Test_2020\\SICAM_PQ_CA_AF_2020_1.der",
+      "BrokerCACert": "",
       "DefaultSubscribeTopicName": "#",
       "DefaultPublisherTopicName": "c/{ClientID}/o/opcua/{VersionMS}/u/{T:d/t}{TM:m/t}{F:d/f}{FM:m/f}{E:d/e}{EM:m/e}",
-      "UseTls": true,
+      "SubscribeUseTls": false,
       "EnableLogging": false,
       "AllowUntrustedCertificates": true,
       "IgnoreCertificateChainErrors": true,
@@ -25,11 +25,11 @@
     },
 
     "Simulation": {
-      "BrokerHostname": "192.168.0.200",
-      "ClientCertP12": "C:\\_AMQP\\Certificates_Test_2020\\IoT_PQ_2k_OK\\SICAM_PQ_Client_192-168-0-55_1.p12",
+      "BrokerHostname": "localhost",
+      "ClientCertP12": "",
       "ClientCertPassword": "12345678",
-      "ClientRootCACertDER": "C:\\_AMQP\\Certificates_Test_2020\\SICAM_PQ_CA_AF_2020_1.der",
-      "BrokerCACertDER": "C:\\_AMQP\\Certificates_Test_2020\\SICAM_PQ_CA_AF_2020_1.der",
+      "ClientRootCACertDER": "",
+      "BrokerCACertDER": "",
 
       // Time in ms to wait before sending the meta message.
       // This is sometime useful if the local broker is used so it has enough time to start.
