@@ -34,6 +34,7 @@ using opc.ua.pubsub.dotnet.client.common.Settings;
 using OPCUAFile = opc.ua.pubsub.dotnet.binary.DataPoints.File;
 using static opc.ua.pubsub.dotnet.client.ProcessDataSet;
 using String = opc.ua.pubsub.dotnet.binary.String;
+using System.Security.Authentication;
 
 [assembly: InternalsVisibleTo( "Client.Test" )]
 
@@ -240,14 +241,15 @@ namespace opc.ua.pubsub.dotnet.client
                 if ( credentials.HasCertificates() )
                 {
                     tlsParameters = new MqttClientOptionsBuilderTlsParameters
-                                    {
-                                            UseTls                            = true,
-                                            AllowUntrustedCertificates        = Settings.Client.AllowUntrustedCertificates,
-                                            IgnoreCertificateChainErrors      = Settings.Client.IgnoreCertificateChainErrors,
-                                            IgnoreCertificateRevocationErrors = Settings.Client.IgnoreCertificateRevocationErrors,
-                                            CertificateValidationHandler      = CertificateValidationCallback,
-                                            Certificates                      = credentials.ClientCertAndCaChain
-                                    };
+                    {
+                        UseTls = true,
+                        AllowUntrustedCertificates = Settings.Client.AllowUntrustedCertificates,
+                        IgnoreCertificateChainErrors = Settings.Client.IgnoreCertificateChainErrors,
+                        IgnoreCertificateRevocationErrors = Settings.Client.IgnoreCertificateRevocationErrors,
+                        CertificateValidationHandler = CertificateValidationCallback,
+                        Certificates = credentials.ClientCertAndCaChain,
+                        SslProtocol = SslProtocols.Tls12
+                    };
                     clientOptionsBuilder.WithTls( tlsParameters );
                 }
                 if ( credentials.IsUserNameAndPasswordRequired() )

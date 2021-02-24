@@ -1,7 +1,7 @@
 ﻿{
   "Settings": {
     "Broker": {
-      "BrokerP12": "", 
+      "BrokerP12": "",
       "BrokerP12Password": "12345678",
       "UseTLS": false,
       "UseMutualAuth": false
@@ -10,7 +10,7 @@
     "Client": {
       "BrokerHostname": "localhost",
       "BrokerPort": "1883",
-      "ClientCertP12":  "", 
+      "ClientCertP12": "",
       "ClientCertPassword": "12345678",
       "BrokerCACert": "",
       "DefaultSubscribeTopicName": "#",
@@ -42,7 +42,7 @@
       "WaitAfterKeyMessage": 1500,
 
       "InputFile": "Simu-A.xlsx",
-      
+
       // It's possible to override the PublisherID set in the input file
       "PublisherID": "",
 

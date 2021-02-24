@@ -5,6 +5,7 @@ using System;
 using System.Globalization;
 using System.Net.Security;
 using System.Reflection;
+using System.Security.Authentication;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
@@ -153,6 +154,7 @@ namespace opc.ua.pubsub.dotnet.broker
                 optionsBuilder = optionsBuilder
                                 .WithEncryptedEndpoint()
                                 .WithEncryptedEndpointPort( 8883 )
+                                .WithEncryptionSslProtocol( SslProtocols.Tls12)
                                 .WithEncryptionCertificate( tuple.Item1.Export( X509ContentType.SerializedCert, tuple.Item2 ) );
                 if ( Settings.Broker.UseMutualAuth )
                 {
