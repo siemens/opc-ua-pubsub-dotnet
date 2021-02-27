@@ -373,7 +373,7 @@ namespace opc.ua.pubsub.dotnet.visualizer
             TypeDescriptor.AddAttributes( typeof(EnumDataTypes),           typeConverterAttribute );
             TypeDescriptor.AddAttributes( typeof(EnumField),               typeConverterAttribute );
             TypeDescriptor.AddAttributes( typeof(FieldMetaData),           typeConverterAttribute );
-            TypeDescriptor.AddAttributes( typeof(KeyValuePair),            typeConverterAttribute );
+            TypeDescriptor.AddAttributes( typeof( binary.Messages.Meta.KeyValuePair ),            typeConverterAttribute );
             TypeDescriptor.AddAttributes( typeof(LocalizedText),           typeConverterAttribute );
             TypeDescriptor.AddAttributes( typeof(MetaFrame),               typeConverterAttribute );
             TypeDescriptor.AddAttributes( typeof(NodeID),                  typeConverterAttribute );

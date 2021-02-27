@@ -203,7 +203,7 @@ namespace opc.ua.pubsub.dotnet.visualizer.UI
                             {
                                 if ( pdv.Properties != null )
                                 {
-                                    foreach ( KeyValuePair keyValuePair in pdv.Properties )
+                                    foreach ( binary.Messages.Meta.KeyValuePair keyValuePair in pdv.Properties )
                                     {
                                         string key = keyValuePair.Name.Name.Value;
                                         if ( key.Equals( "Unit", StringComparison.InvariantCultureIgnoreCase ) )
