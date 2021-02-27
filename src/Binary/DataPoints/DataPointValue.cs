@@ -17,7 +17,7 @@ namespace opc.ua.pubsub.dotnet.binary.DataPoints
         public         int                  Index                { get; set; }
         public         string               Name                 { get; set; }
         public virtual NodeID               NodeID               { get; }
-        public         List<KeyValuePair>   Properties           { get; set; }
+        public         List<Messages.Meta.KeyValuePair>   Properties           { get; set; }
         public virtual StructureDescription StructureDescription { get; }
 
         public bool Equals( DataPointValue other )

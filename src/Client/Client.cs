@@ -874,14 +874,14 @@ namespace opc.ua.pubsub.dotnet.client
             string newTopicName = string.Empty;
 
             // for backward compatibility we wont manipulate the topic name if i didn't find {ClientID} in it
-            if ( topicName.IndexOf( "{", StringComparison.InvariantCulture ) == -1 )
+            if ( !topicName.Contains( "{", StringComparison.InvariantCulture ) )
             {
                 // default topic name : /siemens/uapubsub
                 //topicName = $"{topicPrefix}/{publisherID}/{dataSetWriterID}";
                 return topicName;
             }
-            topicName = topicName.Replace( "{ClientID}",  publisherID );
-            topicName = topicName.Replace( "{VersionMS}", "v3" );
+            topicName = topicName.Replace( "{ClientID}",  publisherID, StringComparison.InvariantCultureIgnoreCase );
+            topicName = topicName.Replace( "{VersionMS}", "v3", StringComparison.InvariantCultureIgnoreCase );
             TopicWildCardCharacterDto wildCardCharDto = null;
             int                       startIndex      = 0;
             while ( true )

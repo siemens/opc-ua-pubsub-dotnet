@@ -29,7 +29,7 @@ namespace opc.ua.pubsub.dotnet.binary.DataPoints
             m_QualityPropertyName   = qualityPropertyName;
             m_TimeStampPropertyName = timeStampPropertyName;
             FieldID                 = new Guid();
-            Properties              = new List<KeyValuePair>();
+            Properties              = new List<Messages.Meta.KeyValuePair>();
             Prefix                  = "";
             Unit                    = "";
             ArraySize               = 0;
@@ -93,7 +93,7 @@ namespace opc.ua.pubsub.dotnet.binary.DataPoints
             get
             {
                 // find a key/value pair in Properties list with key equal to "Prefix" 
-                foreach ( KeyValuePair keyValuePair in Properties )
+                foreach ( Messages.Meta.KeyValuePair keyValuePair in Properties )
                 {
                     if ( keyValuePair.Name.Name.Value.Equals( "Prefix", StringComparison.InvariantCulture ) )
                     {
@@ -122,7 +122,7 @@ namespace opc.ua.pubsub.dotnet.binary.DataPoints
                     // create a new "Prefix" key/value pair if still not exists 
                     // and add it to the Properties list;
                     // note that the Value must have the type UADP.String
-                    KeyValuePair prefix = new KeyValuePair( "Prefix", new String( value ) );
+                    Messages.Meta.KeyValuePair prefix = new Messages.Meta.KeyValuePair( "Prefix", new String( value ) );
                     Properties.Add( prefix );
                 }
                 else
@@ -202,7 +202,7 @@ namespace opc.ua.pubsub.dotnet.binary.DataPoints
             get
             {
                 // find a key/value pair in Properties list with key equal to "Unit" 
-                foreach ( KeyValuePair keyValuePair in Properties )
+                foreach ( Messages.Meta.KeyValuePair keyValuePair in Properties )
                 {
                     if ( keyValuePair.Name.Name.Value.Equals( "Unit", StringComparison.InvariantCulture ) )
                     {
@@ -231,7 +231,7 @@ namespace opc.ua.pubsub.dotnet.binary.DataPoints
                     // create a new "Unit" key/value pair if still not exists 
                     // and add it to the Properties list;
                     // note that the Value must have the type UADP.String
-                    KeyValuePair unit = new KeyValuePair( "Unit", new String( value ) );
+                    Messages.Meta.KeyValuePair unit = new Messages.Meta.KeyValuePair( "Unit", new String( value ) );
                     Properties.Add( unit );
                 }
                 else

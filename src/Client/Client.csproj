@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <ApplicationIcon />
     <StartupObject />
     <PackageId>opc.ua.pubsub.dotnet.client</PackageId>

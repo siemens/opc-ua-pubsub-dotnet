@@ -446,27 +446,27 @@ namespace opc.ua.pubsub.dotnet.client
             // create Properties object and add key/value pair for "Prefix"
             if ( entry.DataPoint.Prefix == null )
             {
-                fieldMetaData.Properties = new List<KeyValuePair>
+                fieldMetaData.Properties = new List<binary.Messages.Meta.KeyValuePair>
                                            {
-                                                   new KeyValuePair( "Prefix", new String( "" ) )
+                                                   new binary.Messages.Meta.KeyValuePair( "Prefix", new String( "" ) )
                                            };
             }
             else
             {
-                fieldMetaData.Properties = new List<KeyValuePair>
+                fieldMetaData.Properties = new List<binary.Messages.Meta.KeyValuePair>
                                            {
-                                                   new KeyValuePair( "Prefix", new String( entry.DataPoint.Prefix ) )
+                                                   new binary.Messages.Meta.KeyValuePair( "Prefix", new String( entry.DataPoint.Prefix ) )
                                            };
             }
 
             // add key/value pair for "Unit"
             if ( entry.DataPoint.Prefix == null )
             {
-                fieldMetaData.Properties.Add( new KeyValuePair( "Unit", new String( "" ) ) );
+                fieldMetaData.Properties.Add( new binary.Messages.Meta.KeyValuePair( "Unit", new String( "" ) ) );
             }
             else
             {
-                fieldMetaData.Properties.Add( new KeyValuePair( "Unit", new String( entry.DataPoint.Unit ) ) );
+                fieldMetaData.Properties.Add( new binary.Messages.Meta.KeyValuePair( "Unit", new String( entry.DataPoint.Unit ) ) );
             }
 
             // add the FieldMetaData for the given data object to the list of all FieldMetaData
