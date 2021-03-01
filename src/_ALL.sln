@@ -12,8 +12,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Broker", "Broker\Broker.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Binary", "Binary\Binary.csproj", "{85E1275C-A568-4981-ABE1-C563EB582A3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Visualizer", "Visualizer\Visualizer.csproj", "{5A2850F9-B8A9-4044-9637-364741108ABF}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "client\Client.csproj", "{6E051B82-ACDB-4208-A8BE-3D7A0048606D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C8EE441C-34FB-412A-B6C8-E6D346C74CCC}"
@@ -26,6 +24,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Visualizer", "Visualizer\Visualizer.csproj", "{525D1C0F-EEF9-4CC6-9B2A-B68B281AEBBF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,14 +59,6 @@ Global
 		{85E1275C-A568-4981-ABE1-C563EB582A3B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{85E1275C-A568-4981-ABE1-C563EB582A3B}.Release|x86.ActiveCfg = Release|x86
 		{85E1275C-A568-4981-ABE1-C563EB582A3B}.Release|x86.Build.0 = Release|x86
-		{5A2850F9-B8A9-4044-9637-364741108ABF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5A2850F9-B8A9-4044-9637-364741108ABF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5A2850F9-B8A9-4044-9637-364741108ABF}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{5A2850F9-B8A9-4044-9637-364741108ABF}.Debug|x86.Build.0 = Debug|Any CPU
-		{5A2850F9-B8A9-4044-9637-364741108ABF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5A2850F9-B8A9-4044-9637-364741108ABF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5A2850F9-B8A9-4044-9637-364741108ABF}.Release|x86.ActiveCfg = Release|Any CPU
-		{5A2850F9-B8A9-4044-9637-364741108ABF}.Release|x86.Build.0 = Release|Any CPU
 		{6E051B82-ACDB-4208-A8BE-3D7A0048606D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6E051B82-ACDB-4208-A8BE-3D7A0048606D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E051B82-ACDB-4208-A8BE-3D7A0048606D}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -91,6 +83,14 @@ Global
 		{4F39794E-4A3F-4E73-9D4D-7DF6D65A311C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4F39794E-4A3F-4E73-9D4D-7DF6D65A311C}.Release|x86.ActiveCfg = Release|Any CPU
 		{4F39794E-4A3F-4E73-9D4D-7DF6D65A311C}.Release|x86.Build.0 = Release|Any CPU
+		{525D1C0F-EEF9-4CC6-9B2A-B68B281AEBBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{525D1C0F-EEF9-4CC6-9B2A-B68B281AEBBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{525D1C0F-EEF9-4CC6-9B2A-B68B281AEBBF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{525D1C0F-EEF9-4CC6-9B2A-B68B281AEBBF}.Debug|x86.Build.0 = Debug|Any CPU
+		{525D1C0F-EEF9-4CC6-9B2A-B68B281AEBBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{525D1C0F-EEF9-4CC6-9B2A-B68B281AEBBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{525D1C0F-EEF9-4CC6-9B2A-B68B281AEBBF}.Release|x86.ActiveCfg = Release|Any CPU
+		{525D1C0F-EEF9-4CC6-9B2A-B68B281AEBBF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -100,7 +100,7 @@ Global
 		{4F39794E-4A3F-4E73-9D4D-7DF6D65A311C} = {C8EE441C-34FB-412A-B6C8-E6D346C74CCC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {8A3A8C20-58A5-453B-8479-29F773A6E9AE}
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8
+		SolutionGuid = {8A3A8C20-58A5-453B-8479-29F773A6E9AE}
 	EndGlobalSection
 EndGlobal

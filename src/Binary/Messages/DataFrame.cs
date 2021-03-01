@@ -230,7 +230,7 @@ namespace opc.ua.pubsub.dotnet.binary.Messages
                 {
                     if ( meta.EnumDataTypes != null
                       && desc.Name.Name.ToString()
-                             .Contains( "EnumValue" ) )
+                             .Contains( "EnumValue", StringComparison.InvariantCultureIgnoreCase ) )
                     {
                         string enumName = desc.Name.Name.Value
                                               .Substring( 10 );
