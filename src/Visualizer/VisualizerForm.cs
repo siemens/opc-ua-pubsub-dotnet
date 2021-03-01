@@ -94,9 +94,17 @@ namespace opc.ua.pubsub.dotnet.visualizer
             }
             else
             {
-                // without TLS for use e.g. with internal broker of GridEdge
-                client.Connect();
+                try
+                {
+                    // without TLS for use e.g. with internal broker of GridEdge
+                    client.Connect();
+                }
+                catch 
+                {
+                    MessageBox.Show( $"Unable to connect to broker {client.Settings.Client.BrokerHostname}" );
+                }
             }
+
             client.Subscribe();
             Task.Run( () => m_UpdatePublisher.Start() );
             Task.Run( () => m_UpdateValues.Start() );

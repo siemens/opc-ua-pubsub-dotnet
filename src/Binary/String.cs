@@ -169,7 +169,7 @@ namespace opc.ua.pubsub.dotnet.binary
 
         public override int GetHashCode()
         {
-            return Value != null ? Value.GetHashCode() : 0;
+            return Value != null ? Value.GetHashCode(StringComparison.Ordinal) : 0;
         }
 
         public static bool operator ==( String left, String right )

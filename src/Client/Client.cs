@@ -310,8 +310,9 @@ namespace opc.ua.pubsub.dotnet.client
 
         #region Fields
 
-        internal static         ushort                                     SequenceNumber;
+        internal static         ushort                                     m_SequenceNumber;
         private                 IMqttClient                                m_MqttClient;
+        private                 IMqttNetLogger                             m_MqttLogger;
         private static readonly ILog                                       Logger = LogManager.GetLogger( typeof(Client) );
         private                 ConcurrentQueue<DecodeMessage.MqttMessage> m_MessageQueue;
         private                 Task                                       m_DecoderTask;
@@ -376,7 +377,9 @@ namespace opc.ua.pubsub.dotnet.client
                 Logger.Error( "No certificates imported" );
             }
             MqttClientOptionsBuilder optionsBuilder = CreateOptionsBuilder( credentials );
-            m_MqttClient                                   = new MqttFactory().CreateMqttClient();
+            m_MqttLogger = new MqttNetLogger();
+
+            m_MqttClient                                   = new MqttFactory().CreateMqttClient(m_MqttLogger);
             m_MqttClient.ApplicationMessageReceivedHandler = new MqttApplicationMessageReceivedHandlerDelegate( e => MqttClientOnApplicationMessageReceived( e ) );
             m_MqttClient.DisconnectedHandler               = new MqttClientDisconnectedHandlerDelegate( e => MqttClientOnDisconnected( e ) );
             IMqttClientOptions options = optionsBuilder.Build();
@@ -552,7 +555,7 @@ namespace opc.ua.pubsub.dotnet.client
                 }
                 else
                 {
-                    byte[] keepAliveChunk = dataSet.GetEncodedKeepAliveMessage( SequenceNumber++ );
+                    byte[] keepAliveChunk = dataSet.GetEncodedKeepAliveMessage( m_SequenceNumber++ );
                     Publish( keepAliveChunk, topicPrefix, dataSet.GetWriterId(), "Meas", dataSet.GetDataSetType(), false );
                 }
             }
@@ -583,21 +586,21 @@ namespace opc.ua.pubsub.dotnet.client
             {
                 if ( sendDelta )
                 {
-                    byte[] deltaChunk = dataSet.GetEncodedDeltaFrame( SequenceNumber++ );
+                    byte[] deltaChunk = dataSet.GetEncodedDeltaFrame( m_SequenceNumber++ );
                     Publish( deltaChunk, topicPrefix, dataSet.GetWriterId(), "Meas", dataSet.GetDataSetType(), false );
                 }
                 else //meta + key
                 {
                     if ( sendMeta )
                     {
-                        List<byte[]> metaChunks = dataSet.GetChunkedMetaFrame( ChunkSize, Options, SequenceNumber++ );
+                        List<byte[]> metaChunks = dataSet.GetChunkedMetaFrame( ChunkSize, Options, m_SequenceNumber++ );
                         foreach ( byte[] chunk in metaChunks )
                         {
                             Publish( chunk, topicPrefix, dataSet.GetWriterId(), "Meta", dataSet.GetDataSetType(), metaChunks.Count == 1 );
                             UpdateLastKeyAndMetaSentTime( dataSet.GetWriterId() );
                         }
                     }
-                    List<byte[]> keyChunks = dataSet.GetChunkedKeyFrame( ChunkSize, SequenceNumber++ );
+                    List<byte[]> keyChunks = dataSet.GetChunkedKeyFrame( ChunkSize, m_SequenceNumber++ );
                     foreach ( byte[] chunk in keyChunks )
                     {
                         Publish( chunk, topicPrefix, dataSet.GetWriterId(), "Meas", dataSet.GetDataSetType(), false );
@@ -635,7 +638,7 @@ namespace opc.ua.pubsub.dotnet.client
                                                      ExtendedFlags2  = extendedFlags2,
                                                      PublisherID     = new String( ClientId )
                                              };
-            metaFrame.SequenceNumber = SequenceNumber++;
+            metaFrame.SequenceNumber = m_SequenceNumber++;
             DateTime time = DateTime.UtcNow;
             metaFrame.ConfigurationVersion.Minor = (uint)( time.Ticks & uint.MaxValue );
             metaFrame.ConfigurationVersion.Major = (uint)( time.Ticks >> 32 );
@@ -673,7 +676,7 @@ namespace opc.ua.pubsub.dotnet.client
                                                                         RawValue = 0x04
                                                                 }
                                        };
-            key.DataSetMessageSequenceNumber = SequenceNumber++;
+            key.DataSetMessageSequenceNumber = m_SequenceNumber++;
             key.Flags1.RawValue              = 0xEB; // EBh = 1110 1011b
 
             // Bit 0 = 1: Data set is valid
@@ -919,7 +922,7 @@ namespace opc.ua.pubsub.dotnet.client
                 }
                 if ( wildCardCharDto != null )
                 {
-                    newTopicName = newTopicName.Replace( stringToReplace, wildCardCharDto.Value );
+                    newTopicName = newTopicName.Replace( stringToReplace, wildCardCharDto.Value, StringComparison.InvariantCulture );
                 }
                 startIndex = curlyBraceEnd + 2;
             }

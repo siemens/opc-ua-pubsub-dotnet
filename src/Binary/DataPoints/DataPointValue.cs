@@ -66,7 +66,7 @@ namespace opc.ua.pubsub.dotnet.binary.DataPoints
             {
                 int hashCode = Index;
                 hashCode = ( hashCode * 397 ) ^ FieldID.GetHashCode();
-                hashCode = ( hashCode * 397 ) ^ ( Name                 != null ? Name.GetHashCode() : 0 );
+                hashCode = ( hashCode * 397 ) ^ ( Name                 != null ? Name.GetHashCode(StringComparison.Ordinal) : 0 );
                 hashCode = ( hashCode * 397 ) ^ ( Properties           != null ? Properties.GetHashCode() : 0 );
                 hashCode = ( hashCode * 397 ) ^ ( StructureDescription != null ? StructureDescription.GetHashCode() : 0 );
                 hashCode = ( hashCode * 397 ) ^ ( EnumDescription      != null ? EnumDescription.GetHashCode() : 0 );

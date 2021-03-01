@@ -378,8 +378,8 @@ namespace opc.ua.pubsub.dotnet.binary.DataPoints
             {
                 int hashCode = base.GetHashCode();
                 hashCode = ( hashCode * 397 ) ^ ( m_AttributeValues       != null ? m_AttributeValues.GetHashCode() : 0 );
-                hashCode = ( hashCode * 397 ) ^ ( m_TimeStampPropertyName != null ? m_TimeStampPropertyName.GetHashCode() : 0 );
-                hashCode = ( hashCode * 397 ) ^ ( m_QualityPropertyName   != null ? m_QualityPropertyName.GetHashCode() : 0 );
+                hashCode = ( hashCode * 397 ) ^ ( m_TimeStampPropertyName != null ? m_TimeStampPropertyName.GetHashCode(StringComparison.Ordinal) : 0 );
+                hashCode = ( hashCode * 397 ) ^ ( m_QualityPropertyName   != null ? m_QualityPropertyName.GetHashCode(StringComparison.Ordinal) : 0 );
                 hashCode = ( hashCode * 397 ) ^ ArraySize;
                 hashCode = ( hashCode * 397 ) ^ (int)NodeIDType;
                 hashCode = ( hashCode * 397 ) ^ ( UserData != null ? UserData.GetHashCode() : 0 );
