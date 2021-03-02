@@ -8,6 +8,7 @@ namespace opc.ua.pubsub.dotnet.binary
     public class EncodingOptions : IEquatable<EncodingOptions>
     {
         public bool LegacyFieldFlagEncoding { get; set; }
+        public bool SendMetaMessageWithoutRetain { get; set; }
 
         public bool Equals( EncodingOptions other )
         {
@@ -19,7 +20,9 @@ namespace opc.ua.pubsub.dotnet.binary
             {
                 return true;
             }
-            return LegacyFieldFlagEncoding == other.LegacyFieldFlagEncoding;
+            return 
+                (LegacyFieldFlagEncoding == other.LegacyFieldFlagEncoding) && 
+                (SendMetaMessageWithoutRetain == other.SendMetaMessageWithoutRetain);
         }
 
         public override bool Equals( object obj )
@@ -41,7 +44,12 @@ namespace opc.ua.pubsub.dotnet.binary
 
         public override int GetHashCode()
         {
-            return LegacyFieldFlagEncoding.GetHashCode();
+            unchecked
+            {
+                int hashCode = LegacyFieldFlagEncoding.GetHashCode();
+                hashCode = ( hashCode * 397 ) ^ ( SendMetaMessageWithoutRetain.GetHashCode() );
+                return hashCode;
+            }
         }
 
         public static bool operator ==( EncodingOptions left, EncodingOptions right )

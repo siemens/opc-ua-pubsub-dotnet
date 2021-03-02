@@ -596,7 +596,8 @@ namespace opc.ua.pubsub.dotnet.client
                         List<byte[]> metaChunks = dataSet.GetChunkedMetaFrame( ChunkSize, Options, m_SequenceNumber++ );
                         foreach ( byte[] chunk in metaChunks )
                         {
-                            Publish( chunk, topicPrefix, dataSet.GetWriterId(), "Meta", dataSet.GetDataSetType(), metaChunks.Count == 1 );
+                            bool retain = ( metaChunks.Count == 1 ) && ( !Options.SendMetaMessageWithoutRetain );
+                            Publish( chunk, topicPrefix, dataSet.GetWriterId(), "Meta", dataSet.GetDataSetType(), retain );
                             UpdateLastKeyAndMetaSentTime( dataSet.GetWriterId() );
                         }
                     }
