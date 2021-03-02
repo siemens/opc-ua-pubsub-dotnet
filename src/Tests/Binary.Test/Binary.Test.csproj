@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>binary.test</AssemblyName>
     <RootNamespace>opc.ua.pubsub.dotnet.binary.test</RootNamespace>
     <IsPackable>false</IsPackable>
@@ -23,14 +23,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Client\Client.csproj" />
-    <ProjectReference Include="..\..\Binary\Binary.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="Regression\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Binary\Binary.csproj" />
+    <ProjectReference Include="..\..\client\Client.csproj" />
   </ItemGroup>
 
 </Project>

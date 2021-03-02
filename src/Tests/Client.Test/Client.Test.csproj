@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <AssemblyName>client.test</AssemblyName>
     <RootNamespace>opc.ua.pubsub.dotnet.client.test</RootNamespace>
@@ -31,9 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Client\Client.csproj">
-        <Private>True</Private>
-    </ProjectReference>
+    <ProjectReference Include="..\..\client\Client.csproj" />
   </ItemGroup>
 
 </Project>

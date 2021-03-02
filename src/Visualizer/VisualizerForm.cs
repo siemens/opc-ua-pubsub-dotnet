@@ -94,9 +94,17 @@ namespace opc.ua.pubsub.dotnet.visualizer
             }
             else
             {
-                // without TLS for use e.g. with internal broker of GridEdge
-                client.Connect();
+                try
+                {
+                    // without TLS for use e.g. with internal broker of GridEdge
+                    client.Connect();
+                }
+                catch 
+                {
+                    MessageBox.Show( $"Unable to connect to broker {client.Settings.Client.BrokerHostname}" );
+                }
             }
+
             client.Subscribe();
             Task.Run( () => m_UpdatePublisher.Start() );
             Task.Run( () => m_UpdateValues.Start() );
@@ -373,7 +381,7 @@ namespace opc.ua.pubsub.dotnet.visualizer
             TypeDescriptor.AddAttributes( typeof(EnumDataTypes),           typeConverterAttribute );
             TypeDescriptor.AddAttributes( typeof(EnumField),               typeConverterAttribute );
             TypeDescriptor.AddAttributes( typeof(FieldMetaData),           typeConverterAttribute );
-            TypeDescriptor.AddAttributes( typeof(KeyValuePair),            typeConverterAttribute );
+            TypeDescriptor.AddAttributes( typeof( binary.Messages.Meta.KeyValuePair ),            typeConverterAttribute );
             TypeDescriptor.AddAttributes( typeof(LocalizedText),           typeConverterAttribute );
             TypeDescriptor.AddAttributes( typeof(MetaFrame),               typeConverterAttribute );
             TypeDescriptor.AddAttributes( typeof(NodeID),                  typeConverterAttribute );
