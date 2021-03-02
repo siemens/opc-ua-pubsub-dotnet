@@ -12,7 +12,7 @@
 
 It's not offering the full flexibility of OPC UA PubSub, but it supports encoding and decoding of all data types which are used by Siemens SICAM A8000 and SICAM GridEdge. You can easily extend this library to support additional data types.
 
-The library itself is written in .NET Standard 2.0 so it supports a wide range of targets (.NET Core, .NET Framework, Mono, Xamarin, Unity, UWP).
+The library itself is written in .NET 5.
 
 # Using
 
