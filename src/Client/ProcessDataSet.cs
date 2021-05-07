@@ -443,30 +443,17 @@ namespace opc.ua.pubsub.dotnet.client
             // all data points have a "Unit" and a "Prefix" key/value pair in the Properties
             // list of the FieldMetaData; if it is null here, then create an empty entry
 
-            // create Properties object and add key/value pair for "Prefix"
-            if ( entry.DataPoint.Prefix == null )
+            if ( entry.DataPoint.Properties == null || entry.DataPoint.Properties.Count == 0 )
             {
                 fieldMetaData.Properties = new List<binary.Messages.Meta.KeyValuePair>
                                            {
-                                                   new binary.Messages.Meta.KeyValuePair( "Prefix", new String( "" ) )
+                                                   new binary.Messages.Meta.KeyValuePair( "Prefix", new String( "" ) ),
+                                                   new binary.Messages.Meta.KeyValuePair( "Unit", new String( "" ) )
                                            };
             }
             else
             {
-                fieldMetaData.Properties = new List<binary.Messages.Meta.KeyValuePair>
-                                           {
-                                                   new binary.Messages.Meta.KeyValuePair( "Prefix", new String( entry.DataPoint.Prefix ) )
-                                           };
-            }
-
-            // add key/value pair for "Unit"
-            if ( entry.DataPoint.Prefix == null )
-            {
-                fieldMetaData.Properties.Add( new binary.Messages.Meta.KeyValuePair( "Unit", new String( "" ) ) );
-            }
-            else
-            {
-                fieldMetaData.Properties.Add( new binary.Messages.Meta.KeyValuePair( "Unit", new String( entry.DataPoint.Unit ) ) );
+                fieldMetaData.Properties = entry.DataPoint.Properties;
             }
 
             // add the FieldMetaData for the given data object to the list of all FieldMetaData
