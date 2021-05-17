@@ -115,12 +115,9 @@ namespace opc.ua.pubsub.dotnet.binary.DataPoints
             }
             else if ( dataType.Equals( WellKnownNodeIDs.String ) )
             {
-                BaseType.WriteToStream( outputStream,
-                                        BitConverter.GetBytes( value.ToString()
-                                                                    .Length
-                                                             )
-                                      );
-                BaseType.WriteToStream( outputStream, Encoding.UTF8.GetBytes( value.ToString() ) );
+                byte[] encodedBytes = Encoding.UTF8.GetBytes( value.ToString() );
+                BaseType.WriteToStream( outputStream, BitConverter.GetBytes( encodedBytes.Length ) );
+                BaseType.WriteToStream( outputStream, encodedBytes );
             }
             else
             {

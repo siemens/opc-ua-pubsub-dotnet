@@ -87,8 +87,8 @@ namespace opc.ua.pubsub.dotnet.binary.test
                                              ).SetName( "{m}-CounterValue" );
                 yield return new TestCaseData( new StringEvent
                                                {
-                                                       Name      = "Sample CounterValue",
-                                                       Value     = "Hello World",
+                                                       Name      = "Sample StringEvent",
+                                                       Value     = "Hello Ü World",
                                                        Orcat     = OrcatConstants.Maintenance,
                                                        Quality   = QualityConstants.Test,
                                                        Timestamp = DateTime.Now.ToFileTimeUtc()
