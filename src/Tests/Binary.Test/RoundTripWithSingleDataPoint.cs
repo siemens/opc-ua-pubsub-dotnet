@@ -12,6 +12,7 @@ using opc.ua.pubsub.dotnet.binary.Messages.Key;
 using opc.ua.pubsub.dotnet.binary.Messages.Meta;
 using NUnit.Framework;
 using opc.ua.pubsub.dotnet.client;
+using opc.ua.pubsub.dotnet.binary.Header;
 
 namespace opc.ua.pubsub.dotnet.binary.test
 {
@@ -111,13 +112,16 @@ namespace opc.ua.pubsub.dotnet.binary.test
             NetworkMessage metaNetworkMessage = decoder.ParseBinaryMessage( encodedMeta );
             Assert.That( metaNetworkMessage, Is.Not.Null );
             Assert.That( metaNetworkMessage, Is.InstanceOf( typeof(MetaFrame) ) );
+            Assert.That( metaNetworkMessage.NetworkMessageHeader.UADPFlags.HasFlag( UADPFlags.PayloadHeaderEnabled ), Is.False );
             NetworkMessage deltaNetworkMessage = decoder.ParseBinaryMessage( encodedKey );
             Assert.That( deltaNetworkMessage, Is.Not.Null );
             Assert.That( deltaNetworkMessage, Is.InstanceOf( typeof(DeltaFrame) ) );
+            Assert.That( deltaNetworkMessage.NetworkMessageHeader.UADPFlags.HasFlag( UADPFlags.PayloadHeaderEnabled ), Is.True );
             DeltaFrame decodedDeltaMessage = (DeltaFrame)deltaNetworkMessage;
             Assert.That( decodedDeltaMessage,             Is.Not.Null );
             Assert.That( decodedDeltaMessage.Items,       Is.Not.Empty );
             Assert.That( decodedDeltaMessage.Items.Count, Is.EqualTo( 1 ) );
+            Assert.That( decodedDeltaMessage.NetworkMessageHeader.UADPFlags.HasFlag( UADPFlags.PayloadHeaderEnabled ), Is.True );
             ProcessDataPointValue decodedDataPoint = (ProcessDataPointValue)decodedDeltaMessage.Items[0];
             Common.AssertDataPointsAreEqual( dataPoint, decodedDataPoint );
         }
@@ -133,15 +137,18 @@ namespace opc.ua.pubsub.dotnet.binary.test
             NetworkMessage metaNetworkMessage = decoder.ParseBinaryMessage( encodedMeta );
             Assert.That( metaNetworkMessage, Is.Not.Null );
             Assert.That( metaNetworkMessage, Is.InstanceOf( typeof(MetaFrame) ) );
+            Assert.That( metaNetworkMessage.NetworkMessageHeader.UADPFlags.HasFlag( UADPFlags.PayloadHeaderEnabled ), Is.False );
             NetworkMessage keyNetworkMessage = decoder.ParseBinaryMessage( encodedKey );
             Assert.That( keyNetworkMessage, Is.Not.Null );
             Assert.That( keyNetworkMessage, Is.InstanceOf( typeof(KeyFrame) ) );
-            KeyFrame              decodedKeyMessage = (KeyFrame)keyNetworkMessage;
+            Assert.That( keyNetworkMessage.NetworkMessageHeader.UADPFlags.HasFlag( UADPFlags.PayloadHeaderEnabled ), Is.True );
+            KeyFrame decodedKeyMessage = (KeyFrame)keyNetworkMessage;
             ProcessDataPointValue decodedDataPoint  = (ProcessDataPointValue)decodedKeyMessage.Items[0];
             Common.AssertDataPointsAreEqual( dataPoint, decodedDataPoint );
             Assert.That( decodedKeyMessage,             Is.Not.Null );
             Assert.That( decodedKeyMessage.Items,       Is.Not.Empty );
             Assert.That( decodedKeyMessage.Items.Count, Is.EqualTo( 1 ) );
+            Assert.That( decodedKeyMessage.NetworkMessageHeader.UADPFlags.HasFlag( UADPFlags.PayloadHeaderEnabled ), Is.True );
         }
     }
 }

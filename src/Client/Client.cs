@@ -634,7 +634,7 @@ namespace opc.ua.pubsub.dotnet.client
                                             };
             metaFrame.NetworkMessageHeader = new NetworkMessageHeader
                                              {
-                                                     VersionAndFlags = 0xD1,
+                                                     VersionAndFlags = 0x91,
                                                      ExtendedFlags1  = extendedFlags1,
                                                      ExtendedFlags2  = extendedFlags2,
                                                      PublisherID     = new String( ClientId )
