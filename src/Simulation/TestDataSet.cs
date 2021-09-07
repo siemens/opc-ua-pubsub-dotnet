@@ -84,7 +84,7 @@ namespace opc.ua.pubsub.dotnet.simulation
         {
             NetworkMessageHeader networkHeader = new NetworkMessageHeader();
             networkHeader.PublisherID     = new String( PublisherID );
-            networkHeader.VersionAndFlags = 0xD1;
+            networkHeader.VersionAndFlags = 0x91;
             networkHeader.ExtendedFlags1 = new ExtendedFlags1
                                            {
                                                    RawValue = 0x84
