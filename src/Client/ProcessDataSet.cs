@@ -372,7 +372,7 @@ namespace opc.ua.pubsub.dotnet.client
         {
             NetworkMessageHeader networkHeader = new NetworkMessageHeader();
             networkHeader.PublisherID     = new String( PublisherId );
-            networkHeader.VersionAndFlags = isMetaMessage ? (byte)0x91 : (byte)0xD1;
+            networkHeader.VersionAndFlags = 0xD1;
             networkHeader.ExtendedFlags1 = new ExtendedFlags1
                                            {
                                                    RawValue = 0x84
