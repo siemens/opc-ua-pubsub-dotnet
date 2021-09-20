@@ -28,7 +28,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="MQTTnet">
-      <Version>3.0.14</Version>
+      <Version>3.0.16</Version>
     </PackageReference>
   </ItemGroup>
     <ItemGroup>
