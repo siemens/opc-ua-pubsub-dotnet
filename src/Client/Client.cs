@@ -397,6 +397,7 @@ namespace opc.ua.pubsub.dotnet.client
                 m_Decoder.MessageDecoded -= DecoderOnMessageDecoded;
                 m_Decoder.Stop();
             }
+
             if ( m_MqttClient != null )
             {
                 if ( m_MqttClient.IsConnected )
@@ -405,19 +406,32 @@ namespace opc.ua.pubsub.dotnet.client
                     m_MqttClient.ApplicationMessageReceivedHandler = null;
                     m_MqttClient.DisconnectedHandler               = null;
                 }
+
                 try
                 {
                     m_MqttClient.DisconnectAsync()
                                 .Wait( TimeSpan.FromSeconds( 5 ) );
                 }
                 catch ( TaskCanceledException ) { } //don't know why this happens always...
-                m_MqttClient.Dispose();
+                finally
+                {
+                    m_MqttClient.Dispose();
+                }
             }
+
             m_DecoderTask?.Wait();
             m_MessageQueue = null;
-            m_Decoder      = null;
-            m_DecoderTask  = null;
-            m_MqttClient   = null;
+            m_Decoder = null;
+            
+            if(m_DecoderTask != null)
+            {
+                m_DecoderTask.Dispose();
+                m_DecoderTask = null;
+            }
+
+            m_MqttClient = null;
+
+            ClientDisconnected?.Invoke( this, "" );
         }
 
         #endregion
