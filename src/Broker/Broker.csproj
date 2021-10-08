@@ -23,7 +23,7 @@
     <PackageReference Include="log4net">
       <Version>2.0.12</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.NetCore.Analyzers" Version="3.3.0">
+    <PackageReference Include="Microsoft.NetCore.Analyzers" Version="3.3.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
