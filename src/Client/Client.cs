@@ -641,8 +641,7 @@ namespace opc.ua.pubsub.dotnet.client
             try
             {
                 Publish( payload, topic, delta );
-                //sent is only true if all chunks are sent without exception
-                sent = true;
+               sent = true; //sent is only true if all chunks are sent without exception
             }
             catch ( DataNotSentException ) { }
             return sent;
