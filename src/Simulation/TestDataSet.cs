@@ -83,8 +83,8 @@ namespace opc.ua.pubsub.dotnet.simulation
         protected NetworkMessageHeader GetChunkedMetaNetworkHeader()
         {
             NetworkMessageHeader networkHeader = new NetworkMessageHeader();
-            networkHeader.PublisherID     = new String( m_PublisherID );
-            networkHeader.VersionAndFlags = 0xD1;
+            networkHeader.PublisherID     = new String(m_PublisherID);
+            networkHeader.VersionAndFlags = 0x91;
             networkHeader.ExtendedFlags1 = new ExtendedFlags1
                                            {
                                                    RawValue = 0x84

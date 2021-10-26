@@ -348,7 +348,7 @@ namespace opc.ua.pubsub.dotnet.client
                                             };
             NetworkMessageHeader networkMessageHeader = new NetworkMessageHeader
                                                         {
-                                                                VersionAndFlags = 0xD1,
+                                                                VersionAndFlags = 0x91,
                                                                 ExtendedFlags1  = extendedFlags1,
                                                                 ExtendedFlags2  = extendedFlags2,
                                                                 PublisherID     = new String( PublisherId )
@@ -370,11 +370,6 @@ namespace opc.ua.pubsub.dotnet.client
 
         protected NetworkMessageHeader GetChunkedNetworkHeader( bool isMetaMessage = false )
         {
-            byte extendedFlags2 = 0x01;
-            if ( isMetaMessage )
-            {
-                extendedFlags2 = 0x09;
-            }
             NetworkMessageHeader networkHeader = new NetworkMessageHeader();
             networkHeader.PublisherID     = new String( PublisherId );
             networkHeader.VersionAndFlags = 0xD1;
@@ -384,7 +379,7 @@ namespace opc.ua.pubsub.dotnet.client
                                            };
             networkHeader.ExtendedFlags2 = new ExtendedFlags2
                                            {
-                                                   RawValue = extendedFlags2
+                                                   RawValue = isMetaMessage ? (byte)0x09 : (byte)0x01
                                            };
             return networkHeader;
         }
