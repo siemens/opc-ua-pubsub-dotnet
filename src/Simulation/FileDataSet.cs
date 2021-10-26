@@ -33,7 +33,7 @@ namespace opc.ua.pubsub.dotnet.simulation
             delta.ConfigurationVersion = m_MetaFrame.ConfigurationVersion;
             delta.NetworkMessageHeader = new NetworkMessageHeader
                                          {
-                                                 PublisherID     = new String( PublisherID ),
+                                                 PublisherID     = new String( m_PublisherID ),
                                                  VersionAndFlags = 0xD1,
                                                  ExtendedFlags1 = new ExtendedFlags1
                                                                   {
@@ -79,7 +79,7 @@ namespace opc.ua.pubsub.dotnet.simulation
             key.ConfigurationVersion = m_MetaFrame.ConfigurationVersion;
             key.NetworkMessageHeader = new NetworkMessageHeader
                                        {
-                                               PublisherID     = new String( PublisherID ),
+                                               PublisherID     = new String( m_PublisherID ),
                                                VersionAndFlags = 0xD1,
                                                ExtendedFlags1 = new ExtendedFlags1
                                                                 {
@@ -159,7 +159,7 @@ namespace opc.ua.pubsub.dotnet.simulation
                                                        VersionAndFlags = 0x91,
                                                        ExtendedFlags1  = extendedFlags1,
                                                        ExtendedFlags2  = extendedFlags2,
-                                                       PublisherID     = new String( PublisherID )
+                                                       PublisherID     = new String( m_PublisherID )
                                                };
             DateTime now  = DateTime.UtcNow;
             TimeSpan time = now - ConfigurationVersion.Base;
