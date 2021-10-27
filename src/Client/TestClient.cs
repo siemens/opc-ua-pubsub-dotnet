@@ -112,6 +112,14 @@ namespace opc.ua.pubsub.dotnet.client
             Console.WriteLine( args );
         }
 
+        public bool SendRawData( byte[] payload, string topic, bool delta )
+        {
+            Console.WriteLine( payload );
+            Console.WriteLine( topic );
+            return true;
+
+        }
+
 #pragma warning disable 67
         public event EventHandler<Exception>  ExceptionCaught;
         public event FileReceivedEventHandler FileReceived;

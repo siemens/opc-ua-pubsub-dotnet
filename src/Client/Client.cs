@@ -635,6 +635,18 @@ namespace opc.ua.pubsub.dotnet.client
             return SendDataSet( dataSet, topic, delta );
         }
 
+        public bool SendRawData( byte[] payload, string topic,bool delta )
+        {
+            bool sent = false;
+            try
+            {
+                Publish( payload, topic, delta );
+               sent = true; //sent is only true if all chunks are sent without exception
+            }
+            catch ( DataNotSentException ) { }
+            return sent;
+        }
+
         private MetaFrame CreateFileMetaFrame( OPCUAFile file, ushort writerId )
         {
             MetaFrame metaFrame = new MetaFrame( Options );
@@ -952,39 +964,45 @@ namespace opc.ua.pubsub.dotnet.client
             string topic = CreateTopicName( topicPrefix, ClientId, dataSetWriterId, messageType, dataSetType );
 
             //string topic = $"{topicPrefix}/{m_ClientId}/{dataSetWriterId}";
+            this.Publish( payload, topic, retain );
+
+        }
+
+        private void Publish( byte[] payload, string topic, bool retain )
+        {
             MqttApplicationMessageBuilder messageBuilder;
             messageBuilder = new MqttApplicationMessageBuilder()
                             .WithAtLeastOnceQoS()
-                            .WithPayload( payload )
-                            .WithTopic( topic )
-                            .WithRetainFlag( retain );
+                            .WithPayload(payload)
+                            .WithTopic(topic)
+                            .WithRetainFlag(retain);
             bool dataSent = false;
 
             //try twice in case of timeout
-            for ( int i = 0; i < 2; i++ )
+            for (int i = 0; i < 2; i++)
             {
                 try
                 {
-                    m_MqttClient.PublishAsync( messageBuilder.Build() )
+                    m_MqttClient.PublishAsync(messageBuilder.Build())
                                 .Wait();
 
                     //successfully sent - quit the retry loop
                     dataSent = true;
                     break;
                 }
-                catch ( Exception e )
+                catch (Exception e)
                 {
-                    Console.Error.WriteLine( $"Error while {i + 1}. publishing message via MQTT for client: " + ClientId );
-                    Console.Error.WriteLine( "Exception:"                                                     + e );
-                    Logger.Error( "Error while publishing message via MQTT for client: "                      + ClientId );
-                    Logger.Error( "Exception:"                                                                + e );
-                    ForwardException( e );
+                    Console.Error.WriteLine($"Error while {i + 1}. publishing message via MQTT for client: " + ClientId);
+                    Console.Error.WriteLine("Exception:" + e);
+                    Logger.Error("Error while publishing message via MQTT for client: " + ClientId);
+                    Logger.Error("Exception:" + e);
+                    ForwardException(e);
 
                     //try again (doesnt't make sense for all errors, 
                     //but due to the AggregatedExceptions it's very difficult to find out what really went wrong...)
                 }
             }
-            if ( !dataSent )
+            if (!dataSent)
             {
                 throw new DataNotSentException();
             }

@@ -14,11 +14,11 @@ namespace opc.ua.pubsub.dotnet.simulation
     public abstract class TestDataSet
     {
         protected MetaFrame m_MetaFrame;
-        protected string    PublisherID;
+        protected string    m_PublisherID;
 
         public TestDataSet( string publisherID )
         {
-            PublisherID = publisherID;
+            m_PublisherID = publisherID;
             CreateMeta();
         }
 
@@ -83,7 +83,7 @@ namespace opc.ua.pubsub.dotnet.simulation
         protected NetworkMessageHeader GetChunkedMetaNetworkHeader()
         {
             NetworkMessageHeader networkHeader = new NetworkMessageHeader();
-            networkHeader.PublisherID     = new String( PublisherID );
+            networkHeader.PublisherID     = new String(m_PublisherID);
             networkHeader.VersionAndFlags = 0x91;
             networkHeader.ExtendedFlags1 = new ExtendedFlags1
                                            {
@@ -99,7 +99,7 @@ namespace opc.ua.pubsub.dotnet.simulation
         protected NetworkMessageHeader GetChunkedNetworkHeader()
         {
             NetworkMessageHeader networkHeader = new NetworkMessageHeader();
-            networkHeader.PublisherID     = new String( PublisherID );
+            networkHeader.PublisherID     = new String( m_PublisherID );
             networkHeader.VersionAndFlags = 0xD1;
             networkHeader.ExtendedFlags1 = new ExtendedFlags1
                                            {

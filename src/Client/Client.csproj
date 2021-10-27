@@ -18,7 +18,7 @@
       The library itself is written in .NET Standard 2.0 so it supports a wide range of targets (.NET Core, .NET Framework, Mono, Xamarin, Unity, UWP).
       https://github.com/siemens/opc-ua-pubsub-dotnet
     </Description>
-  </PropertyGroup>
+   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <WarningLevel>0</WarningLevel>
