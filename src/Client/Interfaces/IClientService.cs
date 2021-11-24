@@ -25,7 +25,22 @@ namespace opc.ua.pubsub.dotnet.client.Interfaces
         public string    Topic       { get; set; }
     }
 
+    public class RawDataReceivedEventArgs : EventArgs
+    {
+        public RawDataReceivedEventArgs( byte[] payload, string topic, string publisherId )
+        {
+            Payload = payload;
+            Topic = topic;
+            PublisherId = publisherId;
+        }
+
+        public byte[] Payload { get; set; }
+        public string PublisherId { get; set; }
+        public string Topic { get; set; }
+    }
+
     public delegate void FileReceivedEventHandler( object sender, FileReceivedEventArgs eventArgs );
+    public delegate void RawDataReceivedEventHandler( object sender, RawDataReceivedEventArgs eventArgs );
 
     public interface IClientService
     {
@@ -40,6 +55,7 @@ namespace opc.ua.pubsub.dotnet.client.Interfaces
         event EventHandler<string>                     ClientDisconnected;
         event EventHandler<Exception>                  ExceptionCaught;
         event FileReceivedEventHandler                 FileReceived;
+        event RawDataReceivedEventHandler              RawDataReceived;
         event DecodeMessage.MessageDecodedEventHandler MessageReceived;
         event DecodeMessage.MessageDecodedEventHandler MetaMessageReceived;
         event DecodeMessage.MessageDecodedEventHandler UnknownMessageReceived;
@@ -48,10 +64,11 @@ namespace opc.ua.pubsub.dotnet.client.Interfaces
         ProcessDataSet                                 GenerateDataSet( string       name,    ushort writerId,             DataSetType dataType );
         bool                                           SendDataSet( ProcessDataSet   dataSet, string m_TopicConfigRequest, bool        delta );
         bool                                           SendDataSet( ProcessDataSet   dataSet, bool   delta );
-        bool                                           SendRawData( byte[]           payload, string topic,bool delta );
+        bool                                           SendRawData( byte[]           payload, string topic, bool delta );
         bool                                           SendFile( OPCUAFile           file,    ushort writerId );
         bool                                           SendFile( OPCUAFile           file,    string topicPrefix, ushort writerId );
         void                                           SendKeepAlive( ProcessDataSet dataSet );
         void                                           Subscribe( string             topic = null );
+        void                                           Subscribe( string             topic,   bool   receiveRawData = false );
     }
 }
