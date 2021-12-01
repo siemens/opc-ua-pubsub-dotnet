@@ -317,7 +317,6 @@ namespace opc.ua.pubsub.dotnet.client
         private                 ConcurrentQueue<DecodeMessage.MqttMessage> m_MessageQueue;
         private                 Task                                       m_DecoderTask;
         private                 DecodeMessage                              m_Decoder;
-        private HashSet<string> m_RawDataTopics = null;
 
         #endregion
 
@@ -382,7 +381,6 @@ namespace opc.ua.pubsub.dotnet.client
             }
             MqttClientOptionsBuilder optionsBuilder = CreateOptionsBuilder( credentials );
             m_MqttLogger = new MqttNetLogger();
-            m_RawDataTopics = new HashSet<string>();
 
             m_MqttClient                                   = new MqttFactory().CreateMqttClient(m_MqttLogger);
             m_MqttClient.ApplicationMessageReceivedHandler = new MqttApplicationMessageReceivedHandlerDelegate( e => MqttClientOnApplicationMessageReceived( e ) );
@@ -442,7 +440,7 @@ namespace opc.ua.pubsub.dotnet.client
         #endregion
 
         #region Subscriber
-        public void Subscribe( string topic, bool receiveRawData = false )
+        public void Subscribe( string topic = null )
         {
             if ( !IsConnected )
             {
@@ -454,11 +452,7 @@ namespace opc.ua.pubsub.dotnet.client
                 topic = Settings.Client.DefaultSubscribeTopicName;
             }
 
-            if ( receiveRawData )
-            {
-                m_RawDataTopics.Add( topic );
-            }
-            else if ( m_DecoderTask == null )
+            if ( m_DecoderTask == null && !Settings.Client.RawDataMode)
             {
                 m_MessageQueue = new ConcurrentQueue<DecodeMessage.MqttMessage>();
                 m_Decoder = new DecodeMessage( m_MessageQueue, Options );
@@ -476,11 +470,6 @@ namespace opc.ua.pubsub.dotnet.client
             Logger.Debug( $"MQTT SubscribeAsync DONE, Topic: {topic}" );
         }
 
-        public void Subscribe( string topic = null )
-        {
-            Subscribe( topic, false );
-        }
-
         private void MqttClientOnDisconnected( MqttClientDisconnectedEventArgs e )
         {
             string msg = e?.Exception?.Message;
@@ -494,9 +483,9 @@ namespace opc.ua.pubsub.dotnet.client
             string topic = e.ApplicationMessage.Topic;
             byte[] payload = e.ApplicationMessage.Payload;
 
-            if ( m_RawDataTopics.Contains( topic ) )
+            if ( Settings.Client.RawDataMode )
             {
-                RawDataReceived?.Invoke( this, new RawDataReceivedEventArgs( payload, topic, e.ClientId ) );
+                RawDataReceived?.Invoke( this, new RawDataReceivedEventArgs( payload, topic ) );
             }
             else if ( m_MessageQueue == null )
             {

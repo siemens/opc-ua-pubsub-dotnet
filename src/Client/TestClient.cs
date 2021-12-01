@@ -120,11 +120,6 @@ namespace opc.ua.pubsub.dotnet.client
 
         }
 
-        public void Subscribe( string topic, bool receiveRawData = false )
-        {
-            throw new NotImplementedException();
-        }
-
 #pragma warning disable 67
         public event EventHandler<Exception>  ExceptionCaught;
         public event FileReceivedEventHandler FileReceived;
