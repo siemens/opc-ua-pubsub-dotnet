@@ -17,6 +17,7 @@ namespace opc.ua.pubsub.dotnet.client.common.Settings
         public bool   IgnoreCertificateChainErrors      { get; set; }
         public bool   IgnoreCertificateRevocationErrors { get; set; }
         public bool   UseTls                            { get; set; } = false;
+        public bool   RawDataMode                       { get; set; } = false;
 
         // Mqtt communication timeout in seconds
         public int CommunicationTimeout { get; set; } = 10;

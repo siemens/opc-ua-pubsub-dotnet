@@ -27,11 +27,10 @@ namespace opc.ua.pubsub.dotnet.client.Interfaces
 
     public class RawDataReceivedEventArgs : EventArgs
     {
-        public RawDataReceivedEventArgs( byte[] payload, string topic, string publisherId )
+        public RawDataReceivedEventArgs( byte[] payload, string topic )
         {
             Payload = payload;
             Topic = topic;
-            PublisherId = publisherId;
         }
 
         public byte[] Payload { get; set; }
@@ -69,6 +68,5 @@ namespace opc.ua.pubsub.dotnet.client.Interfaces
         bool                                           SendFile( OPCUAFile           file,    string topicPrefix, ushort writerId );
         void                                           SendKeepAlive( ProcessDataSet dataSet );
         void                                           Subscribe( string             topic = null );
-        void                                           Subscribe( string             topic,   bool   receiveRawData = false );
     }
 }
