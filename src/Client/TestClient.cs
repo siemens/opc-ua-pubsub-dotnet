@@ -123,6 +123,7 @@ namespace opc.ua.pubsub.dotnet.client
 #pragma warning disable 67
         public event EventHandler<Exception>  ExceptionCaught;
         public event FileReceivedEventHandler FileReceived;
+        public event RawDataReceivedEventHandler RawDataReceived;
 #pragma warning restore 67
     }
 }

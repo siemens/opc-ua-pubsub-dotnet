@@ -91,7 +91,7 @@ namespace opc.ua.pubsub.dotnet.client
             ClientCaChain = new X509Certificate2[clientCaCertsCollection.Count];
             if ( clientCaCertsCollection.Count > 1 )
             {
-                X509Certificate2 firstCert  = clientCaCertsCollection[0];
+                X509Certificate2 firstCert = clientCaCertsCollection[0];
                 X509Certificate2 secondCert = clientCaCertsCollection[1];
                 if ( !firstCert.Issuer.Equals( secondCert.Subject, StringComparison.InvariantCulture ) )
                 {
@@ -184,7 +184,7 @@ namespace opc.ua.pubsub.dotnet.client
     public class CustomClientCredentials : ClientCredentials
     {
         private readonly SecureString m_Password;
-        private readonly string       m_UserName;
+        private readonly string m_UserName;
 
         public CustomClientCredentials( string userName, SecureString password )
         {
@@ -265,6 +265,36 @@ namespace opc.ua.pubsub.dotnet.client
         public override void GetUserNameAndPassword( string clientId, out string userName, out string password )
         {
             userName = m_IoTHubName + ".azure-devices.net/" + clientId + "/?api-version=2018-06-30";
+            password = null;
+        }
+
+        /// <summary>
+        ///     Returs whether Azure requires user name and password for login
+        /// </summary>
+        /// <returns>true: is required; false: not required</returns>
+        public override bool IsUserNameAndPasswordRequired()
+        {
+            return true;
+        }
+    }
+    public class AzureDpsClientCredentials : ClientCredentials
+    {
+        private readonly string m_DpsScopeIdentifier;
+
+
+        public AzureDpsClientCredentials( string dpsScopeIdentifier )
+        {
+            m_DpsScopeIdentifier = dpsScopeIdentifier;
+        }
+        /// <summary>
+        ///     Retrieve user name and password for login for Azure Device Provisioning service
+        /// </summary>
+        /// <param name="clientId">Client ID (publisher ID)</param>
+        /// <param name="userName">out: user name string</param>
+        /// <param name="password">out: password string</param>
+        public override void GetUserNameAndPassword( string clientId, out string userName, out string password )
+        {
+            userName = m_DpsScopeIdentifier + "/registrations/" + clientId + "/api-version=2019-03-31";
             password = null;
         }
 
