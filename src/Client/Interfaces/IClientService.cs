@@ -63,7 +63,7 @@ namespace opc.ua.pubsub.dotnet.client.Interfaces
         ProcessDataSet                                 GenerateDataSet( string       name,    ushort writerId,             DataSetType dataType );
         bool                                           SendDataSet( ProcessDataSet   dataSet, string m_TopicConfigRequest, bool        delta );
         bool                                           SendDataSet( ProcessDataSet   dataSet, bool   delta );
-        bool                                           SendRawData( byte[]           payload, string topic, bool delta );
+        bool                                           SendRawData( byte[]           payload, string topic, bool retain );
         bool                                           SendFile( OPCUAFile           file,    ushort writerId );
         bool                                           SendFile( OPCUAFile           file,    string topicPrefix, ushort writerId );
         void                                           SendKeepAlive( ProcessDataSet dataSet );

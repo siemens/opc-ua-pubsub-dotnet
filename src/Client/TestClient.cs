@@ -112,7 +112,7 @@ namespace opc.ua.pubsub.dotnet.client
             Console.WriteLine( args );
         }
 
-        public bool SendRawData( byte[] payload, string topic, bool delta )
+        public bool SendRawData( byte[] payload, string topic, bool retain )
         {
             Console.WriteLine( payload );
             Console.WriteLine( topic );
