@@ -647,12 +647,12 @@ namespace opc.ua.pubsub.dotnet.client
             return SendDataSet( dataSet, topic, delta );
         }
 
-        public bool SendRawData( byte[] payload, string topic,bool delta )
+        public bool SendRawData( byte[] payload, string topic,bool retain )
         {
             bool sent = false;
             try
             {
-                Publish( payload, topic, delta );
+                Publish( payload, topic, retain );
                sent = true; //sent is only true if all chunks are sent without exception
             }
             catch ( DataNotSentException ) { }
