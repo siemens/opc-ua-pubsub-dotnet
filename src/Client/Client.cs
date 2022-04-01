@@ -472,8 +472,15 @@ namespace opc.ua.pubsub.dotnet.client
 
         private void MqttClientOnDisconnected( MqttClientDisconnectedEventArgs e )
         {
-            string msg = e?.Exception?.Message;
-            ClientDisconnected?.Invoke( this, msg == null ? string.Empty : msg );
+            string msg = $"{e?.Reason}";
+            string exceptionMessage = e?.Exception?.Message;
+
+            if ( !string.IsNullOrEmpty( exceptionMessage ) )
+            {
+                msg += $"[{exceptionMessage}]";
+            }
+
+            ClientDisconnected?.Invoke( this, msg );
         }
 
         private void MqttClientOnApplicationMessageReceived( MqttApplicationMessageReceivedEventArgs e )
