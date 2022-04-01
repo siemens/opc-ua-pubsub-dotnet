@@ -35,6 +35,7 @@ using OPCUAFile = opc.ua.pubsub.dotnet.binary.DataPoints.File;
 using static opc.ua.pubsub.dotnet.client.ProcessDataSet;
 using String = opc.ua.pubsub.dotnet.binary.String;
 using System.Security.Authentication;
+using MQTTnet.Diagnostics.Logger;
 
 [assembly: InternalsVisibleTo( "Client.Test" )]
 
@@ -367,9 +368,11 @@ namespace opc.ua.pubsub.dotnet.client
             LastKeyAndMetaSentTimes         = new Dictionary<uint, DateTime>();
             Settings                        = settings;
             ClientId                        = clientId ?? $"Client_{Assembly.GetEntryAssembly()?.FullName.Split( ',' )[0]}_{Environment.MachineName}";
+
             if ( Settings.Client.EnableLogging )
             {
-                MqttNetGlobalLogger.LogMessagePublished += OnLogMessagePublished;
+                //TODO: find out how this works now
+                //MqttNetGlobalLogger.LogMessagePublished += OnLogMessagePublished;
             }
         }
 
@@ -380,9 +383,11 @@ namespace opc.ua.pubsub.dotnet.client
                 Logger.Error( "No certificates imported" );
             }
             MqttClientOptionsBuilder optionsBuilder = CreateOptionsBuilder( credentials );
-            m_MqttLogger = new MqttNetLogger();
 
-            m_MqttClient                                   = new MqttFactory().CreateMqttClient(m_MqttLogger);
+            //TODO: improve logging...
+            this.m_MqttLogger = new MqttNetNullLogger();
+
+            m_MqttClient = new MqttFactory().CreateMqttClient(m_MqttLogger);
             m_MqttClient.ApplicationMessageReceivedHandler = new MqttApplicationMessageReceivedHandlerDelegate( e => MqttClientOnApplicationMessageReceived( e ) );
             m_MqttClient.DisconnectedHandler               = new MqttClientDisconnectedHandlerDelegate( e => MqttClientOnDisconnected( e ) );
             IMqttClientOptions options = optionsBuilder.Build();
