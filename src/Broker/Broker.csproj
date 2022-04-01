@@ -21,17 +21,20 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="log4net">
-      <Version>2.0.12</Version>
+      <Version>2.0.14</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NetCore.Analyzers" Version="3.3.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="MQTTnet">
-      <Version>3.0.16</Version>
+      <Version>3.1.2</Version>
     </PackageReference>
   </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\client\Client.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
     </ItemGroup>
 </Project>

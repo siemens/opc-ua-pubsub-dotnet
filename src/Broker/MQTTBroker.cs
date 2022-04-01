@@ -13,6 +13,7 @@ using log4net;
 using MQTTnet;
 using MQTTnet.Client.Options;
 using MQTTnet.Diagnostics;
+using MQTTnet.Diagnostics.Logger;
 using MQTTnet.Protocol;
 using MQTTnet.Server;
 using opc.ua.pubsub.dotnet.client.common;
@@ -124,7 +125,8 @@ namespace opc.ua.pubsub.dotnet.broker
         private static void Main( string[] args )
         {
             Log4Net.Init();
-            MqttNetGlobalLogger.LogMessagePublished += OnLogMessagePublished;
+            //TODO: Logging...
+            //MqttNetGlobalLogger.LogMessagePublished += OnLogMessagePublished;
             MainAsync( args )
                    .GetAwaiter()
                    .GetResult();

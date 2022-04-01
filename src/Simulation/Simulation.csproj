@@ -24,7 +24,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="log4net">
-      <Version>2.0.12</Version>
+      <Version>2.0.14</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NetCore.Analyzers" Version="3.3.2">
       <PrivateAssets>all</PrivateAssets>
@@ -53,5 +53,8 @@
     <None Update="Simu-B.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
   </ItemGroup>
 </Project>
