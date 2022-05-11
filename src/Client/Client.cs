@@ -147,9 +147,10 @@ namespace opc.ua.pubsub.dotnet.client
 
             if (Settings.Client.SendStatusMessages && !string.IsNullOrEmpty(Settings.Client.StatusMessageTopic))
             {
+                string topic = CreateTopicName( Settings.Client.StatusMessageTopic, ClientId, 0, null, DataSetType.Event );
                 optionsBuilder.WithWillMessage( new()
                 {
-                    Topic = Settings.Client.StatusMessageTopic,
+                    Topic = topic,
                     Payload = Encoding.UTF8.GetBytes( StatusMessageDisconnected ),
                     Retain = true
                 } );
@@ -171,6 +172,9 @@ namespace opc.ua.pubsub.dotnet.client
                 Publish(
                     Encoding.UTF8.GetBytes( StatusMessageOnline ),
                     Settings.Client.StatusMessageTopic,
+                    0,
+                    null,
+                    DataSetType.Event,
                     true );
             }
 
@@ -194,6 +198,9 @@ namespace opc.ua.pubsub.dotnet.client
                         Publish(
                             Encoding.UTF8.GetBytes( StatusMessageOffline ),
                             Settings.Client.StatusMessageTopic,
+                            0,
+                            null,
+                            DataSetType.Event,
                             true );
                     }
 
@@ -451,8 +458,8 @@ namespace opc.ua.pubsub.dotnet.client
             bool sent = false;
             try
             {
-                Publish( payload, topic, retain );
-               sent = true; //sent is only true if all chunks are sent without exception
+                Publish( payload, topic, 0, null, DataSetType.Event, retain );                
+                sent = true; //sent is only true if all chunks are sent without exception
             }
             catch ( DataNotSentException ) { }
             return sent;
@@ -723,6 +730,7 @@ namespace opc.ua.pubsub.dotnet.client
             }
             topicName = topicName.Replace( "{ClientID}",  publisherID, StringComparison.InvariantCultureIgnoreCase );
             topicName = topicName.Replace( "{VersionMS}", "v3", StringComparison.InvariantCultureIgnoreCase );
+
             TopicWildCardCharacterDto wildCardCharDto = null;
             int                       startIndex      = 0;
             while ( true )
@@ -774,13 +782,6 @@ namespace opc.ua.pubsub.dotnet.client
         {
             string topic = CreateTopicName( topicPrefix, ClientId, dataSetWriterId, messageType, dataSetType );
 
-            //string topic = $"{topicPrefix}/{m_ClientId}/{dataSetWriterId}";
-            this.Publish( payload, topic, retain );
-
-        }
-
-        private void Publish( byte[] payload, string topic, bool retain )
-        {
             MqttApplicationMessageBuilder messageBuilder;
             messageBuilder = new MqttApplicationMessageBuilder()
                             .WithAtLeastOnceQoS()
