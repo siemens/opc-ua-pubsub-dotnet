@@ -66,251 +66,11 @@ namespace opc.ua.pubsub.dotnet.client
 
     public class Client : IClientService
     {
-        /// <summary>
-        ///     According to the implementation of MQTTNet this callback is similar to the one used by the SSLStream class.
-        ///     https://docs.microsoft.com/en-us/dotnet/api/system.net.security.remotecertificatevalidationcallback
-        /// </summary>
-        /// <param name="callbackContext">
-        ///     from MQTTnet V3.0.10 a class containing the fct. argument that were separated so far:
-        ///     <list type="bullet">
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="X509Certificate">Certificate</see>
-        ///             </term>
-        ///             <desccription>used to authenticate the remote party.</desccription>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="X509Chain">Chain</see>
-        ///             </term>
-        ///             <desccription>The chain of certificate authorities associated with the remote certificate.</desccription>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="SslPolicyErrors">SSLPolicyErrors</see>
-        ///             </term>
-        ///             <desccription>One or more errors associated with the remote certificate.</desccription>
-        ///         </item>
-        ///         <item>
-        ///             <term>
-        ///                 <see cref="IMqttClientChannelOptions">ClientOptions</see>
-        ///             </term>
-        ///             <desccription>MQTTClient options which were used to establish the connection.</desccription>
-        ///         </item>
-        ///     </list>
-        /// </param>
-        /// <returns>A Boolean value that determines whether the specified certificate is accepted for authentication.</returns>
-        private bool CertificateValidationCallback( MqttClientCertificateValidationCallbackContext callbackContext )
-        {
-            // a broker CA certificate must exist
-            if ( BrokerCACert == null )
-            {
-                return false;
-            }
-
-            // get the broker CA certificate for validation 
-            using ( X509Certificate2 brokerCACert = new X509Certificate2( BrokerCACert, "", X509KeyStorageFlags.Exportable ) )
-            {
-                // the certificate received from broker during TLS handshake
-                using ( X509Certificate2 brokerCert = new X509Certificate2( callbackContext.Certificate ) )
-                {
-                    // the validation which was made base on the certificates stored in the certificate store 
-                    // was successful
-                    if ( callbackContext.SslPolicyErrors == SslPolicyErrors.None )
-                    {
-                        // that means that all CA certificates that are required for validation check are entered in the
-                        // "trusted CA" part of the certificate store and match with the certtificate/chain from remote
-
-                        // it seems that also e.g. in the docker container the cert store of the OS is used for 
-                        // validation; but we only want to validate against the broker CA that was selected
-                        // during configuration of the device; so we only make our own validations here
-                        // (see below) also if policyErrors is none
-                        //return true;
-                    }
-
-                    // further validation checks:
-
-                    // a certificate chain is received and it is valid
-                    if ( callbackContext.Chain != null && callbackContext.Chain.ChainElements.Count > 1 )
-                    {
-                        // we check whether the broker CA certificate we have stored is part of this chain
-                        foreach ( X509ChainElement cert in callbackContext.Chain.ChainElements )
-                        {
-                            X509Certificate2 certInChain = cert.Certificate;
-                            if ( brokerCACert.Equals( certInChain ) )
-                            {
-                                // we accept as valid
-                                return true;
-                            }
-                        }
-                    }
-
-                    // for the next check we build a certificate chain including the received certificate from 
-                    // remote and the broker CA we have stored and check this chain for validitiy
-                    using ( X509Chain testChain = new X509Chain() )
-                    {
-                        testChain.ChainPolicy.RevocationMode      = X509RevocationMode.NoCheck;
-                        testChain.ChainPolicy.RevocationFlag      = X509RevocationFlag.ExcludeRoot;
-                        testChain.ChainPolicy.VerificationFlags   = X509VerificationFlags.AllowUnknownCertificateAuthority;
-                        testChain.ChainPolicy.VerificationTime    = DateTime.Now;
-                        testChain.ChainPolicy.UrlRetrievalTimeout = new TimeSpan( 0, 0, 0 );
-
-                        // the CA certificate we want to test whether it is the root from the broker cert
-                        testChain.ChainPolicy.ExtraStore.Add( brokerCACert );
-                        if ( testChain.Build( brokerCert ) )
-                        {
-                            // the .Contains check below is added because the .AllowUnknownCertificateAuthority results all in true
-                            // if the ExtraStore.Add adds nothing or empty
-                            if ( testChain.ChainStatus.Length == 1
-                              && testChain.ChainStatus.First()
-                                          .Status
-                              == X509ChainStatusFlags.UntrustedRoot
-                              && testChain.ChainPolicy.ExtraStore.Contains( testChain.ChainElements[testChain.ChainElements.Count - 1]
-                                                                                     .Certificate
-                                                                          ) )
-                            {
-                                // chain is valid,
-                                // and we expect that root is untrusted which the status flag tells us
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-
-            // the validation check errors shall be ignored by setting
-            if ( callbackContext.ClientOptions.TlsOptions.IgnoreCertificateChainErrors )
-            {
-                Logger.Error( "Ignoring broker certificate validation errors." );
-                return true;
-            }
-
-            // not valid
-            Logger.Error( "Broker certificate validation failed" );
-            if ( Logger.IsDebugEnabled )
-            {
-                try
-                {
-                    Logger.Error( "Remote Certificate:" );
-                    using ( X509Certificate2 certificate = new X509Certificate2( callbackContext.Certificate ) )
-                    {
-                        CertifacteLogging.LogCertifacte( certificate, Logger );
-                    }
-                    Logger.Error( "Remote Certificate Chain:" );
-                    CertifacteLogging.LogCertificateChain( callbackContext.Chain, Logger );
-                }
-                catch ( Exception ex )
-                {
-                    Logger.Error( "Exception while logging certificate details.", ex );
-                }
-            }
-            return false;
-        }
-
-        private MqttClientOptionsBuilder CreateOptionsBuilder( ClientCredentials credentials = null )
-        {
-            MqttClientOptionsBuilder              clientOptionsBuilder = new MqttClientOptionsBuilder();
-            MqttClientOptionsBuilderTlsParameters tlsParameters        = null;
-            string                                hostName             = Settings.Client.BrokerHostname;
-            int                                   portNum              = Settings.Client.BrokerPort;
-
-            //check if broker endpoint for local connections is defined in environment, only possible for connections without credentials
-            if ( credentials == null )
-            {
-                string brokerEndpoint = Environment.GetEnvironmentVariable( "GE_BROKER_CONNECTION_ENDPOINT" );
-                if ( !string.IsNullOrEmpty( brokerEndpoint ) )
-                {
-                    string[] tokens = brokerEndpoint.Split( ':' );
-                    if ( tokens.Length == 2 )
-                    {
-                        hostName = tokens[0];
-                        portNum  = Convert.ToInt32( tokens[1], CultureInfo.InvariantCulture );
-                    }
-                }
-            }
-            clientOptionsBuilder.WithCleanSession();
-            clientOptionsBuilder.WithClientId( ClientId );
-            if ( portNum == 443 )
-            {
-                clientOptionsBuilder.WithWebSocketServer( hostName );
-            }
-            else
-            {
-                clientOptionsBuilder.WithTcpServer( hostName, portNum );
-            }
-            if ( credentials != null )
-            {
-                if ( credentials.HasCertificates() )
-                {
-                    tlsParameters = new MqttClientOptionsBuilderTlsParameters
-                    {
-                        UseTls = true,
-                        AllowUntrustedCertificates = Settings.Client.AllowUntrustedCertificates,
-                        IgnoreCertificateChainErrors = Settings.Client.IgnoreCertificateChainErrors,
-                        IgnoreCertificateRevocationErrors = Settings.Client.IgnoreCertificateRevocationErrors,
-                        CertificateValidationHandler = CertificateValidationCallback,
-                        Certificates = credentials.ClientCertAndCaChain,
-                        SslProtocol = SslProtocols.Tls12
-                    };
-                    clientOptionsBuilder.WithTls( tlsParameters );
-                }
-                if ( credentials.IsUserNameAndPasswordRequired() )
-                {
-                    credentials.GetUserNameAndPassword( ClientId, out string username, out string password );
-                    clientOptionsBuilder.WithCredentials( username, password );
-                }
-            }
-
-            // settings for connection timeout and MQTT kepp alive interval, given in seconds
-            // (defaults in MQTTnet stack are CommunicationTimeout = 10 sec and KeepAlivePeriod = 15 sec.,
-            //  see in MqttClientOptions.cs of MQTTnet)
-            clientOptionsBuilder.WithCommunicationTimeout( new TimeSpan( 0, 0, Settings.Client.CommunicationTimeout ) );
-            clientOptionsBuilder.WithKeepAlivePeriod( new TimeSpan( 0,      0, Settings.Client.MqttKeepAlivePeriod ) );
-            return clientOptionsBuilder;
-        }
-
-        private void ForwardException( Exception ex )
-        {
-            if ( ex is AggregateException ae )
-            {
-                foreach ( Exception ie in ae.InnerExceptions )
-                {
-                    ExceptionCaught?.Invoke( this, ie );
-                }
-            }
-            else
-            {
-                ExceptionCaught?.Invoke( this, ex );
-            }
-        }
-
-        private static void OnLogMessagePublished( object sender, MqttNetLogMessagePublishedEventArgs eventArgs )
-        {
-            switch ( eventArgs.LogMessage.Level )
-            {
-                case MqttNetLogLevel.Error:
-                    Logger.Error( eventArgs.LogMessage.Message, eventArgs.LogMessage.Exception );
-                    break;
-
-                case MqttNetLogLevel.Info:
-                    Logger.Info( eventArgs.LogMessage.Message, eventArgs.LogMessage.Exception );
-                    break;
-
-                case MqttNetLogLevel.Warning:
-                    Logger.Warn( eventArgs.LogMessage.Message, eventArgs.LogMessage.Exception );
-                    break;
-
-                case MqttNetLogLevel.Verbose:
-                    Logger.Debug( eventArgs.LogMessage.Message, eventArgs.LogMessage.Exception );
-                    break;
-
-                default:
-                    Logger.Fatal( eventArgs.LogMessage.Message, eventArgs.LogMessage.Exception );
-                    break;
-            }
-        }
-
         #region Fields
+
+        private static readonly string StatusMessageOnline = "{ \"status\": \"online\" }";
+        private static readonly string StatusMessageOffline = "{ \"status\": \"offline\" }";
+        private static readonly string StatusMessageDisconnected = "{ \"status\": \"disconnected\" }";
 
         internal static         ushort                                     m_SequenceNumber;
         private                 IMqttClient                                m_MqttClient;
@@ -377,7 +137,7 @@ namespace opc.ua.pubsub.dotnet.client
             }
         }
 
-        public void Connect( ClientCredentials credentials = null, string willMessage = null, string willTopic = null )
+        public void Connect( ClientCredentials credentials = null )
         {
             if ( credentials != null && !credentials.HasCertificates() )
             {
@@ -385,12 +145,12 @@ namespace opc.ua.pubsub.dotnet.client
             }
             MqttClientOptionsBuilder optionsBuilder = CreateOptionsBuilder( credentials );
 
-            if ( !string.IsNullOrEmpty( willMessage ) && !string.IsNullOrEmpty( willTopic ) )
+            if (Settings.Client.SendStatusMessages && !string.IsNullOrEmpty(Settings.Client.StatusMessageTopic))
             {
                 optionsBuilder.WithWillMessage( new()
                 {
-                    Topic = willTopic,
-                    Payload = Encoding.UTF8.GetBytes( willMessage ),
+                    Topic = Settings.Client.StatusMessageTopic,
+                    Payload = Encoding.UTF8.GetBytes( StatusMessageDisconnected ),
                     Retain = true
                 } );
             }
@@ -405,6 +165,14 @@ namespace opc.ua.pubsub.dotnet.client
             Logger.Debug( $"Waiting for connection ... (CommTimeout: {options.CommunicationTimeout.Seconds} s, MqttKeepAlive: {options.KeepAlivePeriod.Seconds} s)" );
             m_MqttClient.ConnectAsync( options )
                         .Wait();
+
+            if ( Settings.Client.SendStatusMessages && m_MqttClient.IsConnected )
+            {
+                Publish(
+                    Encoding.UTF8.GetBytes( StatusMessageOnline ),
+                    Settings.Client.StatusMessageTopic,
+                    true );
+            }
 
             //m_Logger.Debug($"Connecting finished. Result: {result.ResultCode}");
         }
@@ -421,6 +189,14 @@ namespace opc.ua.pubsub.dotnet.client
             {
                 if ( m_MqttClient.IsConnected )
                 {
+                    if ( Settings.Client.SendStatusMessages )
+                    {
+                        Publish(
+                            Encoding.UTF8.GetBytes( StatusMessageOffline ),
+                            Settings.Client.StatusMessageTopic,
+                            true );
+                    }
+
                     //m_MqttClient.UnsubscribeAsync(Settings.Client.ClientCertP12).Wait();
                     m_MqttClient.ApplicationMessageReceivedHandler = null;
                     m_MqttClient.DisconnectedHandler               = null;
@@ -1044,5 +820,253 @@ namespace opc.ua.pubsub.dotnet.client
         }
 
         #endregion
+
+        #region Certificate handling
+
+        /// <summary>
+        ///     According to the implementation of MQTTNet this callback is similar to the one used by the SSLStream class.
+        ///     https://docs.microsoft.com/en-us/dotnet/api/system.net.security.remotecertificatevalidationcallback
+        /// </summary>
+        /// <param name="callbackContext">
+        ///     from MQTTnet V3.0.10 a class containing the fct. argument that were separated so far:
+        ///     <list type="bullet">
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="X509Certificate">Certificate</see>
+        ///             </term>
+        ///             <desccription>used to authenticate the remote party.</desccription>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="X509Chain">Chain</see>
+        ///             </term>
+        ///             <desccription>The chain of certificate authorities associated with the remote certificate.</desccription>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="SslPolicyErrors">SSLPolicyErrors</see>
+        ///             </term>
+        ///             <desccription>One or more errors associated with the remote certificate.</desccription>
+        ///         </item>
+        ///         <item>
+        ///             <term>
+        ///                 <see cref="IMqttClientChannelOptions">ClientOptions</see>
+        ///             </term>
+        ///             <desccription>MQTTClient options which were used to establish the connection.</desccription>
+        ///         </item>
+        ///     </list>
+        /// </param>
+        /// <returns>A Boolean value that determines whether the specified certificate is accepted for authentication.</returns>
+        private bool CertificateValidationCallback( MqttClientCertificateValidationCallbackContext callbackContext )
+        {
+            // a broker CA certificate must exist
+            if ( BrokerCACert == null )
+            {
+                return false;
+            }
+
+            // get the broker CA certificate for validation 
+            using ( X509Certificate2 brokerCACert = new X509Certificate2( BrokerCACert, "", X509KeyStorageFlags.Exportable ) )
+            {
+                // the certificate received from broker during TLS handshake
+                using ( X509Certificate2 brokerCert = new X509Certificate2( callbackContext.Certificate ) )
+                {
+                    // the validation which was made base on the certificates stored in the certificate store 
+                    // was successful
+                    if ( callbackContext.SslPolicyErrors == SslPolicyErrors.None )
+                    {
+                        // that means that all CA certificates that are required for validation check are entered in the
+                        // "trusted CA" part of the certificate store and match with the certtificate/chain from remote
+
+                        // it seems that also e.g. in the docker container the cert store of the OS is used for 
+                        // validation; but we only want to validate against the broker CA that was selected
+                        // during configuration of the device; so we only make our own validations here
+                        // (see below) also if policyErrors is none
+                        //return true;
+                    }
+
+                    // further validation checks:
+
+                    // a certificate chain is received and it is valid
+                    if ( callbackContext.Chain != null && callbackContext.Chain.ChainElements.Count > 1 )
+                    {
+                        // we check whether the broker CA certificate we have stored is part of this chain
+                        foreach ( X509ChainElement cert in callbackContext.Chain.ChainElements )
+                        {
+                            X509Certificate2 certInChain = cert.Certificate;
+                            if ( brokerCACert.Equals( certInChain ) )
+                            {
+                                // we accept as valid
+                                return true;
+                            }
+                        }
+                    }
+
+                    // for the next check we build a certificate chain including the received certificate from 
+                    // remote and the broker CA we have stored and check this chain for validitiy
+                    using ( X509Chain testChain = new X509Chain() )
+                    {
+                        testChain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck;
+                        testChain.ChainPolicy.RevocationFlag = X509RevocationFlag.ExcludeRoot;
+                        testChain.ChainPolicy.VerificationFlags = X509VerificationFlags.AllowUnknownCertificateAuthority;
+                        testChain.ChainPolicy.VerificationTime = DateTime.Now;
+                        testChain.ChainPolicy.UrlRetrievalTimeout = new TimeSpan( 0, 0, 0 );
+
+                        // the CA certificate we want to test whether it is the root from the broker cert
+                        testChain.ChainPolicy.ExtraStore.Add( brokerCACert );
+                        if ( testChain.Build( brokerCert ) )
+                        {
+                            // the .Contains check below is added because the .AllowUnknownCertificateAuthority results all in true
+                            // if the ExtraStore.Add adds nothing or empty
+                            if ( testChain.ChainStatus.Length == 1
+                              && testChain.ChainStatus.First()
+                                          .Status
+                              == X509ChainStatusFlags.UntrustedRoot
+                              && testChain.ChainPolicy.ExtraStore.Contains( testChain.ChainElements[testChain.ChainElements.Count - 1]
+                                                                                     .Certificate
+                                                                          ) )
+                            {
+                                // chain is valid,
+                                // and we expect that root is untrusted which the status flag tells us
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // the validation check errors shall be ignored by setting
+            if ( callbackContext.ClientOptions.TlsOptions.IgnoreCertificateChainErrors )
+            {
+                Logger.Error( "Ignoring broker certificate validation errors." );
+                return true;
+            }
+
+            // not valid
+            Logger.Error( "Broker certificate validation failed" );
+            if ( Logger.IsDebugEnabled )
+            {
+                try
+                {
+                    Logger.Error( "Remote Certificate:" );
+                    using ( X509Certificate2 certificate = new X509Certificate2( callbackContext.Certificate ) )
+                    {
+                        CertifacteLogging.LogCertifacte( certificate, Logger );
+                    }
+                    Logger.Error( "Remote Certificate Chain:" );
+                    CertifacteLogging.LogCertificateChain( callbackContext.Chain, Logger );
+                }
+                catch ( Exception ex )
+                {
+                    Logger.Error( "Exception while logging certificate details.", ex );
+                }
+            }
+            return false;
+        }
+
+        private MqttClientOptionsBuilder CreateOptionsBuilder( ClientCredentials credentials = null )
+        {
+            MqttClientOptionsBuilder clientOptionsBuilder = new MqttClientOptionsBuilder();
+            MqttClientOptionsBuilderTlsParameters tlsParameters = null;
+            string hostName = Settings.Client.BrokerHostname;
+            int portNum = Settings.Client.BrokerPort;
+
+            //check if broker endpoint for local connections is defined in environment, only possible for connections without credentials
+            if ( credentials == null )
+            {
+                string brokerEndpoint = Environment.GetEnvironmentVariable( "GE_BROKER_CONNECTION_ENDPOINT" );
+                if ( !string.IsNullOrEmpty( brokerEndpoint ) )
+                {
+                    string[] tokens = brokerEndpoint.Split( ':' );
+                    if ( tokens.Length == 2 )
+                    {
+                        hostName = tokens[0];
+                        portNum = Convert.ToInt32( tokens[1], CultureInfo.InvariantCulture );
+                    }
+                }
+            }
+            clientOptionsBuilder.WithCleanSession();
+            clientOptionsBuilder.WithClientId( ClientId );
+            if ( portNum == 443 )
+            {
+                clientOptionsBuilder.WithWebSocketServer( hostName );
+            }
+            else
+            {
+                clientOptionsBuilder.WithTcpServer( hostName, portNum );
+            }
+            if ( credentials != null )
+            {
+                if ( credentials.HasCertificates() )
+                {
+                    tlsParameters = new MqttClientOptionsBuilderTlsParameters
+                    {
+                        UseTls = true,
+                        AllowUntrustedCertificates = Settings.Client.AllowUntrustedCertificates,
+                        IgnoreCertificateChainErrors = Settings.Client.IgnoreCertificateChainErrors,
+                        IgnoreCertificateRevocationErrors = Settings.Client.IgnoreCertificateRevocationErrors,
+                        CertificateValidationHandler = CertificateValidationCallback,
+                        Certificates = credentials.ClientCertAndCaChain,
+                        SslProtocol = SslProtocols.Tls12
+                    };
+                    clientOptionsBuilder.WithTls( tlsParameters );
+                }
+                if ( credentials.IsUserNameAndPasswordRequired() )
+                {
+                    credentials.GetUserNameAndPassword( ClientId, out string username, out string password );
+                    clientOptionsBuilder.WithCredentials( username, password );
+                }
+            }
+
+            // settings for connection timeout and MQTT kepp alive interval, given in seconds
+            // (defaults in MQTTnet stack are CommunicationTimeout = 10 sec and KeepAlivePeriod = 15 sec.,
+            //  see in MqttClientOptions.cs of MQTTnet)
+            clientOptionsBuilder.WithCommunicationTimeout( new TimeSpan( 0, 0, Settings.Client.CommunicationTimeout ) );
+            clientOptionsBuilder.WithKeepAlivePeriod( new TimeSpan( 0, 0, Settings.Client.MqttKeepAlivePeriod ) );
+            return clientOptionsBuilder;
+        }
+
+        private void ForwardException( Exception ex )
+        {
+            if ( ex is AggregateException ae )
+            {
+                foreach ( Exception ie in ae.InnerExceptions )
+                {
+                    ExceptionCaught?.Invoke( this, ie );
+                }
+            }
+            else
+            {
+                ExceptionCaught?.Invoke( this, ex );
+            }
+        }
+
+        private static void OnLogMessagePublished( object sender, MqttNetLogMessagePublishedEventArgs eventArgs )
+        {
+            switch ( eventArgs.LogMessage.Level )
+            {
+                case MqttNetLogLevel.Error:
+                    Logger.Error( eventArgs.LogMessage.Message, eventArgs.LogMessage.Exception );
+                    break;
+
+                case MqttNetLogLevel.Info:
+                    Logger.Info( eventArgs.LogMessage.Message, eventArgs.LogMessage.Exception );
+                    break;
+
+                case MqttNetLogLevel.Warning:
+                    Logger.Warn( eventArgs.LogMessage.Message, eventArgs.LogMessage.Exception );
+                    break;
+
+                case MqttNetLogLevel.Verbose:
+                    Logger.Debug( eventArgs.LogMessage.Message, eventArgs.LogMessage.Exception );
+                    break;
+
+                default:
+                    Logger.Fatal( eventArgs.LogMessage.Message, eventArgs.LogMessage.Exception );
+                    break;
+            }
+        }
+
+        #endregion 
     }
 }

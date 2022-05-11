@@ -24,5 +24,8 @@ namespace opc.ua.pubsub.dotnet.client.common.Settings
 
         // Mqtt keep alive period in seconds
         public int MqttKeepAlivePeriod { get; set; } = 15;
+
+        public bool SendStatusMessages { get; set; } = false;
+        public string StatusMessageTopic { get; set; }
     }
 }
