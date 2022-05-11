@@ -36,6 +36,7 @@ using static opc.ua.pubsub.dotnet.client.ProcessDataSet;
 using String = opc.ua.pubsub.dotnet.binary.String;
 using System.Security.Authentication;
 using MQTTnet.Diagnostics.Logger;
+using System.Text;
 
 [assembly: InternalsVisibleTo( "Client.Test" )]
 
@@ -376,13 +377,23 @@ namespace opc.ua.pubsub.dotnet.client
             }
         }
 
-        public void Connect( ClientCredentials credentials = null )
+        public void Connect( ClientCredentials credentials = null, string willMessage = null, string willTopic = null )
         {
             if ( credentials != null && !credentials.HasCertificates() )
             {
                 Logger.Error( "No certificates imported" );
             }
             MqttClientOptionsBuilder optionsBuilder = CreateOptionsBuilder( credentials );
+
+            if ( !string.IsNullOrEmpty( willMessage ) && !string.IsNullOrEmpty( willTopic ) )
+            {
+                optionsBuilder.WithWillMessage( new()
+                {
+                    Topic = willTopic,
+                    Payload = Encoding.UTF8.GetBytes( willMessage ),
+                    Retain = true
+                } );
+            }
 
             //TODO: improve logging...
             this.m_MqttLogger = new MqttNetNullLogger();

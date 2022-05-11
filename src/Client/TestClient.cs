@@ -35,7 +35,7 @@ namespace opc.ua.pubsub.dotnet.client
 #pragma warning restore 67
         public string ClientId { get; set; }
 
-        public void Connect( ClientCredentials credentials = null )
+        public void Connect( ClientCredentials credentials = null, string willMessage = null, string willTopic = null )
         {
             IsConnected = !SimulateConnectError;
         }

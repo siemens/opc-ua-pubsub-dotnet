@@ -58,7 +58,7 @@ namespace opc.ua.pubsub.dotnet.client.Interfaces
         event DecodeMessage.MessageDecodedEventHandler MessageReceived;
         event DecodeMessage.MessageDecodedEventHandler MetaMessageReceived;
         event DecodeMessage.MessageDecodedEventHandler UnknownMessageReceived;
-        void                                           Connect( ClientCredentials credentials = null );
+        void                                           Connect( ClientCredentials credentials = null, string willMessage = null, string willTopic = null );
         void                                           Disconnect();
         ProcessDataSet                                 GenerateDataSet( string       name,    ushort writerId,             DataSetType dataType );
         bool                                           SendDataSet( ProcessDataSet   dataSet, string m_TopicConfigRequest, bool        delta );
