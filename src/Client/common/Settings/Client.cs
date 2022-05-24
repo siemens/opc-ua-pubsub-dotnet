@@ -27,5 +27,6 @@ namespace opc.ua.pubsub.dotnet.client.common.Settings
 
         public bool SendStatusMessages { get; set; } = false;
         public string StatusMessageTopic { get; set; }
+        public bool NeverSendRetain { get; set; } = false;
     }
 }
