@@ -152,7 +152,7 @@ namespace opc.ua.pubsub.dotnet.client
                 {
                     Topic = topic,
                     Payload = Encoding.UTF8.GetBytes( StatusMessageDisconnected ),
-                    Retain = true
+                    Retain = !Settings.Client.NeverSendRetain
                 } );
             }
 
@@ -787,7 +787,7 @@ namespace opc.ua.pubsub.dotnet.client
                             .WithAtLeastOnceQoS()
                             .WithPayload(payload)
                             .WithTopic(topic)
-                            .WithRetainFlag(retain);
+                            .WithRetainFlag(retain && !Settings.Client.NeverSendRetain);
             bool dataSent = false;
 
             //try twice in case of timeout
