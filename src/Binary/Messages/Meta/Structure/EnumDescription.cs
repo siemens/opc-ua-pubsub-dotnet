@@ -139,7 +139,7 @@ namespace opc.ua.pubsub.dotnet.binary.Messages.Meta.Structure
             sb.AppendFormat( CultureInfo.InvariantCulture, "{0, -30} {1}{2}", "EnumFields:", fieldsLength, Environment.NewLine );
             const int leftAlign = -30;
             sb.AppendLine( "----------------------------------------------------------------------------------------------------------" );
-            sb.AppendLine( $"{"Name",leftAlign} | {"DisplayName",leftAlign} | {"Description",10} | {"Value",12}" );
+            sb.AppendLine( CultureInfo.InvariantCulture, $"{"Name",leftAlign} | {"DisplayName",leftAlign} | {"Description",10} | {"Value",12}" );
             sb.AppendLine( "----------------------------------------------------------------------------------------------------------" );
             for ( int i = 0; i < fieldsLength; i++ )
             {

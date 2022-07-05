@@ -61,7 +61,7 @@ namespace opc.ua.pubsub.dotnet.binary.Messages.Meta
             {
                 fieldLength = Fields.Count;
             }
-            sb.AppendLine( $"{"Enum Fields:",-10} {fieldLength}" );
+            sb.AppendLine( System.Globalization.CultureInfo.InvariantCulture, $"{"Enum Fields:",-10} {fieldLength}" );
             for ( int i = 0; i < fieldLength; i++ )
             {
                 sb.AppendLine( Fields[i]

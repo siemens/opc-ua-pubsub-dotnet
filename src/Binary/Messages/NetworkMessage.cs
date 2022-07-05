@@ -34,24 +34,24 @@ namespace opc.ua.pubsub.dotnet.binary.Messages
 
             //sb.AppendLine($" |  {"ExtendedFlags 1",10} | {"ExtendedFlags 2",10} | {"PublisherID",40}");
             sb.AppendLine( "-------------------------------------------------------------------------------------------------" );
-            sb.AppendLine( $"{"Protocol Version:",-20} {NetworkMessageHeader.ProtocolVersion}" );
-            sb.AppendLine( $"{"Flags:",-20} {NetworkMessageHeader.UADPFlags}" );
-            sb.Append( $"{"ExtendedFlags 1: ",-20}" );
+            sb.AppendLine( System.Globalization.CultureInfo.InvariantCulture, $"{"Protocol Version:",-20} {NetworkMessageHeader.ProtocolVersion}" );
+            sb.AppendLine( System.Globalization.CultureInfo.InvariantCulture, $"{"Flags:",-20} {NetworkMessageHeader.UADPFlags}" );
+            sb.Append( System.Globalization.CultureInfo.InvariantCulture, $"{"ExtendedFlags 1: ",-20}" );
             if ( NetworkMessageHeader.ExtendedFlags1 != null )
             {
-                sb.Append( $"{NetworkMessageHeader.ExtendedFlags1}" );
+                sb.Append( System.Globalization.CultureInfo.InvariantCulture, $"{NetworkMessageHeader.ExtendedFlags1}" );
             }
             sb.Append( Environment.NewLine );
-            sb.Append( $"{"ExtendedFlags 2:",-20}" );
+            sb.Append( System.Globalization.CultureInfo.InvariantCulture, $"{"ExtendedFlags 2:",-20}" );
             if ( NetworkMessageHeader.ExtendedFlags2 != null )
             {
-                sb.Append( $"{NetworkMessageHeader.ExtendedFlags2}" );
+                sb.Append( System.Globalization.CultureInfo.InvariantCulture, $"{NetworkMessageHeader.ExtendedFlags2}" );
             }
             sb.Append( Environment.NewLine );
-            sb.Append( $"{"PublisherID:",-20}" );
+            sb.Append( System.Globalization.CultureInfo.InvariantCulture, $"{"PublisherID:",-20}" );
             if ( NetworkMessageHeader.PublisherID != null )
             {
-                sb.Append( $"{NetworkMessageHeader.PublisherID.Value}" );
+                sb.Append( System.Globalization.CultureInfo.InvariantCulture, $"{NetworkMessageHeader.PublisherID.Value}" );
             }
             sb.Append( Environment.NewLine );
             sb.AppendLine( "=================================================================================================" );

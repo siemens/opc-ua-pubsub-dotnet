@@ -147,7 +147,7 @@ namespace opc.ua.pubsub.dotnet.binary.Messages.Meta
                         }
                         if ( pair.Value != null )
                         {
-                            sb.Append( $"{pair.Value}" );
+                            sb.Append( System.Globalization.CultureInfo.InvariantCulture, $"{pair.Value}" );
                         }
                         else
                         {

@@ -122,36 +122,36 @@ namespace opc.ua.pubsub.dotnet.binary.Messages.Meta
             sb.AppendLine( "-----------------------------" );
             sb.AppendLine( "\tMeta Message" );
             sb.AppendLine( "-----------------------------" );
-            sb.AppendLine( $"Name:\t\t\t{Name}" );
-            sb.AppendLine( $"Description:\t\t{Description}" );
+            sb.AppendLine( System.Globalization.CultureInfo.InvariantCulture, $"Name:\t\t\t{Name}" );
+            sb.AppendLine( System.Globalization.CultureInfo.InvariantCulture, $"Description:\t\t{Description}" );
             int fieldLength = -1;
             if ( FieldMetaDataList != null )
             {
                 fieldLength = FieldMetaDataList.Count;
             }
-            sb.AppendLine( $"FieldMetaData:\t\t{fieldLength}" );
+            sb.AppendLine( System.Globalization.CultureInfo.InvariantCulture, $"FieldMetaData:\t\t{fieldLength}" );
             sb.AppendLine( "--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
                          );
-            sb.AppendLine( $"{"Index",10} | {"Name",-50} | {"Description",-30} | {"Flags",-25} | {"Type",-20} | {"DataType",-15} | {"ValueRank",-12} | {"ArrayDim",-10} | {"Size",-5} | {"FieldID",-38} | {"KeyValuePair",20}"
+            sb.AppendLine( System.Globalization.CultureInfo.InvariantCulture, $"{"Index",10} | {"Name",-50} | {"Description",-30} | {"Flags",-25} | {"Type",-20} | {"DataType",-15} | {"ValueRank",-12} | {"ArrayDim",-10} | {"Size",-5} | {"FieldID",-38} | {"KeyValuePair",20}"
                          );
             sb.AppendLine( "--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
                          );
             for ( int i = 0; i < fieldLength; i++ )
             {
                 FieldMetaData item = FieldMetaDataList[i];
-                sb.AppendLine( $"{i,10} | {item}" );
+                sb.AppendLine( System.Globalization.CultureInfo.InvariantCulture, $"{i,10} | {item}" );
             }
             int nameSpaceLength = -1;
             if ( Namespaces != null )
             {
                 nameSpaceLength = Namespaces.Count;
             }
-            sb.AppendLine( $"Namespaces:\t\t{nameSpaceLength}" );
+            sb.AppendLine( System.Globalization.CultureInfo.InvariantCulture, $"Namespaces:\t\t{nameSpaceLength}" );
             if ( Namespaces != null )
             {
                 for ( int i = 0; i < nameSpaceLength; i++ )
                 {
-                    sb.AppendLine( $"Namespace [{i}]: {Namespaces[i]?.ToString() ?? "null"}" );
+                    sb.AppendLine( System.Globalization.CultureInfo.InvariantCulture, $"Namespace [{i}]: {Namespaces[i]?.ToString() ?? "null"}" );
                 }
             }
             int structureLength = -1;
@@ -159,13 +159,13 @@ namespace opc.ua.pubsub.dotnet.binary.Messages.Meta
             {
                 structureLength = StructureDataTypes.Count;
             }
-            sb.AppendLine( $"StructureDataTypes:\t\t{structureLength}" );
+            sb.AppendLine( System.Globalization.CultureInfo.InvariantCulture, $"StructureDataTypes:\t\t{structureLength}" );
             if ( StructureDataTypes != null )
             {
                 List<StructureDescription> structureDescriptions = StructureDataTypes.Values.ToList();
                 for ( int i = 0; i < structureLength; i++ )
                 {
-                    sb.AppendLine( $"StructureDescription [{i}]:" );
+                    sb.AppendLine( System.Globalization.CultureInfo.InvariantCulture, $"StructureDescription [{i}]:" );
                     sb.AppendLine( structureDescriptions[i]
                                          ?.ToConsoleString()
                                 ?? "null"
@@ -174,14 +174,14 @@ namespace opc.ua.pubsub.dotnet.binary.Messages.Meta
             }
             if ( EnumDataTypes != null )
             {
-                sb.AppendLine( $"EnumDataTypes:\t\t{EnumDataTypes.Count}" );
+                sb.AppendLine( System.Globalization.CultureInfo.InvariantCulture, $"EnumDataTypes:\t\t{EnumDataTypes.Count}" );
                 foreach ( KeyValuePair<NodeID, EnumDescription> pair in EnumDataTypes )
                 {
-                    sb.AppendLine( $"EnumDescription [{pair.Key}]:" );
-                    sb.AppendLine( $"{pair.Value}" );
+                    sb.AppendLine( System.Globalization.CultureInfo.InvariantCulture, $"EnumDescription [{pair.Key}]:" );
+                    sb.AppendLine( System.Globalization.CultureInfo.InvariantCulture, $"{pair.Value}" );
                 }
             }
-            sb.AppendLine( $"ConfigurationVersion:\t{ConfigurationVersion}" );
+            sb.AppendLine( System.Globalization.CultureInfo.InvariantCulture, $"ConfigurationVersion:\t{ConfigurationVersion}" );
             sb.AppendLine();
             sb.AppendLine();
             return sb.ToString();

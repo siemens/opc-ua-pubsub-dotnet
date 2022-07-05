@@ -11,9 +11,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using log4net;
 using MQTTnet;
-using MQTTnet.Client.Options;
 using MQTTnet.Diagnostics;
-using MQTTnet.Diagnostics.Logger;
 using MQTTnet.Protocol;
 using MQTTnet.Server;
 using opc.ua.pubsub.dotnet.client.common;
@@ -47,43 +45,43 @@ namespace opc.ua.pubsub.dotnet.broker
             return san;
         }
 
-        private static bool CustomCertificateValidationCallback( X509Certificate      certificate,
-                                                                 X509Chain            chain,
-                                                                 SslPolicyErrors      sslPolicyErrors,
-                                                                 MqttClientTcpOptions arg4
-                )
-        {
-            Logger.Info( $"SSL Policy Erros: {sslPolicyErrors}" );
-            if ( certificate == null )
-            {
-                Logger.Info( "No client certificate received." );
-            }
-            else
-            {
-                Logger.Info( "Received Client Certificate:" );
-                Logger.Info( certificate.ToString() );
-            }
-            if ( chain == null )
-            {
-                Logger.Info( "No certificate chain." );
-            }
-            else
-            {
-                Logger.Info( "Certificate Chain:" );
-                foreach ( X509ChainElement element in chain.ChainElements )
-                {
-                    Logger.Info( $"Chain Element Information: {element.Information}" );
-                    foreach ( X509ChainStatus elementStatus in element.ChainElementStatus )
-                    {
-                        Logger.Info( $"Status: {elementStatus.Status}" );
-                        Logger.Info( $"Status Information: {elementStatus.StatusInformation}" );
-                    }
-                    Logger.Info( $"Certificate: {element.Certificate}" );
-                }
-            }
-            Logger.Info( "Accepting Client Certifiacte" );
-            return true;
-        }
+        //private static bool CustomCertificateValidationCallback( X509Certificate      certificate,
+        //                                                         X509Chain            chain,
+        //                                                         SslPolicyErrors      sslPolicyErrors,
+        //                                                         MqttClientTcpOptions arg4
+        //        )
+        //{
+        //    Logger.Info( $"SSL Policy Erros: {sslPolicyErrors}" );
+        //    if ( certificate == null )
+        //    {
+        //        Logger.Info( "No client certificate received." );
+        //    }
+        //    else
+        //    {
+        //        Logger.Info( "Received Client Certificate:" );
+        //        Logger.Info( certificate.ToString() );
+        //    }
+        //    if ( chain == null )
+        //    {
+        //        Logger.Info( "No certificate chain." );
+        //    }
+        //    else
+        //    {
+        //        Logger.Info( "Certificate Chain:" );
+        //        foreach ( X509ChainElement element in chain.ChainElements )
+        //        {
+        //            Logger.Info( $"Chain Element Information: {element.Information}" );
+        //            foreach ( X509ChainStatus elementStatus in element.ChainElementStatus )
+        //            {
+        //                Logger.Info( $"Status: {elementStatus.Status}" );
+        //                Logger.Info( $"Status Information: {elementStatus.StatusInformation}" );
+        //            }
+        //            Logger.Info( $"Certificate: {element.Certificate}" );
+        //        }
+        //    }
+        //    Logger.Info( "Accepting Client Certifiacte" );
+        //    return true;
+        //}
 
         private static (X509Certificate2, string) GetBrokerCertificate()
         {
@@ -135,7 +133,7 @@ namespace opc.ua.pubsub.dotnet.broker
         private static async Task MainAsync( string[] args )
         {
             Settings = SettingManager.ReadConfiguration( args );
-            IMqttServer              broker         = null;
+            MqttServer              broker         = null;
             MqttServerOptionsBuilder optionsBuilder = new MqttServerOptionsBuilder();
 
             // TLS Support
@@ -168,10 +166,9 @@ namespace opc.ua.pubsub.dotnet.broker
                 Logger.Info( "No encryption used." );
                 optionsBuilder = optionsBuilder.WithDefaultEndpointPort( 1883 );
             }
-            optionsBuilder = optionsBuilder.WithConnectionValidator( ValidateUserAndPassword );
-            broker         = new MqttFactory().CreateMqttServer();
-            IMqttServerOptions options = optionsBuilder.Build();
-            await broker.StartAsync( options );
+            //optionsBuilder = optionsBuilder.WithConnectionValidator( ValidateUserAndPassword );
+            broker         = new MqttFactory().CreateMqttServer( optionsBuilder.Build() );
+            await broker.StartAsync( );
             Console.ReadKey();
         }
 
@@ -212,34 +209,34 @@ namespace opc.ua.pubsub.dotnet.broker
         ///     Check if JWT is enabled and validate the JWT if required.
         ///     If JWT is not enabled, authorization is granted if username & password are emtpy.
         /// </summary>
-        private static void ValidateUserAndPassword( MqttConnectionValidatorContext mqttConnectionValidatorContext )
-        {
-            mqttConnectionValidatorContext.ReasonCode = MqttConnectReasonCode.Success;
-            Logger.Info( $"Connection from client '{mqttConnectionValidatorContext.ClientId}'" );
-            bool validateJWT = true;
-            if ( string.IsNullOrEmpty( mqttConnectionValidatorContext.Username ) )
-            {
-                validateJWT = false;
-                Logger.Info( "Connection request: username is null." );
-            }
-            else
-            {
-                Logger.Info( $"Username: {mqttConnectionValidatorContext.Username}" );
-            }
-            if ( string.IsNullOrEmpty( mqttConnectionValidatorContext.Password ) )
-            {
-                validateJWT = false;
-                Logger.Info( "Connection request: username is null." );
-            }
-            else
-            {
-                Logger.Info( $"Password: {mqttConnectionValidatorContext.Password}" );
-            }
-            if ( validateJWT )
-            {
-                JSONWebToken tokenHandler = new JSONWebToken();
-                tokenHandler.IsValid( mqttConnectionValidatorContext.Password );
-            }
-        }
+        //private static void ValidateUserAndPassword( MqttConnectionValidatorContext mqttConnectionValidatorContext )
+        //{
+        //    mqttConnectionValidatorContext.ReasonCode = MqttConnectReasonCode.Success;
+        //    Logger.Info( $"Connection from client '{mqttConnectionValidatorContext.ClientId}'" );
+        //    bool validateJWT = true;
+        //    if ( string.IsNullOrEmpty( mqttConnectionValidatorContext.Username ) )
+        //    {
+        //        validateJWT = false;
+        //        Logger.Info( "Connection request: username is null." );
+        //    }
+        //    else
+        //    {
+        //        Logger.Info( $"Username: {mqttConnectionValidatorContext.Username}" );
+        //    }
+        //    if ( string.IsNullOrEmpty( mqttConnectionValidatorContext.Password ) )
+        //    {
+        //        validateJWT = false;
+        //        Logger.Info( "Connection request: username is null." );
+        //    }
+        //    else
+        //    {
+        //        Logger.Info( $"Password: {mqttConnectionValidatorContext.Password}" );
+        //    }
+        //    if ( validateJWT )
+        //    {
+        //        JSONWebToken tokenHandler = new JSONWebToken();
+        //        tokenHandler.IsValid( mqttConnectionValidatorContext.Password );
+        //    }
+        //}
     }
 }

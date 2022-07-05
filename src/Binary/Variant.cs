@@ -234,7 +234,7 @@ namespace opc.ua.pubsub.dotnet.binary
             StringBuilder sb = new StringBuilder();
             foreach ( Variant item in list )
             {
-                sb.AppendLine( $"\t{item}" );
+                sb.AppendLine( System.Globalization.CultureInfo.InvariantCulture, $"\t{item}" );
             }
             return sb.ToString();
         }

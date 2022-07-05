@@ -160,7 +160,7 @@ namespace opc.ua.pubsub.dotnet.binary.Messages.Meta.Structure
             const int leftAlign = -30;
             sb.AppendLine( "---------------------------------------------------------------------------------------------------------------------------------------------------------"
                          );
-            sb.AppendLine( $"{"Name",leftAlign} | {"Description",leftAlign} | {"DataType",10} | {"ValueRank",12} | {"ArrayDimension",10} | {"MaxStringLength",5} | {"IsOptional",12}"
+            sb.AppendLine( System.Globalization.CultureInfo.InvariantCulture, $"{"Name",leftAlign} | {"Description",leftAlign} | {"DataType",10} | {"ValueRank",12} | {"ArrayDimension",10} | {"MaxStringLength",5} | {"IsOptional",12}"
                          );
             sb.AppendLine( "----------------------------------------------------------------------------------------------------------------------------------------------------------"
                          );
