@@ -95,7 +95,7 @@ namespace opc.ua.pubsub.dotnet.binary.Messages.Key
             sb.AppendLine( "Key Message" );
             sb.AppendLine( "----------------------------------------------------------------------------------------------------------------------------------------------"
                          );
-            sb.AppendLine( $"{"Index",10} | {"Name",50} | {"Orcat",10} | {"Quality",10} | {"Custom",10} | {"MDSP q",10} | {"Timestamp",21} | {"Value",20}" );
+            sb.AppendLine( System.Globalization.CultureInfo.InvariantCulture, $"{"Index",10} | {"Name",50} | {"Orcat",10} | {"Quality",10} | {"Custom",10} | {"MDSP q",10} | {"Timestamp",21} | {"Value",20}" );
             sb.AppendLine( "----------------------------------------------------------------------------------------------------------------------------------------------"
                          );
             for ( int i = 0; i < Items.Count; i++ )
@@ -118,7 +118,7 @@ namespace opc.ua.pubsub.dotnet.binary.Messages.Key
                     name = MetaFrame.FieldMetaDataList[dpv.Index]
                                     .Name.ToString();
                 }
-                sb.AppendLine( $"{dpv.Index,10} | {name,-50} | {value}" );
+                sb.AppendLine( System.Globalization.CultureInfo.InvariantCulture, $"{dpv.Index,10} | {name,-50} | {value}" );
             }
             sb.AppendLine( "=============================================================================================================================================="
                          );

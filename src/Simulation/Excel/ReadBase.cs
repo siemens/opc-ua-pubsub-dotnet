@@ -69,7 +69,7 @@ namespace opc.ua.pubsub.dotnet.simulation.Excel
             {
                 try
                 {
-                    value = long.Parse( timeStampCell.RichText.Text, CultureInfo.InvariantCulture );
+                    value = long.Parse( timeStampCell.GetRichText()?.Text, CultureInfo.InvariantCulture );
                 }
                 catch ( FormatException exception )
                 {

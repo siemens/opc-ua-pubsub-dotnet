@@ -23,9 +23,6 @@ using opc.ua.pubsub.dotnet.binary.Messages.Meta.Structure;
 using log4net;
 using MQTTnet;
 using MQTTnet.Client;
-using MQTTnet.Client.Disconnecting;
-using MQTTnet.Client.Options;
-using MQTTnet.Client.Receiving;
 using MQTTnet.Diagnostics;
 using MQTTnet.Protocol;
 using opc.ua.pubsub.dotnet.client.Interfaces;
@@ -35,7 +32,6 @@ using OPCUAFile = opc.ua.pubsub.dotnet.binary.DataPoints.File;
 using static opc.ua.pubsub.dotnet.client.ProcessDataSet;
 using String = opc.ua.pubsub.dotnet.binary.String;
 using System.Security.Authentication;
-using MQTTnet.Diagnostics.Logger;
 using System.Text;
 
 [assembly: InternalsVisibleTo( "Client.Test" )]
@@ -148,22 +144,19 @@ namespace opc.ua.pubsub.dotnet.client
             if (Settings.Client.SendStatusMessages && !string.IsNullOrEmpty(Settings.Client.StatusMessageTopic))
             {
                 string topic = CreateTopicName( Settings.Client.StatusMessageTopic, ClientId, 0, null, DataSetType.Event );
-                optionsBuilder.WithWillMessage( new()
-                {
-                    Topic = topic,
-                    Payload = Encoding.UTF8.GetBytes( StatusMessageDisconnected ),
-                    Retain = !Settings.Client.NeverSendRetain
-                } );
+                optionsBuilder.WithWillTopic( topic );
+                optionsBuilder.WithWillPayload( Encoding.UTF8.GetBytes( StatusMessageDisconnected ) );
+                optionsBuilder.WithWillRetain( !Settings.Client.NeverSendRetain );
             }
 
             //TODO: improve logging...
             this.m_MqttLogger = new MqttNetNullLogger();
 
             m_MqttClient = new MqttFactory().CreateMqttClient(m_MqttLogger);
-            m_MqttClient.ApplicationMessageReceivedHandler = new MqttApplicationMessageReceivedHandlerDelegate( e => MqttClientOnApplicationMessageReceived( e ) );
-            m_MqttClient.DisconnectedHandler               = new MqttClientDisconnectedHandlerDelegate( e => MqttClientOnDisconnected( e ) );
-            IMqttClientOptions options = optionsBuilder.Build();
-            Logger.Debug( $"Waiting for connection ... (CommTimeout: {options.CommunicationTimeout.Seconds} s, MqttKeepAlive: {options.KeepAlivePeriod.Seconds} s)" );
+            m_MqttClient.ApplicationMessageReceivedAsync += MqttClientOnApplicationMessageReceived;
+            m_MqttClient.DisconnectedAsync               += MqttClientOnDisconnected;
+            MqttClientOptions options = optionsBuilder.Build();
+            Logger.Debug( $"Waiting for connection ... (Timeout: {options.Timeout.TotalSeconds} s, MqttKeepAlive: {options.KeepAlivePeriod.TotalSeconds} s)" );
             m_MqttClient.ConnectAsync( options )
                         .Wait();
 
@@ -205,8 +198,8 @@ namespace opc.ua.pubsub.dotnet.client
                     }
 
                     //m_MqttClient.UnsubscribeAsync(Settings.Client.ClientCertP12).Wait();
-                    m_MqttClient.ApplicationMessageReceivedHandler = null;
-                    m_MqttClient.DisconnectedHandler               = null;
+                    m_MqttClient.ApplicationMessageReceivedAsync -= MqttClientOnApplicationMessageReceived;
+                    m_MqttClient.DisconnectedAsync               -= MqttClientOnDisconnected;
                 }
 
                 try
@@ -259,17 +252,20 @@ namespace opc.ua.pubsub.dotnet.client
                 m_DecoderTask = Task.Run( () => m_Decoder.Start() );
             }
 
-            m_MqttClient.SubscribeAsync( new MqttTopicFilter
-            {
-                Topic = topic,
-                QualityOfServiceLevel = MqttQualityOfServiceLevel.AtLeastOnce
-            }
-                                       ).Wait();
 
+            var mqttSubscribeOptions = new MqttFactory().CreateSubscribeOptionsBuilder()
+                .WithTopicFilter( f => { 
+                    f.WithTopic( topic );
+                    f.WithAtLeastOnceQoS();
+                } )
+                .Build();
+
+            m_MqttClient.SubscribeAsync( mqttSubscribeOptions ).Wait();
+                
             Logger.Debug( $"MQTT SubscribeAsync DONE, Topic: {topic}" );
         }
 
-        private void MqttClientOnDisconnected( MqttClientDisconnectedEventArgs e )
+        private Task MqttClientOnDisconnected( MqttClientDisconnectedEventArgs e )
         {
             string msg = $"{e?.Reason}";
             string exceptionMessage = e?.Exception?.Message;
@@ -280,9 +276,10 @@ namespace opc.ua.pubsub.dotnet.client
             }
 
             ClientDisconnected?.Invoke( this, msg );
+            return Task.CompletedTask;
         }
 
-        private void MqttClientOnApplicationMessageReceived( MqttApplicationMessageReceivedEventArgs e )
+        private Task MqttClientOnApplicationMessageReceived( MqttApplicationMessageReceivedEventArgs e )
         {
             Logger.Debug( "OnMessage received. Enqueuing message..." );
             
@@ -306,6 +303,7 @@ namespace opc.ua.pubsub.dotnet.client
                 }
                                       );
             }
+            return Task.CompletedTask;
         }
 
         private void DecoderOnMessageDecoded( object sender, MessageDecodedEventArgs eventArgs )
@@ -784,7 +782,7 @@ namespace opc.ua.pubsub.dotnet.client
 
             MqttApplicationMessageBuilder messageBuilder;
             messageBuilder = new MqttApplicationMessageBuilder()
-                            .WithAtLeastOnceQoS()
+                            .WithQualityOfServiceLevel(MqttQualityOfServiceLevel.AtLeastOnce)
                             .WithPayload(payload)
                             .WithTopic(topic)
                             .WithRetainFlag(retain && !Settings.Client.NeverSendRetain);
@@ -858,7 +856,7 @@ namespace opc.ua.pubsub.dotnet.client
         ///     </list>
         /// </param>
         /// <returns>A Boolean value that determines whether the specified certificate is accepted for authentication.</returns>
-        private bool CertificateValidationCallback( MqttClientCertificateValidationCallbackContext callbackContext )
+        private bool CertificateValidationCallback( MqttClientCertificateValidationEventArgs eventArgs )
         {
             // a broker CA certificate must exist
             if ( BrokerCACert == null )
@@ -870,11 +868,11 @@ namespace opc.ua.pubsub.dotnet.client
             using ( X509Certificate2 brokerCACert = new X509Certificate2( BrokerCACert, "", X509KeyStorageFlags.Exportable ) )
             {
                 // the certificate received from broker during TLS handshake
-                using ( X509Certificate2 brokerCert = new X509Certificate2( callbackContext.Certificate ) )
+                using ( X509Certificate2 brokerCert = new X509Certificate2( eventArgs.Certificate ) )
                 {
                     // the validation which was made base on the certificates stored in the certificate store 
                     // was successful
-                    if ( callbackContext.SslPolicyErrors == SslPolicyErrors.None )
+                    if ( eventArgs.SslPolicyErrors == SslPolicyErrors.None )
                     {
                         // that means that all CA certificates that are required for validation check are entered in the
                         // "trusted CA" part of the certificate store and match with the certtificate/chain from remote
@@ -889,10 +887,10 @@ namespace opc.ua.pubsub.dotnet.client
                     // further validation checks:
 
                     // a certificate chain is received and it is valid
-                    if ( callbackContext.Chain != null && callbackContext.Chain.ChainElements.Count > 1 )
+                    if ( eventArgs.Chain != null && eventArgs.Chain.ChainElements.Count > 1 )
                     {
                         // we check whether the broker CA certificate we have stored is part of this chain
-                        foreach ( X509ChainElement cert in callbackContext.Chain.ChainElements )
+                        foreach ( X509ChainElement cert in eventArgs.Chain.ChainElements )
                         {
                             X509Certificate2 certInChain = cert.Certificate;
                             if ( brokerCACert.Equals( certInChain ) )
@@ -937,7 +935,7 @@ namespace opc.ua.pubsub.dotnet.client
             }
 
             // the validation check errors shall be ignored by setting
-            if ( callbackContext.ClientOptions.TlsOptions.IgnoreCertificateChainErrors )
+            if ( eventArgs.ClientOptions.TlsOptions.IgnoreCertificateChainErrors )
             {
                 Logger.Error( "Ignoring broker certificate validation errors." );
                 return true;
@@ -950,12 +948,12 @@ namespace opc.ua.pubsub.dotnet.client
                 try
                 {
                     Logger.Error( "Remote Certificate:" );
-                    using ( X509Certificate2 certificate = new X509Certificate2( callbackContext.Certificate ) )
+                    using ( X509Certificate2 certificate = new X509Certificate2( eventArgs.Certificate ) )
                     {
                         CertifacteLogging.LogCertifacte( certificate, Logger );
                     }
                     Logger.Error( "Remote Certificate Chain:" );
-                    CertifacteLogging.LogCertificateChain( callbackContext.Chain, Logger );
+                    CertifacteLogging.LogCertificateChain( eventArgs.Chain, Logger );
                 }
                 catch ( Exception ex )
                 {
@@ -1022,7 +1020,7 @@ namespace opc.ua.pubsub.dotnet.client
             // settings for connection timeout and MQTT kepp alive interval, given in seconds
             // (defaults in MQTTnet stack are CommunicationTimeout = 10 sec and KeepAlivePeriod = 15 sec.,
             //  see in MqttClientOptions.cs of MQTTnet)
-            clientOptionsBuilder.WithCommunicationTimeout( new TimeSpan( 0, 0, Settings.Client.CommunicationTimeout ) );
+            clientOptionsBuilder.WithTimeout( new TimeSpan( 0, 0, Settings.Client.CommunicationTimeout ) );
             clientOptionsBuilder.WithKeepAlivePeriod( new TimeSpan( 0, 0, Settings.Client.MqttKeepAlivePeriod ) );
             return clientOptionsBuilder;
         }
