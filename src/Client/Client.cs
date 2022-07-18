@@ -1017,6 +1017,12 @@ namespace opc.ua.pubsub.dotnet.client
                 }
             }
 
+            if ( !string.IsNullOrEmpty(Settings.Client.ProxyAddress) && !string.IsNullOrEmpty(Settings.Client.ProxyPort))
+            {
+                string address = Settings.Client.ProxyAddress + ":" + Settings.Client.ProxyPort;
+                clientOptionsBuilder.WithProxy(address, Settings.Client.ProxyUsername, Settings.Client.ProxyPassword.ToString() );
+            }
+
             // settings for connection timeout and MQTT kepp alive interval, given in seconds
             // (defaults in MQTTnet stack are CommunicationTimeout = 10 sec and KeepAlivePeriod = 15 sec.,
             //  see in MqttClientOptions.cs of MQTTnet)
