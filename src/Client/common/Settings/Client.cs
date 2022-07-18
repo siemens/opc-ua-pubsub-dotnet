@@ -19,6 +19,12 @@ namespace opc.ua.pubsub.dotnet.client.common.Settings
         public bool   UseTls                            { get; set; } = false;
         public bool   RawDataMode                       { get; set; } = false;
 
+        // Proxy Information
+        public string ProxyAddress { get; set; }
+        public string ProxyPort { get; set; }
+        public string ProxyUsername { get; set; }
+        public string ProxyPassword { get; set; }
+
         // Mqtt communication timeout in seconds
         public int CommunicationTimeout { get; set; } = 10;
 
