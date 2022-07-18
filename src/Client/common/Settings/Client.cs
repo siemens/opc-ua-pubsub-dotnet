@@ -1,6 +1,9 @@
 ﻿// Copyright 2020 Siemens AG
 // SPDX-License-Identifier: MIT
 
+using System.Security;
+using System.Text.Json.Serialization;
+
 namespace opc.ua.pubsub.dotnet.client.common.Settings
 {
     public class Client
@@ -23,7 +26,8 @@ namespace opc.ua.pubsub.dotnet.client.common.Settings
         public string ProxyAddress { get; set; }
         public string ProxyPort { get; set; }
         public string ProxyUsername { get; set; }
-        public string ProxyPassword { get; set; }
+        [JsonIgnore]
+        public SecureString ProxyPassword { get; set; }
 
         // Mqtt communication timeout in seconds
         public int CommunicationTimeout { get; set; } = 10;
