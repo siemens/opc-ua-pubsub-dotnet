@@ -1017,7 +1017,7 @@ namespace opc.ua.pubsub.dotnet.client
                 }
             }
 
-            if ( !string.IsNullOrEmpty(Settings.Client.ProxyAddress) && !string.IsNullOrEmpty(Settings.Client.ProxyPort))
+            if ( Settings.Client.ProxyEnabled )
             {
                 string address = Settings.Client.ProxyAddress + ":" + Settings.Client.ProxyPort;
                 clientOptionsBuilder.WithProxy(address, Settings.Client.ProxyUsername, Settings.Client.ProxyPassword.ToString() );

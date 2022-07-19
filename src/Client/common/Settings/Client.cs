@@ -23,6 +23,7 @@ namespace opc.ua.pubsub.dotnet.client.common.Settings
         public bool   RawDataMode                       { get; set; } = false;
 
         // Proxy Information
+        public bool ProxyEnabled { get; set; }
         public string ProxyAddress { get; set; }
         public string ProxyPort { get; set; }
         public string ProxyUsername { get; set; }
