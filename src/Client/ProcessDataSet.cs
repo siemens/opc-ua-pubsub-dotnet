@@ -94,6 +94,20 @@ namespace opc.ua.pubsub.dotnet.client
                                   .ToList();
         }
 
+        public IList<ProcessDataPointValue> GetUpdatedDataPointValues()
+        {
+            return m_ProcessValues.Values.Where( v => v.IsModified == true ).Select( v => v.DataPoint )
+                                  .ToList();
+        }
+
+        public void ClearAllModifiedFlags()        
+        {
+            foreach ( DataPointEntry procVal in m_ProcessValues.Values )
+            { 
+                procVal.IsModified = false;            
+            }
+        }
+
         public List<byte[]> GetChunkedKeyFrame( uint chunkSize, ushort sequenceNumber )
         {
             KeyFrame key = GetKeyFrame( sequenceNumber );
