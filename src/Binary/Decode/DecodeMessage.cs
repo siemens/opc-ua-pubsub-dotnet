@@ -323,6 +323,7 @@ namespace opc.ua.pubsub.dotnet.binary.Decode
                         {
                             Logger.Debug( keepAliveFrame.ToString() );
                         }
+                        return keepAliveFrame;
                     }
                     return dataFrame;
             }
