@@ -125,16 +125,22 @@ namespace opc.ua.pubsub.dotnet.client
             LastKeyAndMetaSentTimes         = new Dictionary<uint, DateTime>();
             Settings                        = settings;
             ClientId                        = clientId ?? $"Client_{Assembly.GetEntryAssembly()?.FullName.Split( ',' )[0]}_{Environment.MachineName}";
+            m_MqttLogger = new MqttNetNullLogger();
+        }
 
-            if ( Settings.Client.EnableLogging )
-            {
-                //TODO: find out how this works now
-                //MqttNetGlobalLogger.LogMessagePublished += OnLogMessagePublished;
-            }
+        private void OnLogMessagePublished( object sender, MqttNetLogMessagePublishedEventArgs e )
+        {
+            Console.WriteLine($"MQTT.NET: {e.LogMessage}");
         }
 
         public void Connect( ClientCredentials credentials = null )
         {
+            if ( Settings.Client.EnableLogging )
+            {
+                m_MqttLogger = new MqttNetEventLogger();
+                ( (MqttNetEventLogger) m_MqttLogger ).LogMessagePublished += OnLogMessagePublished;
+            }
+
             if ( credentials != null && !credentials.HasCertificates() )
             {
                 Logger.Error( "No certificates imported" );
@@ -213,6 +219,13 @@ namespace opc.ua.pubsub.dotnet.client
                     m_MqttClient.Dispose();
                 }
             }
+
+            if ( m_MqttLogger is MqttNetEventLogger eventLogger )
+            {
+                eventLogger.LogMessagePublished -= OnLogMessagePublished;
+            }
+            m_MqttLogger = null;
+
 
             m_DecoderTask?.Wait();
             m_MessageQueue = null;
@@ -1046,31 +1059,6 @@ namespace opc.ua.pubsub.dotnet.client
             }
         }
 
-        private static void OnLogMessagePublished( object sender, MqttNetLogMessagePublishedEventArgs eventArgs )
-        {
-            switch ( eventArgs.LogMessage.Level )
-            {
-                case MqttNetLogLevel.Error:
-                    Logger.Error( eventArgs.LogMessage.Message, eventArgs.LogMessage.Exception );
-                    break;
-
-                case MqttNetLogLevel.Info:
-                    Logger.Info( eventArgs.LogMessage.Message, eventArgs.LogMessage.Exception );
-                    break;
-
-                case MqttNetLogLevel.Warning:
-                    Logger.Warn( eventArgs.LogMessage.Message, eventArgs.LogMessage.Exception );
-                    break;
-
-                case MqttNetLogLevel.Verbose:
-                    Logger.Debug( eventArgs.LogMessage.Message, eventArgs.LogMessage.Exception );
-                    break;
-
-                default:
-                    Logger.Fatal( eventArgs.LogMessage.Message, eventArgs.LogMessage.Exception );
-                    break;
-            }
-        }
 
         #endregion 
     }
