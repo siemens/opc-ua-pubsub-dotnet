@@ -155,9 +155,6 @@ namespace opc.ua.pubsub.dotnet.client
                 optionsBuilder.WithWillRetain( !Settings.Client.NeverSendRetain );
             }
 
-            //TODO: improve logging...
-            this.m_MqttLogger = new MqttNetNullLogger();
-
             m_MqttClient = new MqttFactory().CreateMqttClient(m_MqttLogger);
             m_MqttClient.ApplicationMessageReceivedAsync += MqttClientOnApplicationMessageReceived;
             m_MqttClient.DisconnectedAsync               += MqttClientOnDisconnected;
