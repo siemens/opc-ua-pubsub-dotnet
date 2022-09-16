@@ -152,7 +152,10 @@ namespace opc.ua.pubsub.dotnet.client
 
                     if ( timeWithoutPacketSent > keepAlivePeriod )
                     {
-                        m_MqttClient.PingAsync( cancellationToken ).Wait( Settings.Client.MqttKeepAlivePeriod * 1000, cancellationToken );
+                        if ( !m_MqttClient.PingAsync( cancellationToken ).Wait( Settings.Client.MqttKeepAlivePeriod * 1000, cancellationToken ) )
+                        {
+                            throw new MqttCommunicationTimedOutException();
+                        }
                     }
 
                     // Wait a fixed time in all cases. Calculation of the remaining time is complicated
