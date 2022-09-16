@@ -199,7 +199,11 @@ namespace opc.ua.pubsub.dotnet.client
             if ( Settings.Client.EnableLogging )
             {
                 m_MqttLogger = new MqttNetEventLogger();
-                ( (MqttNetEventLogger) m_MqttLogger ).LogMessagePublished += OnLogMessagePublished;
+                ( (MqttNetEventLogger)m_MqttLogger ).LogMessagePublished += OnLogMessagePublished;
+            }
+            else
+            {
+                m_MqttLogger = new MqttNetNullLogger();
             }
 
             if ( credentials != null && !credentials.HasCertificates() )
