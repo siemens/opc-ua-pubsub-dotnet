@@ -204,9 +204,6 @@ namespace opc.ua.pubsub.dotnet.client
                 Logger.Error( "No certificates imported" );
             }
             MqttClientOptionsBuilder optionsBuilder = CreateOptionsBuilder( credentials );
-            // >>>> workaround mqtt timeout
-            optionsBuilder.WithNoKeepAlive();
-            // <<<< workaround mqtt timeout
 
             if ( Settings.Client.SendStatusMessages && !string.IsNullOrEmpty(Settings.Client.StatusMessageTopic))
             {
