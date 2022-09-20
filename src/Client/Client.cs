@@ -180,7 +180,7 @@ namespace opc.ua.pubsub.dotnet.client
                     Logger.Error( "Error exception while sending/receiving keep alive packets. " + exception );
                 }
 
-                await m_MqttClient.DisconnectAsync();
+                await m_MqttClient?.DisconnectAsync();
             }
             finally
             {
@@ -284,21 +284,21 @@ namespace opc.ua.pubsub.dotnet.client
                             DataSetType.Event,
                             true );
                     }
-
-                    //m_MqttClient.UnsubscribeAsync(Settings.Client.ClientCertP12).Wait();
-                    m_MqttClient.ApplicationMessageReceivedAsync -= MqttClientOnApplicationMessageReceived;
-                    m_MqttClient.DisconnectedAsync               -= MqttClientOnDisconnected;
                 }
 
                 try
                 {
+                    //m_MqttClient.UnsubscribeAsync(Settings.Client.ClientCertP12).Wait();
+                    m_MqttClient.ApplicationMessageReceivedAsync -= MqttClientOnApplicationMessageReceived;
+                    m_MqttClient.DisconnectedAsync -= MqttClientOnDisconnected;
+
                     m_MqttClient.DisconnectAsync()
                                 .Wait( TimeSpan.FromSeconds( 5 ) );
                 }
                 catch ( TaskCanceledException ) { } //don't know why this happens always...
                 finally
                 {
-                    m_MqttClient.Dispose();
+                    m_MqttClient?.Dispose();
                 }
             }
 
