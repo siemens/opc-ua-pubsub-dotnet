@@ -180,7 +180,7 @@ namespace opc.ua.pubsub.dotnet.client
                     Logger.Error( "Error exception while sending/receiving keep alive packets. " + exception );
                 }
 
-                await m_MqttClient?.DisconnectAsync();
+                await m_MqttClient?.DisconnectAsync(MqttClientDisconnectReason.KeepAliveTimeout);
             }
             finally
             {
@@ -892,7 +892,7 @@ namespace opc.ua.pubsub.dotnet.client
             {
                 try
                 {
-                    m_MqttClient.PublishAsync(messageBuilder.Build())
+                    m_MqttClient.PublishAsync(messageBuilder.Build(), m_BackgroundCancellationToken.Token)
                                 .Wait();
 
                     m_LastPacketSentTimestamp = DateTime.UtcNow;
