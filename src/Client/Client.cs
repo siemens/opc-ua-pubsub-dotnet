@@ -255,11 +255,23 @@ namespace opc.ua.pubsub.dotnet.client
 
         public void Disconnect()
         {
-            Disconnect( true );
+            Disconnect( Settings.Client.SendStatusMessages, true );
         }
 
-        private void Disconnect( bool withCallback = false ) 
+        private void Disconnect( bool withStatusMessage, bool withCallback ) 
         {
+            if ( m_MqttClient != null && m_MqttClient.IsConnected && withStatusMessage )
+            {
+                Publish(
+                    Encoding.UTF8.GetBytes( StatusMessageOffline ),
+                    Settings.Client.StatusMessageTopic,
+                    0,
+                    null,
+                    DataSetType.Event,
+                    true,
+                    false );
+            }
+
             if ( m_Decoder != null )
             {
                 m_Decoder.MessageDecoded -= DecoderOnMessageDecoded;
@@ -273,18 +285,6 @@ namespace opc.ua.pubsub.dotnet.client
 
             if ( m_MqttClient != null )
             {
-                if ( m_MqttClient.IsConnected && Settings.Client.SendStatusMessages )
-                {
-                    Publish(
-                        Encoding.UTF8.GetBytes( StatusMessageOffline ),
-                        Settings.Client.StatusMessageTopic,
-                        0,
-                        null,
-                        DataSetType.Event,
-                        true,
-                        false );
-                }
-
                 try
                 {
                     //m_MqttClient.UnsubscribeAsync(Settings.Client.ClientCertP12).Wait();
@@ -373,7 +373,7 @@ namespace opc.ua.pubsub.dotnet.client
             }
 
             ClientDisconnected?.Invoke( this, msg );
-            Disconnect( false );
+            Disconnect( false, false );
             return Task.CompletedTask;
         }
 
