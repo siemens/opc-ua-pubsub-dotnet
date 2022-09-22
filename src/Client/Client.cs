@@ -246,6 +246,7 @@ namespace opc.ua.pubsub.dotnet.client
                     0,
                     null,
                     DataSetType.Event,
+                    true,
                     true );
             }
 
@@ -254,11 +255,23 @@ namespace opc.ua.pubsub.dotnet.client
 
         public void Disconnect()
         {
-            Disconnect( true );
+            Disconnect( Settings.Client.SendStatusMessages, true );
         }
 
-        private void Disconnect( bool withCallback = false ) 
+        private void Disconnect( bool withStatusMessage, bool withCallback ) 
         {
+            if ( m_MqttClient != null && m_MqttClient.IsConnected && withStatusMessage )
+            {
+                Publish(
+                    Encoding.UTF8.GetBytes( StatusMessageOffline ),
+                    Settings.Client.StatusMessageTopic,
+                    0,
+                    null,
+                    DataSetType.Event,
+                    true,
+                    false );
+            }
+
             if ( m_Decoder != null )
             {
                 m_Decoder.MessageDecoded -= DecoderOnMessageDecoded;
@@ -272,20 +285,6 @@ namespace opc.ua.pubsub.dotnet.client
 
             if ( m_MqttClient != null )
             {
-                if ( m_MqttClient.IsConnected )
-                {
-                    if ( Settings.Client.SendStatusMessages )
-                    {
-                        Publish(
-                            Encoding.UTF8.GetBytes( StatusMessageOffline ),
-                            Settings.Client.StatusMessageTopic,
-                            0,
-                            null,
-                            DataSetType.Event,
-                            true );
-                    }
-                }
-
                 try
                 {
                     //m_MqttClient.UnsubscribeAsync(Settings.Client.ClientCertP12).Wait();
@@ -374,7 +373,7 @@ namespace opc.ua.pubsub.dotnet.client
             }
 
             ClientDisconnected?.Invoke( this, msg );
-            Disconnect( false );
+            Disconnect( false, false );
             return Task.CompletedTask;
         }
 
@@ -485,7 +484,7 @@ namespace opc.ua.pubsub.dotnet.client
                 else
                 {
                     byte[] keepAliveChunk = dataSet.GetEncodedKeepAliveMessage( m_SequenceNumber++ );
-                    Publish( keepAliveChunk, topicPrefix, dataSet.GetWriterId(), "Meas", dataSet.GetDataSetType(), false );
+                    Publish( keepAliveChunk, topicPrefix, dataSet.GetWriterId(), "Meas", dataSet.GetDataSetType(), false, true );
                 }
             }
         }
@@ -516,7 +515,7 @@ namespace opc.ua.pubsub.dotnet.client
                 if ( sendDelta )
                 {
                     byte[] deltaChunk = dataSet.GetEncodedDeltaFrame( m_SequenceNumber++ );
-                    Publish( deltaChunk, topicPrefix, dataSet.GetWriterId(), "Meas", dataSet.GetDataSetType(), false );
+                    Publish( deltaChunk, topicPrefix, dataSet.GetWriterId(), "Meas", dataSet.GetDataSetType(), false, true );
                 }
                 else //meta + key
                 {
@@ -526,14 +525,14 @@ namespace opc.ua.pubsub.dotnet.client
                         foreach ( byte[] chunk in metaChunks )
                         {
                             bool retain = ( metaChunks.Count == 1 ) && ( !Options.SendMetaMessageWithoutRetain );
-                            Publish( chunk, topicPrefix, dataSet.GetWriterId(), "Meta", dataSet.GetDataSetType(), retain );
+                            Publish( chunk, topicPrefix, dataSet.GetWriterId(), "Meta", dataSet.GetDataSetType(), retain, true );
                             UpdateLastKeyAndMetaSentTime( dataSet.GetWriterId() );
                         }
                     }
                     List<byte[]> keyChunks = dataSet.GetChunkedKeyFrame( ChunkSize, m_SequenceNumber++ );
                     foreach ( byte[] chunk in keyChunks )
                     {
-                        Publish( chunk, topicPrefix, dataSet.GetWriterId(), "Meas", dataSet.GetDataSetType(), false );
+                        Publish( chunk, topicPrefix, dataSet.GetWriterId(), "Meas", dataSet.GetDataSetType(), false, true );
                     }
                 }
 
@@ -555,7 +554,7 @@ namespace opc.ua.pubsub.dotnet.client
             bool sent = false;
             try
             {
-                Publish( payload, topic, 0, null, DataSetType.Event, retain );                
+                Publish( payload, topic, 0, null, DataSetType.Event, retain, true );                
                 sent = true; //sent is only true if all chunks are sent without exception
             }
             catch ( DataNotSentException ) { }
@@ -676,8 +675,8 @@ namespace opc.ua.pubsub.dotnet.client
                 }
                 try
                 {
-                    Publish( metaFrameBytes, topicPrefix, writerId, "Meta", DataSetType.TimeSeriesEventFile, false );
-                    Publish( keyFrameBytes,  topicPrefix, writerId, "File", DataSetType.TimeSeriesEventFile, false );
+                    Publish( metaFrameBytes, topicPrefix, writerId, "Meta", DataSetType.TimeSeriesEventFile, false, true);
+                    Publish( keyFrameBytes,  topicPrefix, writerId, "File", DataSetType.TimeSeriesEventFile, false, true );
                     fileSent = true;
                 }
                 catch ( DataNotSentException ) { }
@@ -875,7 +874,7 @@ namespace opc.ua.pubsub.dotnet.client
             return newTopicName;
         }
 
-        private void Publish( byte[] payload, string topicPrefix, ushort dataSetWriterId, string messageType, DataSetType dataSetType, bool retain )
+        private void Publish( byte[] payload, string topicPrefix, ushort dataSetWriterId, string messageType, DataSetType dataSetType, bool retain , bool throwException)
         {
             string topic = CreateTopicName( topicPrefix, ClientId, dataSetWriterId, messageType, dataSetType );
 
@@ -913,7 +912,7 @@ namespace opc.ua.pubsub.dotnet.client
                     //but due to the AggregatedExceptions it's very difficult to find out what really went wrong...)
                 }
             }
-            if (!dataSent)
+            if (!dataSent && throwException)
             {
                 throw new DataNotSentException();
             }
