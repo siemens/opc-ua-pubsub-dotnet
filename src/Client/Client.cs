@@ -135,65 +135,6 @@ namespace opc.ua.pubsub.dotnet.client
             Console.WriteLine($"MQTT.NET: {e.LogMessage}");
         }
 
-        // >>>> workaround mqtt timeout
-
-        async Task TrySendKeepAliveMessagesAsync( CancellationToken cancellationToken )
-        {
-            try
-            {
-                Logger.Debug( "Start sending keep alive packets." );
-
-                var keepAlivePeriod = TimeSpan.FromSeconds( Settings.Client.MqttKeepAlivePeriod );
-
-                while ( !cancellationToken.IsCancellationRequested )
-                {
-                    // Values described here: [MQTT-3.1.2-24].
-                    var timeWithoutPacketSent = DateTime.UtcNow - m_LastPacketSentTimestamp;
-
-                    if ( timeWithoutPacketSent > keepAlivePeriod )
-                    {
-                        if ( !m_MqttClient.PingAsync( cancellationToken ).Wait( Settings.Client.MqttKeepAlivePeriod * 1000, cancellationToken ) )
-                        {
-                            throw new MqttCommunicationTimedOutException();
-                        }
-                    }
-
-                    // Wait a fixed time in all cases. Calculation of the remaining time is complicated
-                    // due to some edge cases and was buggy in the past. Now we wait several ms because the
-                    // min keep alive value is one second so that the server will wait 1.5 seconds for a PING
-                    // packet.
-                    await Task.Delay( 250, cancellationToken ).ConfigureAwait( false );
-                }
-            }
-            catch ( Exception exception )
-            {
-                if ( exception is OperationCanceledException )
-                {
-                    return;
-                }
-                else if ( exception is MqttCommunicationException )
-                {
-                    Logger.Warn( "Communication error while sending/receiving keep alive packets. " + exception );
-                }
-                else
-                {
-                    Logger.Error( "Error exception while sending/receiving keep alive packets. " + exception );
-                }
-
-                await m_MqttClient?.DisconnectAsync(MqttClientDisconnectReason.KeepAliveTimeout);
-            }
-            finally
-            {
-                Logger.Debug( "Stopped sending keep alive packets." );
-            }
-        }
-
-        private DateTime m_LastPacketSentTimestamp = DateTime.UtcNow;
-        private CancellationTokenSource m_BackgroundCancellationToken = null;
-        private Task m_KeepAlivePacketsSenderTask = null;
-
-        // <<<< workaround mqtt timeout
-
         public void Connect( ClientCredentials credentials = null )
         {
             if ( Settings.Client.EnableLogging )
@@ -227,16 +168,6 @@ namespace opc.ua.pubsub.dotnet.client
             Logger.Debug( $"Waiting for connection ... (Timeout: {options.Timeout.TotalSeconds} s, MqttKeepAlive: {options.KeepAlivePeriod.TotalSeconds} s)" );
             m_MqttClient.ConnectAsync( options )
                         .Wait();
-
-            // >>>> workaround mqtt timeout
-            if ( m_MqttClient.IsConnected )
-            {
-                m_LastPacketSentTimestamp = DateTime.UtcNow;
-                m_BackgroundCancellationToken = new CancellationTokenSource();
-                m_KeepAlivePacketsSenderTask = Task.Run( () => TrySendKeepAliveMessagesAsync( m_BackgroundCancellationToken.Token ), m_BackgroundCancellationToken.Token );
-            }
-            // <<<< workaround mqtt timeout
-
 
             if ( Settings.Client.SendStatusMessages && m_MqttClient.IsConnected )
             {
@@ -277,11 +208,6 @@ namespace opc.ua.pubsub.dotnet.client
                 m_Decoder.MessageDecoded -= DecoderOnMessageDecoded;
                 m_Decoder.Stop();
             }
-
-            m_BackgroundCancellationToken?.Cancel();
-            m_KeepAlivePacketsSenderTask?.Wait();
-            m_BackgroundCancellationToken = null;
-            m_KeepAlivePacketsSenderTask = null;
 
             if ( m_MqttClient != null )
             {
@@ -891,10 +817,8 @@ namespace opc.ua.pubsub.dotnet.client
             {
                 try
                 {
-                    m_MqttClient.PublishAsync(messageBuilder.Build(), m_BackgroundCancellationToken.Token)
+                    m_MqttClient.PublishAsync(messageBuilder.Build())
                                 .Wait();
-
-                    m_LastPacketSentTimestamp = DateTime.UtcNow;
 
                     //successfully sent - quit the retry loop
                     dataSent = true;
