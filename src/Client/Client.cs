@@ -1,4 +1,4 @@
-﻿// Copyright 2020 Siemens AG
+// Copyright 2020 Siemens AG
 // SPDX-License-Identifier: MIT
 
 using System;
@@ -551,7 +551,7 @@ namespace opc.ua.pubsub.dotnet.client
             // Bit 3 = 1: DataSetMessageSequenceNumber enabled
             // Bit 5-6 = 11: Minor and Major version enabled
             // Bit 7 = 1: DataSetFlags2 enabled
-            // without Flags2 and without timestamp enabled: Flags1 = 0x6B;
+            // without Flags2 and without timestamp enabled: Flags1 = 0x6B
             key.Flags2.RawValue = 0x10; // Bit 0-3 = 0000: Data Key Frame
 
             // Bit 4 = 1: Timestamp (in DataSetMessageHeader) enabled
@@ -812,30 +812,34 @@ namespace opc.ua.pubsub.dotnet.client
                             .WithRetainFlag(retain && !Settings.Client.NeverSendRetain);
             bool dataSent = false;
 
-            //try twice in case of timeout
-            for (int i = 0; i < 2; i++)
+            using CancellationTokenSource tokenSource = new();
+            try
             {
-                try
+                var mqttTask = m_MqttClient.PublishAsync(messageBuilder.Build(), tokenSource.Token);
+                if (!mqttTask.Wait((Settings.Client.CommunicationTimeout + 1) * 1000))
                 {
-                    m_MqttClient.PublishAsync(messageBuilder.Build())
-                                .Wait();
-
-                    //successfully sent - quit the retry loop
-                    dataSent = true;
-                    break;
+                    tokenSource.Cancel();
+                    Console.WriteLine("Timeout while publishing message via MQTT for client: " + ClientId);
+                    Logger.Error("Timeout while publishing message via MQTT for client:" + ClientId);
                 }
-                catch (Exception e)
+                else
                 {
-                    Console.Error.WriteLine($"Error while {i + 1}. publishing message via MQTT for client: " + ClientId);
-                    Console.Error.WriteLine("Exception:" + e);
-                    Logger.Error("Error while publishing message via MQTT for client: " + ClientId);
-                    Logger.Error("Exception:" + e);
-                    ForwardException(e);
-
-                    //try again (doesnt't make sense for all errors, 
-                    //but due to the AggregatedExceptions it's very difficult to find out what really went wrong...)
+                    //successfully sent
+                    dataSent = true;
                 }
             }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine($"Error while publishing message via MQTT for client: " + ClientId);
+                Console.Error.WriteLine("Exception:" + e);
+                Logger.Error("Error while publishing message via MQTT for client: " + ClientId);
+                Logger.Error("Exception:" + e);
+                ForwardException(e);
+
+                //try again (doesnt't make sense for all errors, 
+                //but due to the AggregatedExceptions it's very difficult to find out what really went wrong...)
+            }
+
             if (!dataSent && throwException)
             {
                 throw new DataNotSentException();
@@ -1047,7 +1051,7 @@ namespace opc.ua.pubsub.dotnet.client
                 clientOptionsBuilder.WithProxy(address, Settings.Client.ProxyUsername, Settings.Client.ProxyPassword.ToString() );
             }
 
-            // settings for connection timeout and MQTT kepp alive interval, given in seconds
+            // settings for connection timeout and MQTT keep alive interval, given in seconds
             // (defaults in MQTTnet stack are CommunicationTimeout = 10 sec and KeepAlivePeriod = 15 sec.,
             //  see in MqttClientOptions.cs of MQTTnet)
             clientOptionsBuilder.WithTimeout( new TimeSpan( 0, 0, Settings.Client.CommunicationTimeout ) );
