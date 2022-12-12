@@ -35,9 +35,9 @@
       },
       "MQTTnet": {
         "type": "Direct",
-        "requested": "[4.1.3.436, )",
-        "resolved": "4.1.3.436",
-        "contentHash": "nJ3olWosTucUhsnzjb2Q/zI0TYLd7pHBO/Q1ZnTSwtsROnSaiIPmWteJcjHJ/0kUQcCQ+WWZRhA4S4VJjircVQ=="
+        "requested": "[4.1.4.563, )",
+        "resolved": "4.1.4.563",
+        "contentHash": "gO9segUcKyQJcjV7w7OOdoAIkec7cUN65vEhYutbdWcj4rbtz/oL/RDvQVVbameXc6ChkjKx7/HbO+R8ejAUZQ=="
       },
       "Microsoft.Build.Tasks.Git": {
         "type": "Transitive",
@@ -309,7 +309,7 @@
       "opc.ua.pubsub.dotnet.client": {
         "type": "Project",
         "dependencies": {
-          "MQTTnet": "[4.1.3.436, )",
+          "MQTTnet": "[4.1.4.563, )",
           "Microsoft.Extensions.Configuration.Binder": "[6.0.0, )",
           "Microsoft.Extensions.Configuration.CommandLine": "[6.0.0, )",
           "Microsoft.Extensions.Configuration.Json": "[6.0.0, )",
