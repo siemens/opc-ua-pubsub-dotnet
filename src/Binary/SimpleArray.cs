@@ -90,6 +90,7 @@ namespace opc.ua.pubsub.dotnet.binary
         private static byte[] EncodeElement( TypeCode typeCode, T element )
         {
             byte[] buffer = null;
+
             switch ( typeCode )
             {
                 case TypeCode.Boolean:
@@ -97,11 +98,8 @@ namespace opc.ua.pubsub.dotnet.binary
                     break;
 
                 case TypeCode.Byte:
-                    buffer = BitConverter.GetBytes( (byte)(object)element );
-                    break;
-
                 case TypeCode.SByte:
-                    buffer = BitConverter.GetBytes( (sbyte)(object)element );
+                    buffer = new byte[1] { (byte)(object)element };
                     break;
 
                 case TypeCode.Int16:

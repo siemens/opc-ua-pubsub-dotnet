@@ -207,7 +207,7 @@ namespace opc.ua.pubsub.dotnet.simulation.Excel
                 IXLCell cell      = row.Cell( "A" );
                 IXLCell valueCell = row.Cell( "B" );
                 Logger.Debug( $"Cell value: {cell.Value}" );
-                switch ( cell.Value )
+                switch ( cell.Value.ToString(System.Globalization.CultureInfo.InvariantCulture) )
                 {
                     case "Publisher ID":
                         CommonConfig.PublisherID = valueCell.GetString();
