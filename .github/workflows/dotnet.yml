@@ -49,9 +49,9 @@ jobs:
       - name: Store SemVer
         id: gitversion
         run: |
-          Write-Output "semver=$($env:GitVersion_SemVer)" >> $GITHUB_OUTPUT
+          Write-Output "semver=$($env:GitVersion_SemVer)" >> "$GITHUB_OUTPUT"
           Write-Host "semver=$($env:GitVersion_SemVer)"
-          Write-Host $GITHUB_OUTPUT
+          Write-Host "$GITHUB_OUTPUT"
       
       - name: Create zip
         id: packageBuildResults
@@ -61,7 +61,7 @@ jobs:
           New-Item -ItemType Directory -Force -Path $outFolder
           $fileName = "win-x64-$($env:GitVersion_SemVer).zip"
           Write-Host "Filename: '$fileName'"
-          Write-Output "win-x64-fileName=$($fileName)" >> $GITHUB_OUTPUT
+          Write-Output "win-x64-fileName=$($fileName)" >> "$GITHUB_OUTPUT"
           $outPath = Join-Path $outFolder $fileName
           Compress-Archive -DestinationPath $outPath -Path $sourceFolder -CompressionLevel Optimal
       
@@ -83,12 +83,12 @@ jobs:
           
           $binary = $packages | where {$_ -match "binary"}
           Write-Host "Binary NuGet Package: '$binary'"
-          Write-Output "nupkg-binary-fileName=$($binary)" >> $GITHUB_OUTPUT
+          Write-Output "nupkg-binary-fileName=$($binary)" >> "$GITHUB_OUTPUT"
 
           $client = $packages | where {$_ -match "client"}
           Write-Host "Client NuGet Package: '$client'"
           Write-Host "::set-output name=nupkg-client-fileName::$($client)"
-          Write-Output "nupkg-client-fileName=$($client)" >> $GITHUB_OUTPUT
+          Write-Output "nupkg-client-fileName=$($client)" >> "$GITHUB_OUTPUT"
           
 
       - name: Archive NuGet Packages
