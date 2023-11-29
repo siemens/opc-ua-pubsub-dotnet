@@ -308,7 +308,7 @@ namespace opc.ua.pubsub.dotnet.client
             Logger.Debug( "OnMessage received. Enqueuing message..." );
             
             string topic = e.ApplicationMessage.Topic;
-            byte[] payload = e.ApplicationMessage.Payload;
+            byte[] payload = e.ApplicationMessage.PayloadSegment.Array;
 
             if ( Settings.Client.RawDataMode )
             {
