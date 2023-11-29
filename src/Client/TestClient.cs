@@ -13,7 +13,7 @@ using static opc.ua.pubsub.dotnet.client.ProcessDataSet;
 
 namespace opc.ua.pubsub.dotnet.client
 {
-    public class TestClient : IClientService, ITestClient
+    public class TestClient : ITestClient
     {
         public TestClient( Settings settings, string clientId = null )
         {
