@@ -50,6 +50,8 @@ jobs:
         id: gitversion
         run: |
           Write-Output "semver=$($env:GitVersion_SemVer)" >> $GITHUB_OUTPUT
+          Write-Host "semver=$($env:GitVersion_SemVer)"
+          Write-Host $GITHUB_OUTPUT
       
       - name: Create zip
         id: packageBuildResults
