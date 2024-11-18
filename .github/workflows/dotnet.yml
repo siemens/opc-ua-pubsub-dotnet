@@ -16,11 +16,11 @@ jobs:
       nupkg-client-fileName: ${{ steps.createNupkg.outputs.nupkg-client-fileName }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       
-      - uses: actions/cache@v2
+      - uses: actions/cache@v4
         id: cache
         with:
           path: ~/.nuget/packages
@@ -108,12 +108,12 @@ jobs:
         shell: pwsh
     steps:
       - name: Download Build Results
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: win-x64-release
 
       - name: Download NuGet Packages
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: nuget-win-x64-release
       
