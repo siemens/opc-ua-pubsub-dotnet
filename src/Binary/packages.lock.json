@@ -10,9 +10,9 @@
       },
       "log4net": {
         "type": "Direct",
-        "requested": "[2.0.15, )",
-        "resolved": "2.0.15",
-        "contentHash": "GahnO9ZgFka+xYcFwAfIFjW+k86P2nxFoaEpH6t3v4hiGj7tv2ksVZphxCVIHmJxoySS0HeU3dgCW+bSCcfD0A==",
+        "requested": "[3.0.3, )",
+        "resolved": "3.0.3",
+        "contentHash": "LAZBO0rHo4DM56GIt124NaXKo6LVZcfiuWVgODdUnhPNMzTOlRJWOEIXo8zVNLm426B+coDc4ocfTsTw7R7Zeg==",
         "dependencies": {
           "System.Configuration.ConfigurationManager": "4.5.0"
         }
