@@ -36,7 +36,7 @@ jobs:
         run: dotnet restore _ALL.sln --use-lock-file
       
       - name: Build
-        run: msbuild -m -t:Rebuild -p:Configuration=Release -bl:opc-ua-pubsub-dotnet.binlog -noconlog _All.sln
+        run: msbuild -m -t:Rebuild -p:Configuration=Release -maxcpucount:1 -bl:opc-ua-pubsub-dotnet.binlog -noconlog /p:BuildInParallel=false _All.sln
       
       - name: Archive Build Log
         uses: actions/upload-artifact@v4
